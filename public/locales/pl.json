@@ -1,0 +1,413 @@
+{
+    "common": {
+        "loading": "Ładowanie...",
+        "error": "Ups, coś poszło nie tak!",
+        "success": "Sukces!",
+        "cancel": "Anuluj",
+        "save": "Zapisz",
+        "delete": "Usuń",
+        "edit": "Edytuj",
+        "add": "Dodaj",
+        "close": "Zamknij",
+        "back": "Wróć",
+        "share": "Udostępnij",
+        "view": "Wyświetl",
+        "settings": "Ustawienia",
+        "min": "Min",
+        "max": "Maks"
+    },
+    "auth": {
+        "login": "Zaloguj się",
+        "signup": "Zarejestruj się",
+        "email": "Adres e-mail",
+        "password": "Hasło",
+        "name": "Twoje imię",
+        "rememberMe": "Zapamiętaj mnie",
+        "forgotPassword": "Zapomniałeś hasła?",
+        "noAccount": "Jesteś tu nowy?",
+        "haveAccount": "Masz już konto?",
+        "signupNow": "Dołącz do klubu",
+        "loginNow": "Witaj ponownie"
+    },
+    "navbar": {
+        "home": "Strona główna",
+        "profile": "Mój kącik",
+        "discover": "Odkrywaj",
+        "logout": "Wyloguj się",
+        "searchUsers": "Znajdź znajomych...",
+        "noUsersFound": "Nie znaleziono użytkowników"
+    },
+    "wishlist": {
+        "title": "Lista życzeń",
+        "wishlists": "Listy życzeń",
+        "name": "Nazwa",
+        "description": "Opis",
+        "listName": "Jak nazwiesz tę listę?",
+        "emoji": "Emoji",
+        "chooseEmoji": "Wybierz pasujące emoji",
+        "private": "Prywatna",
+        "public": "Publiczna",
+        "privateList": "Sekretna lista",
+        "publicList": "Publiczna lista",
+        "onlyYouCanSee": "Tylko dla Twoich oczu",
+        "anyoneCanView": "Każdy z linkiem może zajrzeć",
+        "createNew": "Utwórz nową listę",
+        "editWishlist": "Edytuj listę",
+        "deleteWishlist": "Usuń listę",
+        "empty": "Trochę tu cicho...",
+        "addFirstItem": "Dodaj pierwsze marzenie, aby zacząć magię!",
+        "items": "życzeń",
+        "total": "razem",
+        "notFound": "Nie znaleziono listy",
+        "mayBeDeleted": "Wygląda na to, że ta lista rozpłynęła się w powietrzu.",
+        "goToProfile": "Wróć do profilu"
+    },
+    "item": {
+        "addToWishlist": "Dodaj do listy",
+        "productUrl": "Link do produktu",
+        "pasteLink": "Wrzuć link do produktu tutaj...",
+        "parse": "Pobierz szczegóły",
+        "priority": "Jak bardzo tego pragniesz?",
+        "mustHave": "Muszę to mieć na wczoraj",
+        "want": "Bardzo bym chciał",
+        "niceToHave": "Fajnie byłoby mieć",
+        "notes": "Notatki",
+        "notesOptional": "Jakieś wskazówki? (Rozmiar, kolor itp.)",
+        "color": "Preferowany kolor, rozmiar...",
+        "addToList": "Dodaj do listy",
+        "editItem": "Edytuj",
+        "deleteItem": "Usuń",
+        "markPurchased": "Oznacz jako podarowane",
+        "priceNotFound": "Cena się schowała"
+    },
+    "home": {
+        "hero": {
+            "tagline": "Najlepszy prezent to ten, o którym naprawdę marzysz!",
+            "title": "Wszystkie Twoje życzenia w jednym pięknym miejscu",
+            "subtitle": "Zapisuj ulubione produkty z dowolnego sklepu, bezpiecznie udostępniaj listy znajomym i spraw, by obdarowywanie było czystą przyjemnością. Przestań marzyć, zacznij tworzyć listę!",
+            "cta": "Stwórz swoją listę",
+            "learn": "Zobacz, jak to działa"
+        },
+        "features": {
+            "title": "Spełniaj marzenia z głową",
+            "subtitle": "Zaprojektowane z myślą o Tobie. Wszystko, czego potrzebujesz do stworzenia idealnej listy.",
+            "smartParsing": "Magia linków",
+            "smartParsingDesc": "Wystarczy wkleić link! Automatycznie pobierzemy tytuł, cenę i zdjęcie w kilka sekund.",
+            "beautyDisplay": "Estetyka w detalach",
+            "beautyDisplayDesc": "Twoje marzenia zasługują na piękną oprawę. Ciesz się nowoczesnym układem w stylu Pinterest.",
+            "privateKeys": "Dostęp VIP",
+            "privateKeysDesc": "Zachowaj prywatność. Udostępniaj ukryte listy tylko wybranym osobom za pomocą unikalnych kluczy.",
+            "personalize": "Twoje zasady",
+            "personalizeDesc": "Dodawaj notatki, ustalaj priorytety i ozdabiaj emoji. To Twoja osobista przestrzeń.",
+            "easy": "Szybko i wygodnie",
+            "easyDesc": "Jeden klik, jeden link – i produkt jest na Twojej liście.",
+            "smart": "Inteligentne pobieranie",
+            "smartDesc": "Sami wyciągniemy aktualną cenę, opis i najlepsze zdjęcia produktu.",
+            "share": "Udostępnianie jednym kliknięciem",
+            "shareDesc": "Danie komuś wskazówki nigdy nie było tak proste. Po prostu wyślij link.",
+            "organize": "Idealny porządek",
+            "organizeDesc": "Grupuj przedmioty według kategorii i priorytetu, aby ułatwić znajomym wybór."
+        }
+    },
+    "cta": {
+        "title": "Gotowy na organizację swoich marzeń?",
+        "subtitle": "Dołącz do tysięcy osób, które skończyły z nietrafionymi prezentami. Twoja pierwsza lista będzie gotowa w kilka sekund.",
+        "createAccount": "Załóż darmowe konto",
+        "explore": "Najpierw rozejrzyj się"
+    },
+    "footer": {
+        "description": "Twórz piękne listy życzeń, udostępniaj je prywatnie znajomym i spraw, by każdy prezent był idealną niespodzianką.",
+        "subscribePlaceholder": "Zostaw e-mail po nowości...",
+        "subscribeBtn": "Bądź na bieżąco",
+        "categoryProduct": "Produkt",
+        "categoryLegal": "Prawo",
+        "discover": "Odkrywaj",
+        "myLists": "Moje listy",
+        "sharedWithMe": "Udostępnione mi",
+        "privacyPolicy": "Polityka prywatności",
+        "termsOfService": "Warunki korzystania",
+        "madeWithforDreamers": "Stworzone dla marzycieli.",
+        "rights": "© 2026 WishList. Wszelkie prawa zastrzeżone."
+    },
+    "discover": {
+        "title": "Zainspiruj się",
+        "subtitle": "Podejrzyj, o czym marzą inni",
+        "inspireMe": "Zaskocz mnie",
+        "searchProducts": "Szukaj marek, produktów...",
+        "filters": "Filtry",
+        "loadMore": "Pokaż więcej",
+        "searchPlaceholder": "Szukaj list życzeń...",
+        "noResults": "Nic tu nie ma",
+        "public": "Publiczne listy",
+        "trending": "Teraz na topie",
+        "priceRange": "Zakres cen",
+        "sortBy": "Sortuj według",
+        "newest": "Najświeższe najpierw",
+        "priceLow": "Cena: rosnąco",
+        "priceHigh": "Cena: malejąco",
+        "inspirationMode": "Tryb inspiracji - przeglądaj wybrane perełki",
+        "itemsFound": "znalezionych życzeń",
+        "noItems": "Brak produktów w Twoim klimacie",
+        "clearFilters": "Wyczyść filtry",
+        "activeFilters": "Aktywne filtry",
+        "categories": "Kategorie",
+        "advancedFilters": "Filtry zaawansowane"
+    },
+    "profile": {
+        "title": "Mój profil",
+        "myWishlists": "Moje listy",
+        "mySharedLists": "Udostępnione mi",
+        "createFirst": "Utwórz swoją pierwszą listę",
+        "noShared": "Nikt jeszcze nie udostępnił Ci listy",
+        "addShared": "Dodaj wspólną listę",
+        "settings": "Ustawienia",
+        "noWishlists": "Nie masz jeszcze żadnych marzeń na liście!",
+        "createOne": "Stwórzmy jakąś"
+    },
+    "shared": {
+        "accessKey": "Sekretny klucz",
+        "enterAccessKey": "Wrzuć tu klucz dostępu",
+        "sharedWithYou": "Udostępnione Tobie",
+        "invalidKey": "Hmm, ten klucz nie pasuje. Spróbujesz jeszcze raz?",
+        "alreadyAdded": "Już odblokowałeś tę listę!",
+        "addedSuccessfully": "Lista odblokowana!",
+        "viewPrivate": "Odblokuj prywatną listę, którą ktoś Ci udostępnił",
+        "accessBtn": "Odblokuj",
+        "tipDemo": "Wskazówka: Wypróbuj nasz klucz demo ",
+        "toSeeHowItWorks": " aby zobaczyć magię!",
+        "viewOnly": "Tylko do odczytu",
+        "noSharedDesc": "Kiedy Twoi znajomi udostępnią Ci swoje sekrety, wpisz ich klucz powyżej, aby je odblokować."
+    },
+    "errors": {
+        "required": "Potrzebujemy tych informacji!",
+        "invalidEmail": "To nie wygląda jak poprawny e-mail",
+        "passwordTooShort": "Zrób je trochę dłuższe i silniejsze",
+        "loginFailed": "Logowanie nieudane. Sprawdzisz dane jeszcze raz?",
+        "signupFailed": "Coś poszło nie tak podczas rejestracji",
+        "failedToCreate": "Nie udało się utworzyć listy",
+        "failedToUpdate": "Nie udało się zapisać zmian",
+        "failedToDelete": "Nie udało się usunąć",
+        "couldNotConnect": "Utracono połączenie z serwerem. Czy parser śpi?"
+    },
+    "errorPage": {
+        "title": "Ups! Upuściliśmy paczkę",
+        "description": "Stało się coś nieoczekiwanego. Bez paniki, Twoje marzenia są bezpieczne.",
+        "tryAgain": "Spróbujmy jeszcze raz",
+        "goHome": "Zabierz mnie na Główną",
+        "hideDetails": "Ukryj te techniczne nudy",
+        "showDetails": "Pokaż szczegóły techniczne"
+    },
+    "notFound": {
+        "title": "404: Nie znaleziono marzenia",
+        "description": "Wygląda na to, że ta strona zgubiła się w drodze. Mogła zostać przeniesiona lub nigdy nie istniała.",
+        "backHome": "Wróć w bezpieczne miejsce (Główna)",
+        "discover": "Idź odkrywać",
+        "goBack": "Albo wróć do poprzedniej strony"
+    },
+    "privacyPolicy": {
+        "tagline": "Twoje dane, Twoje zasady",
+        "title": "Polityka prywatności",
+        "description": "Wierzymy, że Twoje listy życzeń są całkowicie osobiste. Oto dokładnie, jak postępujemy z Twoimi informacjami — bez prawniczego żargonu, bez niespodzianek.",
+        "lastUpdated": "Ostatnia aktualizacja: 1 marca 2026",
+        "onThisPage": "Na tej stronie",
+        "tldr": {
+            "title": "W skrócie",
+            "item1": "Twoje listy są domyślnie prywatne. Nigdy nie sprzedajemy Twoich danych.",
+            "item2": "Zbieramy tylko to, co jest niezbędne do działania WishList.",
+            "item3": "Możesz usunąć swoje konto i wszystkie dane w dowolnym momencie.",
+            "item4": "Brak zewnętrznych trackerów reklamowych. Śledzenia między witrynami mówimy: nie!"
+        },
+        "sections": {
+            "collect": {
+                "title": "Informacje, które zbieramy",
+                "p1": "Kiedy tworzysz konto, zbieramy Twoje imię, adres e-mail i wybraną nazwę użytkownika. Jeśli prześlesz awatar, obraz ten jest bezpiecznie przechowywany.",
+                "p2": "Kiedy tworzysz listy i dodajesz do nich produkty, przechowujemy nazwę, link, cenę, zdjęcie, notatki i Twój priorytet.",
+                "p3": "Automatycznie zbieramy tylko podstawowe dane (jak odwiedzane zakładki i używane funkcje), aby ulepszać WishList. Nie śledzimy Cię w całym internecie."
+            },
+            "use": {
+                "title": "Jak wykorzystujemy Twoje dane",
+                "p1": "Twoje dane służą wyłącznie do tego, by WishList działał jak marzenie: tworzenia list, udostępniania ich i przeglądania trybu publicznego.",
+                "p2": "Czasem wyślemy ważny e-mail techniczny (np. ze względów bezpieczeństwa). Marketing? Tylko jeśli sam wyrazisz na to ochotę.",
+                "p3": "Nigdy, przenigdy nie sprzedajemy ani nie udostępniamy Twoich danych obcym firmom pod reklamy."
+            },
+            "sharing": {
+                "title": "Udostępnianie i klucze",
+                "p1": "Twoje sekrety są bezpieczne. Listy są prywatne, dopóki sam nie wyślesz komuś klucza dostępu.",
+                "p2": "Kto ma klucz, ten widzi listę. W dowolnym momencie możesz wygenerować nowy klucz lub go usunąć, automatycznie blokując starym posiadaczom dostęp.",
+                "p3": "Listy publiczne trafiają do zakładki 'Odkrywaj'. To Ty decydujesz, czy chcesz się czymś pochwalić światu."
+            },
+            "cookies": {
+                "title": "Ciasteczka (Cookies)",
+                "p1": "Używamy tylko niezbędnych ciasteczek, żebyś nie musiał logować się co pięć minut. Są one kluczowe do działania platformy.",
+                "p2": "Nie korzystamy z żadnych śledzących ciasteczek reklamowych od stron trzecich.",
+                "p3": "Zawsze możesz usunąć ciasteczka w przeglądarce, choć wtedy Cię wyloguje."
+            },
+            "children": {
+                "title": "Prywatność najmłodszych",
+                "p1": "WishList nie jest dla osób poniżej 13 roku życia. Świadomie nie gromadzimy danych od dzieci.",
+                "p2": "Jeśli wiesz, że ktoś poniżej tego wieku założył konto, daj znać — usuniemy je natychmiast."
+            },
+            "contact": {
+                "title": "Pogadajmy",
+                "p1": "Masz pytania o prywatność? Łap nas pod adresem privacy@WishList.com.",
+                "p2": "Odpowiadamy na wszystkie zgłoszenia w ciągu 30 dni.",
+                "p3": "Ten dokument był aktualizowany 1 marca 2026. O dużych zmianach zawsze informujemy mailem."
+            }
+        },
+        "readTerms": "Przeczytaj nasze Warunki korzystania",
+        "backToTop": "Powrót do góry"
+    },
+    "termsOfService": {
+        "tagline": "Uczciwe i przejrzyste",
+        "title": "Warunki korzystania",
+        "description": "Zasady gry w WishList. Zrobiliśmy je krótko, na luzie i sprawiedliwie dla każdego.",
+        "lastUpdated": "Ostatnia aktualizacja: 1 marca 2026",
+        "onThisPage": "Na tej stronie",
+        "tldr": {
+            "title": "W skrócie",
+            "item1": "Twoje listy są Twoje. Nie kładziemy na nich łap.",
+            "item2": "Bądź w porządku, nie psuj zabawy innym.",
+            "item3": "WishList to narzędzie, a nie sklep internetowy.",
+            "item4": "Możesz uciec z naszymi (swoimi) danymi w dowolnym momencie."
+        },
+        "sections": {
+            "acceptance": {
+                "title": "Zgoda to podstawa",
+                "p1": "Używając WishList, akceptujesz te warunki. Jeśli ich nie czujesz, niestety musisz zamknąć kartę w przeglądarce.",
+                "p2": "Czasem coś tu zmieniamy. Dalsze korzystanie z apki to znak, że akceptujesz poprawki. O dużych zmianach oczywiście damy znać."
+            },
+            "account": {
+                "title": "Twoje konto",
+                "p1": "Musisz mieć co najmniej 13 lat. Zakładając konto obiecujesz, że nie ściemniasz w swoich danych.",
+                "p2": "Ty pilnujesz swojego hasła. Cokolwiek stanie się na Twoim koncie, to Twoja odpowiedzialność.",
+                "p3": "Zastrzegamy sobie prawo do banowania kont, jeśli ktoś ewidentnie łamie zasady lub psuje platformę."
+            },
+            "content": {
+                "title": "Twoje treści",
+                "p1": "Wszystko co tu wrzucisz, należy do Ciebie. Nie rościmy sobie praw do Twoich genialnych pomysłów na prezenty.",
+                "p2": "Udostępniając listę, dajesz nam tylko techniczne prawo do jej wyświetlania. Jak ją usuniesz — znika całkowicie.",
+                "p3": "Pilnuj, żeby linki i zdjęcia, które dodajesz, nie łamały praw autorskich innych osób."
+            },
+            "prohibited": {
+                "title": "Tego nie robimy",
+                "p1": "Zero spamu, wirusów, hejtu i nielegalnych treści. Szanujmy się.",
+                "p2": "Żadnego automatycznego wyciągania danych (scrapowania) z naszej bazy bez pisemnej zgody.",
+                "p3": "Włamy na cudze konta i próby psucia serwerów skończą się banem.",
+                "p4": "Zakładanie kont po to, by udawać kogoś innego (phishing), jest surowo zabronione."
+            },
+            "liability": {
+                "title": "Ograniczenie odpowiedzialności",
+                "p1": "WishList działa „tak jak jest”. Staramy się jak możemy, ale nie gwarantujemy, że apka nigdy się nie zatnie.",
+                "p2": "Nie jesteśmy sklepem. Nie sprzedajemy rzeczy z Twoich list, nie ustalamy ich cen i nie bierzemy za nie kasy.",
+                "p3": "Zgodnie z prawem, nie ponosimy odpowiedzialności za ewentualne szkody wynikające z użytkowania platformy."
+            },
+            "changes": {
+                "title": "Zmiany i rozstania",
+                "p1": "Możemy w każdej chwili zmodyfikować lub zamknąć część serwisu. O ważnych sprawach uprzedzimy.",
+                "p2": "Konto możesz usunąć z poziomu ustawień. Do 30 dni wszystko zniknie na amen.",
+                "p3": "Jak będziesz łamać regulamin, możemy Ci podziękować za współpracę. Zazwyczaj podamy powód."
+            },
+            "governing": {
+                "title": "Kwestie prawne",
+                "p1": "Te warunki podlegają prawu miejsca, z którego działa WishList. Wszelkie spory najpierw próbujemy załatwić przy kawie.",
+                "p2": "Jeśli jakiś punkt regulaminu okaże się nieważny prawnie, cała reszta i tak obowiązuje.",
+                "p3": "Ten dokument to cała nasza umowa. Ostatnia aktualizacja: 1 marca 2026 r."
+            }
+        },
+        "readPrivacy": "Przeczytaj naszą Politykę prywatności",
+        "backToTop": "Powrót do góry"
+    },
+    "settings": {
+        "title": "Ustawienia",
+        "backToProfile": "Wróć do profilu",
+        "tabs": {
+            "profile": "Profil",
+            "notifications": "Powiadomienia",
+            "privacy": "Prywatność"
+        },
+        "profile": {
+            "title": "Ustawienia profilu",
+            "changePhoto": "Zmień zdjęcie",
+            "photoHint": "JPG, PNG. Maks. 2MB. Zrób to z klasą!",
+            "displayName": "Wyświetlana nazwa",
+            "username": "Nazwa użytkownika",
+            "bio": "Bio",
+            "saveChanges": "Zapisz zmiany",
+            "saved": "Zapisano pomyślnie!"
+        },
+        "notifications": {
+            "title": "Ustawienia powiadomień",
+            "email": "Powiadomienia e-mail",
+            "emailDesc": "Otrzymuj najświeższe plotki o swoich listach",
+            "priceDrop": "Alerty o spadku cen",
+            "priceDropDesc": "Damy Ci znać, gdy ceny marzeń spadną",
+            "gift": "Powiadomienia o prezentach",
+            "giftDesc": "Gdy ktoś ze znajomych oznaczy przedmiot jako kupiony"
+        },
+        "privacy": {
+            "title": "Ustawienia prywatności",
+            "publicProfile": "Profil publiczny",
+            "publicProfileDesc": "Pozwól innym złapać Twój vibe",
+            "showPrices": "Pokaż ceny",
+            "showPricesDesc": "Wyświetlaj ceny na udostępnionych listach",
+            "deleteAccount": "Usuń konto",
+            "deleteAccountDesc": "Trwale usuń konto i wszystkie dane. Nie ma odwrotu!",
+            "deleteBtn": "Usuń konto"
+        }
+    },
+    "howItWorks": {
+        "hero": {
+            "badge": "Zobacz jak to działa",
+            "title": "Prezentowanie robić",
+            "titleHighlight": "prosty",
+            "subtitle": "Tworzymy listy życzeń, dzielimy się nimi prywatnie i za każdym razem otrzymujemy idealne prezenty. Bez zgadywania, bez powtórzonych prezentów.",
+            "stats": {
+                "steps": "Kroki",
+                "setupTime": "Minut do skonfigurowania"
+            },
+            "cta1": "Zacznij za darmo",
+            "cta2": "Przeglądaj listy życzeń"
+        },
+        "steps": {
+            "title": "Cztery proste kroki",
+            "subtitle": "Od stworzenia pierwszej listy życzeń do otrzymania idealnego prezentu - oto jak działa WishList.",
+            "step1Title": "Utwórz swoją listę życzeń",
+            "step1Desc": "Zacznij od utworzenia nowej listy życzeń na każdą okazję - urodziny, święta, wesela lub po prostu. Nadaj jej nazwę i dostosuj do swoich preferencji.",
+            "step1Feature1": "Wiele list życzeń na różne okazje",
+            "step1Feature2": "Niestandardowe nazwy i opisy",
+            "step1Feature3": "Piękne obrazy okładek",
+            "step2Title": "Łatwo dodawaj przedmioty",
+            "step2Desc": "Po prostu wklej dowolny link do produktu, a my automatycznie wyodrębnimy szczegóły - tytuł, cenę i obraz. Możesz również ręcznie dodawać elementy za pomocą własnych notatek.",
+            "step2Feature1": "Inteligentne analizowanie linków",
+            "step2Feature2": "Automatyczne pobieranie szczegółów produktu",
+            "step2Feature3": "Ustaw poziomy priorytu",
+            "step3Title": "Udostępnij prywatnie",
+            "step3Desc": "Wygeneruj unikalny klucz dostępu, aby udostępnić swoją listę konkretnym osobom. Tylko osoby posiadające klucz mogą przejrzeć twoją listę życzeń - bez publicznych linków, bez ciekawych spojrzeń.",
+            "step3Feature1": "Unikalne klucze dostępu (WISH-XXX-XXX)",
+            "step3Feature2": "Kontroluj, kto widzi twoją listę",
+            "step3Feature3": "Cofnij dostęp w dowolnym momencie",
+            "step4Title": "Otrzymuj idealne prezenty",
+            "step4Desc": "Twoi przyjaciele i rodzina mogą zobaczyć dokładnie to, czego chcesz, oznaczyć przedmioty jako zakupione (ukryte przed tobą) i sprawić, że każdy prezent będzie idealna niespodzianką.",
+            "step4Feature1": "Ukryte śledzenie zakupów",
+            "step4Feature2": "Brak powtórzonych prezentów",
+            "step4Feature3": "Wszyscy pozostają zaskoczeni"
+        },
+        "features": {
+            "title": "Dlaczego wybrać WishList?",
+            "subtitle": "Zbudowany z myślą o prywatności i prostocie.",
+            "feature1Title": "Prywatny domyślnie",
+            "feature1Desc": "Twoje listy życzeń są prywatne, dopóki nie zdecydujesz się je udostępnić.",
+            "feature2Title": "Inteligentna widoczność",
+            "feature2Desc": "Darczyńcy widzą zakupy, ale ty pozostajesz zaskoczony.",
+            "feature3Title": "Pozostań na bieżąco",
+            "feature3Desc": "Otrzymuj powiadomienia, gdy ceny przedmiotów spadają lub są kupowane.",
+            "feature4Title": "Bezpieczne udostępnianie",
+            "feature4Desc": "Klucze dostępu zapewniają, że tylko właściwe osoby widzą twoje listy."
+        },
+        "finalCta": {
+            "title": "Gotowy do rozpoczęcia?",
+            "subtitle": "Dołącz do tysięcy szczęśliwych użytkowników, którzy nigdy więcej nie otrzymają złego prezentu.",
+            "button": "Utwórz swoją pierwszą listę życzeń"
+        }
+    }
+}

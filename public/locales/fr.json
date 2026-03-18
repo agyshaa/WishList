@@ -1,0 +1,413 @@
+{
+    "common": {
+        "loading": "Chargement...",
+        "error": "Oups, une erreur !",
+        "success": "Succès !",
+        "cancel": "Annuler",
+        "save": "Enregistrer",
+        "delete": "Supprimer",
+        "edit": "Modifier",
+        "add": "Ajouter",
+        "close": "Fermer",
+        "back": "Retour",
+        "share": "Partager",
+        "view": "Voir",
+        "settings": "Paramètres",
+        "min": "Min",
+        "max": "Max"
+    },
+    "auth": {
+        "login": "Se connecter",
+        "signup": "S'inscrire",
+        "email": "Adresse e-mail",
+        "password": "Mot de passe",
+        "name": "Ton nom",
+        "rememberMe": "Se souvenir de moi",
+        "forgotPassword": "Mot de passe oublié ?",
+        "noAccount": "Nouveau par ici ?",
+        "haveAccount": "Déjà des nôtres ?",
+        "signupNow": "Rejoins le club",
+        "loginNow": "Bon retour"
+    },
+    "navbar": {
+        "home": "Accueil",
+        "profile": "Mon Espace",
+        "discover": "Découvrir",
+        "logout": "Se déconnecter",
+        "searchUsers": "Trouver des potes...",
+        "noUsersFound": "Aucun utilisateur trouvé"
+    },
+    "wishlist": {
+        "title": "Liste d'envies",
+        "wishlists": "Listes d'envies",
+        "name": "Nom",
+        "description": "Description",
+        "listName": "Quelle est la vibe de ta liste ?",
+        "emoji": "Émoji",
+        "chooseEmoji": "Choisis un émoji cool",
+        "private": "Privée",
+        "public": "Publique",
+        "privateList": "Liste Secrète",
+        "publicList": "Liste Publique",
+        "onlyYouCanSee": "Rien que pour tes yeux",
+        "anyoneCanView": "Toute personne avec le lien peut fouiner",
+        "createNew": "Créer une nouvelle liste",
+        "editWishlist": "Modifier la liste",
+        "deleteWishlist": "Supprimer la liste",
+        "empty": "C'est un peu calme par ici...",
+        "addFirstItem": "Ajoute ton premier vœu pour que la magie opère !",
+        "items": "vœux",
+        "total": "au total",
+        "notFound": "Liste introuvable",
+        "mayBeDeleted": "On dirait que cette liste s'est évaporée.",
+        "goToProfile": "Retour au profil"
+    },
+    "item": {
+        "addToWishlist": "Ajouter à la liste",
+        "productUrl": "Lien du produit",
+        "pasteLink": "Glisse n'importe quel lien de produit ici...",
+        "parse": "Récupérer les infos",
+        "priority": "À quel point tu le veux ?",
+        "mustHave": "Il me le faut pour hier",
+        "want": "J'adorerais l'avoir",
+        "niceToHave": "Ce serait cool",
+        "notes": "Notes",
+        "notesOptional": "Des indices ? (Taille, couleur, etc.)",
+        "color": "Couleur préférée, taille...",
+        "addToList": "Ajouter à la liste",
+        "editItem": "Modifier",
+        "deleteItem": "Supprimer",
+        "markPurchased": "Marquer comme offert",
+        "priceNotFound": "Prix caché"
+    },
+    "home": {
+        "hero": {
+            "tagline": "Le plus beau cadeau, c'est de recevoir exactement ce que l'on veut !",
+            "title": "Toutes tes envies réunies au même endroit",
+            "subtitle": "Enregistre tes articles préférés de n'importe quelle boutique, partage-les en toute sécurité avec tes amis et simplifie l'art d'offrir. Ne rêve plus, crée ta liste !",
+            "cta": "Créer ma liste d'envies",
+            "learn": "Comment ça marche"
+        },
+        "features": {
+            "title": "Fais tes vœux intelligemment",
+            "subtitle": "Conçu pour les rêveurs modernes. Tout ce dont tu as besoin pour la liste parfaite.",
+            "smartParsing": "Liens magiques",
+            "smartParsingDesc": "Colle simplement un lien ! Nous récupérons automatiquement le titre, le prix et l'image en quelques secondes.",
+            "beautyDisplay": "Esthétique épurée",
+            "beautyDisplayDesc": "Tes envies méritent d'être mises en valeur. Profite d'un design moderne façon Pinterest.",
+            "privateKeys": "Accès VIP",
+            "privateKeysDesc": "Garde le secret. Partage des listes privées grâce à des clés d'accès uniques et sécurisées.",
+            "personalize": "À ton image",
+            "personalizeDesc": "Ajoute des notes, définis des priorités et utilise des emojis. Tes règles, ta liste.",
+            "easy": "Rapide et sans effort",
+            "easyDesc": "Un clic, un lien, et ton article est sauvegardé.",
+            "smart": "Extraction intelligente",
+            "smartDesc": "Nous nous occupons de tout en récupérant automatiquement les bonnes photos et les prix actuels.",
+            "share": "Partage en un clic",
+            "shareDesc": "Faire passer le message n'a jamais été aussi simple. Envoie juste ton lien.",
+            "organize": "Parfaitement organisé",
+            "organizeDesc": "Regroupe tes rêves par catégorie et par priorité pour faciliter le choix de tes amis."
+        }
+    },
+    "cta": {
+        "title": "Prêt à organiser tes rêves ?",
+        "subtitle": "Rejoins des milliers de personnes qui en ont fini avec les mauvais cadeaux. Crée ta première liste en quelques secondes.",
+        "createAccount": "Créer un compte gratuit",
+        "explore": "Explorer d'abord"
+    },
+    "footer": {
+        "description": "Crée de magnifiques listes d'envies, partage-les en privé avec tes amis et fais de chaque cadeau une surprise parfaite.",
+        "subscribePlaceholder": "Laisse ton email pour les actus...",
+        "subscribeBtn": "Tiens-moi au courant",
+        "categoryProduct": "Produit",
+        "categoryLegal": "Légal",
+        "discover": "Découvrir",
+        "myLists": "Mes listes",
+        "sharedWithMe": "Partagé avec moi",
+        "privacyPolicy": "Politique de confidentialité",
+        "termsOfService": "Conditions d'utilisation",
+        "madeWithforDreamers": "Fait pour les rêveurs.",
+        "rights": "© 2026 WishList. Tous droits réservés."
+    },
+    "discover": {
+        "title": "Inspire-toi",
+        "subtitle": "Jette un œil à ce dont les autres rêvent",
+        "inspireMe": "Surprends-moi",
+        "searchProducts": "Rechercher des marques, produits...",
+        "filters": "Filtres",
+        "loadMore": "Montre-m'en plus",
+        "searchPlaceholder": "Rechercher des listes...",
+        "noResults": "Il n'y a rien ici",
+        "public": "Listes publiques",
+        "trending": "En ce moment",
+        "priceRange": "Gamme de prix",
+        "sortBy": "Trier par",
+        "newest": "Les nouveautés d'abord",
+        "priceLow": "Prix : croissant",
+        "priceHigh": "Prix : décroissant",
+        "inspirationMode": "Mode inspiration - Parcoure des pépites recommandées",
+        "itemsFound": "vœux trouvés",
+        "noItems": "Aucun article ne correspond à ta vibe pour le moment",
+        "clearFilters": "Effacer les filtres",
+        "activeFilters": "Filtres actifs",
+        "categories": "Catégories",
+        "advancedFilters": "Filtres avancés"
+    },
+    "profile": {
+        "title": "Mon profil",
+        "myWishlists": "Mes listes",
+        "mySharedLists": "Partagé avec moi",
+        "createFirst": "Crée ta première liste d'envies",
+        "noShared": "Personne n'a encore partagé de liste avec toi",
+        "addShared": "Ajouter une liste partagée",
+        "settings": "Paramètres",
+        "noWishlists": "Tu n'as pas encore fait de vœux!",
+        "createOne": "Créons-en une"
+    },
+    "shared": {
+        "accessKey": "Clé secrète",
+        "enterAccessKey": "Lâche ta clé d'accès ici",
+        "sharedWithYou": "Partagé avec toi",
+        "invalidKey": "Hmm, cette clé n'a pas l'air bonne. On réessaie ?",
+        "alreadyAdded": "Tu as déjà débloqué cette liste!",
+        "addedSuccessfully": "Liste débloquée!",
+        "viewPrivate": "Débloque une liste privée qu'on a partagée avec toi",
+        "accessBtn": "Débloquer",
+        "tipDemo": "Astuce : Essaie notre clé démo ",
+        "toSeeHowItWorks": " pour voir la magie opérer!",
+        "viewOnly": "Mode lecture",
+        "noSharedDesc": "Quand tes potes partagent leurs listes secrètes, entre leur clé ci-dessus pour les débloquer."
+    },
+    "errors": {
+        "required": "On a besoin de cette info!",
+        "invalidEmail": "Ça ne ressemble pas à un e-mail valide",
+        "passwordTooShort": "Fais-le un peu plus long et plus costaud",
+        "loginFailed": "Échec de la connexion. Tu vérifies tes infos ?",
+        "signupFailed": "Un truc s'est mal passé pendant l'inscription",
+        "failedToCreate": "Impossible de créer ta liste",
+        "failedToUpdate": "Impossible de sauvegarder les changements",
+        "failedToDelete": "Impossible de supprimer",
+        "couldNotConnect": "Connexion au serveur perdue. Le parseur s'est endormi ?"
+    },
+    "errorPage": {
+        "title": "Oups ! On a fait tomber le carton",
+        "description": "Un truc inattendu s'est produit. Pas de panique, tes vœux sont en sécurité.",
+        "tryAgain": "Allez, on réessaie",
+        "goHome": "Ramène-moi à l'Accueil",
+        "hideDetails": "Cacher le jargon technique",
+        "showDetails": "Montrer les détails techniques"
+    },
+    "notFound": {
+        "title": "404 : Vœu introuvable",
+        "description": "On dirait que cette page s'est perdue en route. Elle a peut-être été déplacée ou n'a jamais existé.",
+        "backHome": "Retour en lieu sûr (Accueil)",
+        "discover": "Aller explorer",
+        "goBack": "Ou retourner à la page précédente"
+    },
+    "privacyPolicy": {
+        "tagline": "Tes données, tes règles",
+        "title": "Politique de confidentialité",
+        "description": "Nous pensons que tes listes d'envies sont personnelles. Voici exactement comment nous traitons tes informations — sans jargon juridique, sans surprises.",
+        "lastUpdated": "Dernière mise à jour : 1er mars 2026",
+        "onThisPage": "Sur cette page",
+        "tldr": {
+            "title": "En bref (TL;DR)",
+            "item1": "Tes listes sont privées par défaut. Nous ne vendons jamais tes données.",
+            "item2": "Nous collectons uniquement ce qui est nécessaire pour faire fonctionner WishList.",
+            "item3": "Tu peux supprimer ton compte et toutes tes données à tout moment.",
+            "item4": "Pas de traqueurs publicitaires tiers ni de suivi intersites."
+        },
+        "sections": {
+            "collect": {
+                "title": "Informations que nous collectons",
+                "p1": "Lorsque tu crées un compte, nous collectons ton nom, ton e-mail et un pseudo de ton choix. Si tu ajoutes un avatar, cette image est stockée en toute sécurité.",
+                "p2": "Quand tu crées des listes et ajoutes des articles, nous sauvegardons le nom du produit, le lien, le prix, l'image, tes notes et ton niveau de priorité.",
+                "p3": "Nous collectons automatiquement des données d'utilisation basiques (pages visitées, fonctions utilisées) pour améliorer WishList. Nous ne te suivons pas sur d'autres sites."
+            },
+            "use": {
+                "title": "Comment nous utilisons tes données",
+                "p1": "Tes données servent à faire fonctionner la magie de WishList : création de listes, partage via clés d'accès et affichage des listes publiques.",
+                "p2": "Nous pourrions t'envoyer des e-mails importants (alertes de sécurité). Le marketing, c'est uniquement si tu es d'accord, et tu peux te désinscrire quand tu veux.",
+                "p3": "Nous ne vendons, louons ou n'échangeons jamais tes informations personnelles à des tiers à des fins publicitaires."
+            },
+            "sharing": {
+                "title": "Partage et clés d'accès",
+                "p1": "Tes listes sont privées par défaut. Toi seul peux les voir tant que tu ne partages pas une clé d'accès.",
+                "p2": "Toute personne possédant une clé peut voir ta liste en mode lecture. Tu peux révoquer ou recréer une clé à tout moment, coupant instantanément l'accès aux anciens détenteurs.",
+                "p3": "Les listes publiques apparaissent dans 'Découvrir' et sont visibles par tous. C'est toi qui gères le niveau de confidentialité de chaque liste."
+            },
+            "cookies": {
+                "title": "Cookies et stockage",
+                "p1": "WishList utilise des cookies essentiels pour te garder connecté. Ils sont strictement nécessaires au fonctionnement du service.",
+                "p2": "Nous n'utilisons pas de cookies publicitaires ou de technologies de suivi intersites.",
+                "p3": "Tu peux effacer les cookies via ton navigateur, mais ça te déconnectera."
+            },
+            "children": {
+                "title": "Confidentialité des mineurs",
+                "p1": "WishList n'est pas fait pour les enfants de moins de 13 ans. Nous ne collectons pas sciemment leurs données.",
+                "p2": "Si tu penses qu'un enfant de moins de 13 ans nous a fourni des infos, préviens-nous et on efface tout."
+            },
+            "contact": {
+                "title": "On en parle ?",
+                "p1": "Des questions sur la confidentialité ? Écris-nous à privacy@WishList.com.",
+                "p2": "Nous répondons à toutes les requêtes en moins de 30 jours.",
+                "p3": "Cette politique a été mise à jour le 1er mars 2026. On te préviendra par mail en cas de gros changements."
+            }
+        },
+        "readTerms": "Lire nos Conditions d'utilisation",
+        "backToTop": "Retour en haut"
+    },
+    "termsOfService": {
+        "tagline": "Juste et transparent",
+        "title": "Conditions d'utilisation",
+        "description": "Les règles du jeu sur WishList. On a fait court, lisible et juste pour tout le monde.",
+        "lastUpdated": "Dernière mise à jour : 1er mars 2026",
+        "onThisPage": "Sur cette page",
+        "tldr": {
+            "title": "En bref (TL;DR)",
+            "item1": "Tes listes t'appartiennent. On ne te les volera jamais.",
+            "item2": "Reste cool, n'abuse pas de la plateforme.",
+            "item3": "WishList est un outil pour tes envies, pas un magasin.",
+            "item4": "Tu peux supprimer ton compte et tes données quand ça te chante."
+        },
+        "sections": {
+            "acceptance": {
+                "title": "Acceptation des règles",
+                "p1": "En utilisant WishList, tu acceptes ces conditions et notre Politique de confidentialité. Si t'es pas d'accord, il vaut mieux fermer l'onglet.",
+                "p2": "Il se peut qu'on mette à jour ces règles. Si tu continues d'utiliser l'appli, ça veut dire que tu acceptes les changements."
+            },
+            "account": {
+                "title": "Ton compte",
+                "p1": "Tu dois avoir au moins 13 ans pour t'inscrire. En créant un compte, tu promets que tes infos sont vraies.",
+                "p2": "Garde ton mot de passe secret. Tout ce qui se passe sur ton compte est de ta responsabilité.",
+                "p3": "On se réserve le droit de bannir les comptes qui ne respectent pas les règles ou font des trucs louches."
+            },
+            "content": {
+                "title": "Ton contenu",
+                "p1": "Tu gardes la pleine propriété de tes listes, notes et tout le reste. On ne revendique aucun droit sur tes idées de cadeaux.",
+                "p2": "En rendant une liste publique ou en la partageant, tu nous donnes juste le droit de l'afficher. Ce droit prend fin si tu la supprimes.",
+                "p3": "Assure-toi que les liens et images que tu ajoutes ne violent pas les droits d'auteur des autres."
+            },
+            "prohibited": {
+                "title": "Ce qui est interdit",
+                "p1": "Zéro spam, virus, haine ou trucs illégaux. Gardons une bonne ambiance.",
+                "p2": "Le pillage automatique de données (scraping) est interdit sans notre accord écrit.",
+                "p3": "N'essaie pas de pirater les autres comptes ou de casser nos serveurs.",
+                "p4": "Créer des listes pour se faire passer pour quelqu'un d'autre (phishing), c'est l'exclusion directe."
+            },
+            "liability": {
+                "title": "Limites de responsabilité",
+                "p1": "WishList est fourni \"tel quel\". On fait de notre mieux, mais on ne garantit pas zéro bug ou zéro panne.",
+                "p2": "On n'est pas une boutique. On ne vend rien, on ne gère pas les paiements et on ne contrôle pas si les prix changent.",
+                "p3": "Dans la limite permise par la loi, on n'est pas responsables des dommages indirects liés à l'utilisation du service."
+            },
+            "changes": {
+                "title": "Changements et fin de l'aventure",
+                "p1": "On peut modifier ou suspendre une partie de WishList à tout moment. On essaiera de prévenir si c'est important.",
+                "p2": "Tu peux supprimer ton compte depuis les Paramètres. Tes données disparaîtront définitivement dans les 30 jours.",
+                "p3": "On peut te virer si tu ne respectes pas ces règles. En général, on t'expliquera pourquoi."
+            },
+            "governing": {
+                "title": "Lois et litiges",
+                "p1": "Ces règles obéissent aux lois du pays où WishList opère. En cas de souci, on essaie d'abord de s'arranger à l'amiable.",
+                "p2": "Si un tribunal décide qu'une règle n'est pas valable, les autres restent en place.",
+                "p3": "Ceci est notre accord complet. Dernière mise à jour : 1er mars 2026."
+            }
+        },
+        "readPrivacy": "Lire notre Politique de confidentialité",
+        "backToTop": "Retour en haut"
+    },
+    "settings": {
+        "title": "Paramètres",
+        "backToProfile": "Retour au profil",
+        "tabs": {
+            "profile": "Profil",
+            "notifications": "Alertes",
+            "privacy": "Confidentialité"
+        },
+        "profile": {
+            "title": "Paramètres du profil",
+            "changePhoto": "Changer la photo",
+            "photoHint": "JPG, PNG. Max 2 Mo. Montre-toi sous ton meilleur jour!",
+            "displayName": "Nom d'affichage",
+            "username": "Nom d'utilisateur",
+            "bio": "Bio",
+            "saveChanges": "Enregistrer les modifications",
+            "saved": "Sauvegardé avec succès!"
+        },
+        "notifications": {
+            "title": "Paramètres de notification",
+            "email": "Actus par e-mail",
+            "emailDesc": "Reçois les dernières news de tes listes",
+            "priceDrop": "Alertes de baisse de prix",
+            "priceDropDesc": "On te bipe quand tes vœux sont en promo",
+            "gift": "Notifications de cadeaux",
+            "giftDesc": "Quand un pote marque un article comme acheté"
+        },
+        "privacy": {
+            "title": "Paramètres de confidentialité",
+            "publicProfile": "Profil public",
+            "publicProfileDesc": "Laisse les autres découvrir ta vibe",
+            "showPrices": "Afficher les prix",
+            "showPricesDesc": "Affiche les prix sur les listes partagées",
+            "deleteAccount": "Supprimer le compte",
+            "deleteAccountDesc": "Supprime définitivement ton compte et toutes tes données. Pas de retour en arrière !",
+            "deleteBtn": "Supprimer le compte"
+        }
+    },
+    "howItWorks": {
+        "hero": {
+            "badge": "Voir comment ça marche",
+            "title": "Faire des cadeaux",
+            "titleHighlight": "simple",
+            "subtitle": "Créez des listes de souhaits, partagez-les en privé et recevez les cadeaux parfaits à chaque fois. Pas de devinettes, pas de cadeaux en double.",
+            "stats": {
+                "steps": "Étapes",
+                "setupTime": "Minutes pour configurer"
+            },
+            "cta1": "Commencer gratuitement",
+            "cta2": "Explorez les listes de souhaits"
+        },
+        "steps": {
+            "title": "Quatre étapes simples",
+            "subtitle": "De la création de votre première liste de souhaits à la réception du cadeau parfait, voici comment fonctionne WishList.",
+            "step1Title": "Créez votre liste de souhaits",
+            "step1Desc": "Commencez par créer une nouvelle liste de souhaits pour toute occasion - anniversaires, vacances, mariages ou simplement parce que. Donnez-lui un nom et personnalisez-la à votre guise.",
+            "step1Feature1": "Plusieurs listes de souhaits pour différentes occasions",
+            "step1Feature2": "Noms et descriptions personnalisés",
+            "step1Feature3": "Belles images de couverture",
+            "step2Title": "Ajoutez facilement des articles",
+            "step2Desc": "Collez simplement n'importe quel lien de produit et nous extrairons automatiquement les détails : titre, prix et image. Vous pouvez également ajouter des articles manuellement avec vos propres notes.",
+            "step2Feature1": "Analyse intelligente des liens",
+            "step2Feature2": "Récupérer automatiquement les détails du produit",
+            "step2Feature3": "Définir les niveaux de priorité",
+            "step3Title": "Partager en privé",
+            "step3Desc": "Générez une clé d'accès unique pour partager votre liste avec des personnes spécifiques. Seuls ceux dotés de la clé peuvent voir votre liste de souhaits - pas de liens publics, pas de regards curieux.",
+            "step3Feature1": "Clés d'accès uniques (WISH-XXX-XXX)",
+            "step3Feature2": "Contrôlez qui voit votre liste",
+            "step3Feature3": "Révoquer l'accès à tout moment",
+            "step4Title": "Recevez des cadeaux parfaits",
+            "step4Desc": "Vos amis et votre famille peuvent voir exactement ce que vous voulez, marquer les articles comme achetés (cachés pour vous) et rendre chaque cadeau parfait surprise.",
+            "step4Feature1": "Suivi des achats masqué",
+            "step4Feature2": "Pas de cadeaux en double",
+            "step4Feature3": "Tout le monde reste surpris"
+        },
+        "features": {
+            "title": "Pourquoi choisir WishList?",
+            "subtitle": "Conçu en pensant à la confidentialité et à la simplicité.",
+            "feature1Title": "Privé par défaut",
+            "feature1Desc": "Vos listes de souhaits sont privées jusqu'à ce que vous décidiez de les partager.",
+            "feature2Title": "Visibilité intelligente",
+            "feature2Desc": "Les cadeaux voient les achats, mais vous restez surpris.",
+            "feature3Title": "Restez informé",
+            "feature3Desc": "Recevez des notifications lorsque les articles baissent de prix ou sont achetés.",
+            "feature4Title": "Partage sécurisé",
+            "feature4Desc": "Les clés d'accès garantissent que seules les bonnes personnes voient vos listes."
+        },
+        "finalCta": {
+            "title": "Prêt à commencer?",
+            "subtitle": "Rejoignez des milliers d'utilisateurs heureux qui ne reçoivent jamais un mauvais cadeau.",
+            "button": "Créez votre première liste de souhaits"
+        }
+    }
+}

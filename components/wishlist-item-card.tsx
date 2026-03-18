@@ -1,0 +1,116 @@
+"use client"
+
+import type { WishlistItem } from "@/lib/mock-data"
+import { cn } from "@/lib/utils"
+import Image from "next/image"
+import { ExternalLink, MoreHorizontal, Trash2, Edit3, Check } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { useState } from "react"
+
+interface WishlistItemCardProps {
+  item: WishlistItem
+  editable?: boolean
+  onDelete?: (id: string) => void
+  onMarkPurchased?: (id: string) => void
+  onEdit?: (item: WishlistItem) => void
+}
+
+export function WishlistItemCard({ item, editable = false, onDelete, onMarkPurchased, onEdit }: WishlistItemCardProps) {
+  const [isPurchased, setIsPurchased] = useState(false)
+
+  const priorityColors = {
+    high: "border-l-primary",
+    medium: "border-l-secondary",
+    low: "border-l-muted-foreground",
+  }
+
+  return (
+    <div
+      className={cn(
+        "glass rounded-xl overflow-hidden transition-smooth hover:scale-[1.01] border-l-4",
+        priorityColors[item.priority],
+        isPurchased && "opacity-60",
+      )}
+    >
+      <div className="flex gap-4 p-4">
+        {/* Product Image */}
+        <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden bg-muted shrink-0 flex-shrink-0">
+          <Image src={item.image || "/placeholder.svg"} alt={item.title} fill className="w-full h-full object-cover" sizes="96px" />
+          {isPurchased && (
+            <div className="absolute inset-0 bg-background/80 flex items-center justify-center">
+              <Check className="w-8 h-8 text-secondary" />
+            </div>
+          )}
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-start justify-between gap-2">
+            <div className="min-w-0">
+              <p className="text-xs text-muted-foreground mb-0.5">{item.store}</p>
+              <h3 className={cn("font-medium text-foreground line-clamp-2 text-sm break-all whitespace-pre-wrap", isPurchased && "line-through")}>
+                {item.title}
+              </h3>
+            </div>
+
+            {editable && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="p-1 hover:bg-muted rounded-lg transition-smooth">
+                    <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-40">
+                  <DropdownMenuItem onClick={() => onEdit?.(item)}>
+                    <Edit3 className="w-4 h-4 mr-2" />
+                    Edit
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setIsPurchased(true)
+                      onMarkPurchased?.(item.id)
+                    }}
+                  >
+                    <Check className="w-4 h-4 mr-2" />
+                    Mark Purchased
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="text-destructive" onClick={() => onDelete?.(item.id)}>
+                    <Trash2 className="w-4 h-4 mr-2" />
+                    Delete
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+          </div>
+
+          <div className="mt-2 flex items-center justify-between">
+            <div className="flex flex-col items-start gap-0.5">
+              <p className="text-lg font-bold text-secondary">
+                ₴{item.price.toFixed(2)}
+              </p>
+              {item.oldPrice && item.oldPrice > item.price && (
+                <div className="flex items-center gap-2">
+                  <p className="text-xs text-muted-foreground line-through">
+                    ₴{item.oldPrice.toFixed(2)}
+                  </p>
+                  <span className="text-[10px] font-bold text-red-500 bg-red-500/10 px-1.5 py-0.5 rounded-sm">
+                    -{Math.round(((item.oldPrice - item.price) / item.oldPrice) * 100)}%
+                  </span>
+                </div>
+              )}
+            </div>
+            <Button size="sm" variant="outline" className="gap-1 h-8 text-xs bg-transparent" asChild>
+              <a href={item.url} target="_blank" rel="noopener noreferrer">
+                <ExternalLink className="w-3 h-3" />
+                View
+              </a>
+            </Button>
+          </div>
+
+          {item.notes && <p className="text-xs text-muted-foreground mt-2 italic break-all whitespace-pre-wrap">\"{ item.notes}\"</p>}
+        </div>
+      </div>
+    </div>
+  )
+}
