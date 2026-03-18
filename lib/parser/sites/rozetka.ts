@@ -1,47 +1,83 @@
 import * as cheerio from "cheerio"
-import { cleanPrice, cleanText } from "../utils"
+import { cleanPrice, cleanText, calculateDiscountPercent } from "../utils"
 import type { ProductData } from "../types"
 import { UniversalParser } from "../universal"
 
-/**
- * Rozetka parser: JSON-LD first, then manual selectors.
- */
 export class RozetkaParser extends UniversalParser {
     parse(url: string, html: string): ProductData {
-        let ldData: Partial<ProductData> = {}
-        try {
-            ldData = super.parse(url, html)
-        } catch {}
+        if (html.includes("Помилка 404") || html.includes("не знайдена")) {
+            throw new Error("404: Товар не знайден на Rozetka. Перевірте посилання")
+        }
 
-        // Manual extraction
+        let ldData: Partial<ProductData> = {}
+        try { ldData = super.parse(url, html) } catch { }
+
         const $ = cheerio.load(html)
 
-        const titleElem = $("h1.product__title")
-        const domTitle = titleElem.text().trim() || ""
+        // ============ TITLE ============
+        let domTitle = $("h1.product__title, h1").first().text().trim()
 
-        const priceElem = $("p.product-prices__big, div.product-price__big")
-        const domPrice = priceElem.length ? cleanPrice(priceElem.first().text()) : 0
+        // ============ PRICE (Current) ============
+        let domPrice = 0;
+        const priceSelectors = [
+            "p.product-prices__big", "div.product-price__big", "p.product__price"
+        ];
+        for (const selector of priceSelectors) {
+            const price = cleanPrice($(selector).first().text());
+            if (price > 0) { domPrice = price; break; }
+        }
 
-        // Try extracting old price (discount)
-        const oldPriceElem = $("p.product-prices__small, div.product-price__small")
-        const domOldPrice = oldPriceElem.length ? cleanPrice(oldPriceElem.first().text()) : undefined
+        // ============ OLD PRICE (Discount) ============
+        let domOldPrice: number | undefined;
 
-        const imageElem = $("img.product-photo__picture")
-        const domImageUrl = imageElem.attr("src") || ""
+        // 1. DOM пошук
+        const oldPriceSelectors = [
+            "p.product-prices__small", "div.product-price__small", ".product-about__price--old", "p.product-price--old", "del"
+        ];
+        for (const selector of oldPriceSelectors) {
+            const oldPrice = cleanPrice($(selector).first().text());
+            // Використовуємо ldData.price як базу, якщо domPrice ще не знайдено
+            const basePrice = domPrice > 0 ? domPrice : (ldData.price || 0);
+            if (basePrice > 0 && oldPrice > basePrice) {
+                domOldPrice = oldPrice;
+                break;
+            }
+        }
 
-        const descElem = $("div.product-about__description-content")
-        const domDescription = descElem.length ? cleanText(descElem.text()) : ""
+        // 2. Скриптовий пошук (Якщо DOM порожній через блокування або недозавантаження)
+        if (!domOldPrice) {
+            const scriptMatches = html.match(/["']old_price["']\s*:\s*(\d+(\.\d+)?)/gi);
+            if (scriptMatches) {
+                const basePrice = domPrice > 0 ? domPrice : (ldData.price || 0);
+                for (const match of scriptMatches) {
+                    const priceMatch = match.match(/\d+(\.\d+)?/);
+                    if (priceMatch) {
+                        const price = parseFloat(priceMatch[0]);
+                        if (basePrice > 0 && price > basePrice) {
+                            domOldPrice = price;
+                            console.log(`[RozetkaParser] Extracted oldPrice from script: ${price}`);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        // ============ ІНШІ ДАНІ ============
+        let domImageUrl = $("img.product-photo__picture").first().attr("src") || ""
+        let domDescription = cleanText($("div.product-about__description-content").first().text())
 
         const title = domTitle || ldData.title || ""
-        const price = [domPrice, ldData.price || 0].find(p => p > 0) || 0
-        let oldPrice = [domOldPrice, ldData.oldPrice].find(p => p !== undefined && p > 0)
-        
+        const price = domPrice || ldData.price || 0
+        let oldPrice = domOldPrice || ldData.oldPrice
+
         if (oldPrice && oldPrice <= price) oldPrice = undefined
 
         return {
             title: cleanText(title),
             price,
             oldPrice,
+            discount_percent: calculateDiscountPercent(price, oldPrice),
             currency: "UAH",
             image_url: domImageUrl || ldData.image_url || "",
             description: cleanText(domDescription || ldData.description || ""),

@@ -1,5 +1,5 @@
 import * as cheerio from "cheerio"
-import { cleanPrice, cleanText, convertUsdToUah } from "../utils"
+import { cleanPrice, cleanText, convertUsdToUah, calculateDiscountPercent } from "../utils"
 import type { ProductData } from "../types"
 import { UniversalParser } from "../universal"
 
@@ -39,9 +39,14 @@ export class ZakolotParser extends UniversalParser {
             "span[class*='price'][class*='current']",
             "[data-testid*='price']",
             "[class*='finalPrice']",
-            "[class*='price']",
             "span[class*='Price']",
             "div[class*='Price']",
+            "p[class*='price']",
+            "[class*='product-price']",
+            "[class*='productPrice']",
+            ".price-tag",
+            "span.price",
+            "div.price",
         ]
 
         let attempts = 0
@@ -57,11 +62,20 @@ export class ZakolotParser extends UniversalParser {
                 const text = elem.text()
                 if (text && text.length > 0) {
                     domPrice = cleanPrice(text)
-                    if (domPrice > 0) break
+                    if (domPrice > 0) {
+                        console.log(`[Zakolot] Found price ${domPrice} with selector: ${selector}`)
+                        break
+                    }
                 }
             }
             if (domPrice > 0) break
             attempts++
+        }
+
+        // Fallback to ldData if DOM extraction failed
+        if (domPrice === 0 && ldData.price && ldData.price > 0) {
+            console.log(`[Zakolot] Using JSON-LD price: ${ldData.price}`)
+            domPrice = ldData.price
         }
 
         // Витяг старої ціни (знижки)
@@ -70,6 +84,9 @@ export class ZakolotParser extends UniversalParser {
             "span[class*='CompareAtPrice']",
             "[class*='old-price']",
             "[class*='oldPrice']",
+            "[class*='crossed-price']",
+            "[class*='original-price']",
+            "[class*='price-before-discount']",
             "s",
             "del",
             "[style*='line-through']"
@@ -83,6 +100,7 @@ export class ZakolotParser extends UniversalParser {
                     const priceVal = cleanPrice(text)
                     if (priceVal > domPrice) {
                         domOldPrice = priceVal
+                        console.log(`[Zakolot] Found oldPrice ${priceVal} with selector: ${selector}`)
                         break
                     }
                 }
@@ -98,7 +116,7 @@ export class ZakolotParser extends UniversalParser {
             }
         }
 
-        // Витяг зображення
+        // Витяг зображення - фільтруємо логотип, беремо головне фото
         const imageSelectors = [
             "img[class*='ProductImage']",
             "img[class*='product'][class*='image']",
@@ -107,23 +125,46 @@ export class ZakolotParser extends UniversalParser {
             "[role='main'] img",
             ".product-image img",
             ".product__image img",
-            "img[alt]",
+            "img[alt*='product' i]",
+            "img[alt*='Product' i]",
+            "img[class*='main' i]",
         ]
 
         for (const selector of imageSelectors) {
             const imgElements = $(selector)
             
             for (let i = 0; i < Math.min(imgElements.length, 5); i++) {
-                const src = $(imgElements[i]).attr("src") || 
-                           $(imgElements[i]).attr("data-src") ||
-                           $(imgElements[i]).attr("data-image") ||
-                           ""
-                           
-                if (src && src.length > 10 && 
-                    !src.includes("loading") && 
-                    !src.includes("placeholder") &&
-                    !src.includes("data:image")) {
+                const imgEl = $(imgElements[i])
+                let src = imgEl.attr("src") || 
+                         imgEl.attr("data-src") ||
+                         imgEl.attr("data-image") ||
+                         imgEl.attr("data-lazy-src") ||
+                         ""
+                
+                // Filter out logos/icons
+                if (!src || 
+                    src.includes("loading") || 
+                    src.includes("placeholder") ||
+                    src.includes("avatar") ||
+                    src.includes("logo") ||
+                    src.includes("icon") ||
+                    src.includes("data:image")) {
+                    continue
+                }
+
+                // Prefer larger images (usually the product image)
+                const width = imgEl.attr("width")
+                const height = imgEl.attr("height")
+                const size = (width && height) ? parseInt(width) * parseInt(height) : 0
+                
+                // Skip very small images (likely icons)
+                if (src && size < 10000 && size > 0) {
+                    continue
+                }
+
+                if (src && src.length > 10) {
                     imageUrl = src
+                    console.log(`[Zakolot] Found product image ${src.slice(0, 80)}...`)
                     break
                 }
             }
@@ -153,6 +194,7 @@ export class ZakolotParser extends UniversalParser {
             title: cleanText(title),
             price,
             oldPrice,
+            discount_percent: calculateDiscountPercent(price, oldPrice),
             currency: "UAH",
             image_url: imageUrl || ldData.image_url || "",
             description: cleanText(description || ldData.description || ""),

@@ -31,7 +31,10 @@ interface AppState {
     updateWishlist: (id: string, updates: Partial<Wishlist>) => void
     deleteWishlist: (id: string) => void
     getWishlistById: (id: string) => Wishlist | undefined
+    getWishlistByIdFromApi: (id: string) => Promise<Wishlist | undefined>
     getWishlistByAccessKey: (key: string) => Promise<Wishlist | undefined>
+    regenerateAccessKey: (id: string) => Promise<string | null>
+    updateWishlistPrivacy: (id: string, isPrivate: boolean) => Promise<void>
 
     // Items
     addItemToWishlist: (wishlistId: string, item: Omit<WishlistItem, "id" | "addedAt">) => void
@@ -43,6 +46,11 @@ interface AppState {
     sharedLists: SharedList[]
     addSharedList: (accessKey: string) => Promise<{ success: boolean; message: string }>
     removeSharedList: (id: string) => void
+
+    // Booked Items
+    bookedItems: (WishlistItem & { wishlist?: any })[]
+    fetchBookedItems: () => Promise<void>
+    bookItem: (itemId: string) => Promise<boolean>
 }
 
 const AppContext = createContext<AppState | undefined>(undefined)
@@ -52,6 +60,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const [isLoading, setIsLoading] = useState(true)
     const [wishlists, setWishlists] = useState<Wishlist[]>([])
     const [sharedLists, setSharedLists] = useState<SharedList[]>([])
+    const [bookedItems, setBookedItems] = useState<(WishlistItem & { wishlist?: any })[]>([])
 
     // Fetch wishlists from API
     const fetchWishlists = useCallback(async () => {
@@ -100,6 +109,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     useEffect(() => {
         if (user) {
             fetchWishlists()
+            fetchBookedItems()
             // Load shared lists from localStorage (shared lists are client-side concept)
             const savedShared = localStorage.getItem("wishlist_shared")
             if (savedShared) {
@@ -108,6 +118,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         } else {
             setWishlists([])
             setSharedLists([])
+            setBookedItems([])
         }
     }, [user, fetchWishlists])
 
@@ -264,6 +275,19 @@ export function AppProvider({ children }: { children: ReactNode }) {
         return wishlists.find((w) => w.id === id)
     }
 
+    const getWishlistByIdFromApi = async (id: string): Promise<Wishlist | undefined> => {
+        try {
+            const res = await fetch(`/api/wishlists/${id}`)
+            if (res.ok) {
+                const data = await res.json()
+                return data.wishlist
+            }
+        } catch (error) {
+            console.error("Get wishlist from API error:", error)
+        }
+        return undefined
+    }
+
     const getWishlistByAccessKey = async (key: string): Promise<Wishlist | undefined> => {
         try {
             const res = await fetch(`/api/wishlists/shared?key=${encodeURIComponent(key)}`)
@@ -280,6 +304,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     // Item functions
     const addItemToWishlist = async (wishlistId: string, item: Omit<WishlistItem, "id" | "addedAt">) => {
         try {
+            console.log("[addItemToWishlist] Adding item:", item)
             const res = await fetch(`/api/wishlists/${wishlistId}/items`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -288,6 +313,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
             if (res.ok) {
                 const data = await res.json()
+                console.log("[addItemToWishlist] Response:", data)
                 setWishlists((prev) =>
                     prev.map((w) =>
                         w.id === wishlistId
@@ -379,6 +405,55 @@ export function AppProvider({ children }: { children: ReactNode }) {
         setSharedLists((prev) => prev.filter((s) => s.id !== id))
     }
 
+    const fetchBookedItems = async () => {
+        try {
+            const res = await fetch("/api/user/booked-items")
+            if (res.ok) {
+                const data = await res.json()
+                setBookedItems(data.items || [])
+            }
+        } catch (error) {
+            console.error("Fetch booked items error:", error)
+        }
+    }
+
+    const bookItem = async (itemId: string): Promise<boolean> => {
+        try {
+            const res = await fetch(`/api/items/${itemId}/book`, { method: "POST" })
+            if (res.ok) {
+                const data = await res.json()
+                // Update local state if needed via refetching
+                await fetchBookedItems()
+                return data.isBooked
+            }
+        } catch (error) {
+            console.error("Book item error:", error)
+        }
+        return false
+    }
+
+    const regenerateAccessKey = async (id: string): Promise<string | null> => {
+        try {
+            const res = await fetch(`/api/wishlists/${id}/access-key`, { method: "POST" })
+            if (res.ok) {
+                const data = await res.json()
+                setWishlists((prev) => prev.map((w) => (w.id === id ? data.wishlist : w)))
+                return data.accessKey
+            }
+        } catch (error) {
+            console.error("Regenerate access key error:", error)
+        }
+        return null
+    }
+
+    const updateWishlistPrivacy = async (id: string, isPrivate: boolean): Promise<void> => {
+        try {
+            await updateWishlist(id, { isPrivate })
+        } catch (error) {
+            console.error("Update wishlist privacy error:", error)
+        }
+    }
+
     return (
         <AppContext.Provider
             value={{
@@ -393,6 +468,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
                 updateWishlist,
                 deleteWishlist,
                 getWishlistById,
+                getWishlistByIdFromApi,
                 getWishlistByAccessKey,
                 addItemToWishlist,
                 updateItem,
@@ -401,6 +477,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
                 sharedLists,
                 addSharedList,
                 removeSharedList,
+                bookedItems,
+                fetchBookedItems,
+                bookItem,
+                regenerateAccessKey,
+                updateWishlistPrivacy,
             }}
         >
             {children}

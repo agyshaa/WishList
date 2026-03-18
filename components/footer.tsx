@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { Sparkles, Mail, Github, Twitter, Heart, ArrowUp } from "lucide-react"
 import Link from "next/link"
 import { useLanguage } from "@/lib/language-context"
+import Image from "next/image"
 
 
 export function Footer() {
@@ -66,9 +67,8 @@ export function Footer() {
                     {/* Brand column */}
                     <div className="md:col-span-5">
                         <Link href="/" className="group inline-flex items-center gap-3 mb-5">
-                            <div className="relative w-10 h-10 rounded-xl bg-primary flex items-center justify-center overflow-hidden group-hover:glow-primary transition-smooth">
-                                <Sparkles className="w-5 h-5 text-primary-foreground relative z-10" />
-                                <div className="absolute inset-0 bg-secondary/30 translate-y-full group-hover:translate-y-0 transition-smooth" />
+                            <div className="w-8 h-8 rounded-lg flex items-center justify-center transition-smooth group-hover:glow-primary">
+                                <Image src="/icon.svg" alt="WishList Logo" width={32} height={32} className="w-8 h-8 rounded-lg" />
                             </div>
                             <span className="text-2xl font-bold font-heading text-foreground">
                                 Wish<span className="text-primary">List</span>

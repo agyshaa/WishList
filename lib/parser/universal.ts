@@ -1,5 +1,5 @@
 import * as cheerio from "cheerio"
-import { cleanPrice, cleanText, convertUsdToUah } from "./utils"
+import { cleanPrice, cleanText, convertUsdToUah, calculateDiscountPercent } from "./utils"
 import type { ProductData, ProductParser } from "./types"
 
 /**
@@ -12,11 +12,15 @@ export class UniversalParser implements ProductParser {
 
         // Try JSON-LD first
         const jsonLd = this.parseJsonLd($)
-        if (jsonLd) return jsonLd
+        if (jsonLd && jsonLd.price > 0 && jsonLd.title) return jsonLd
 
         // Try OpenGraph
         const og = this.parseOpenGraph($)
-        if (og) return og
+        if (og && og.price > 0 && og.title) return og
+
+        // Try DOM selectors as fallback
+        const dom = this.parseDom($, url)
+        if (dom && dom.price > 0 && dom.title) return dom
 
         // Fallback: just get the page title
         const title = $("title").text() || ""
@@ -28,6 +32,217 @@ export class UniversalParser implements ProductParser {
             description: "",
             source_url: url,
             store_name: "",
+        }
+    }
+
+    /**
+     * Try extracting from DOM with common selectors
+     */
+    protected parseDom($: cheerio.CheerioAPI, url: string): ProductData | null {
+        // Universal price selectors that work on many sites
+        const priceSelectors = [
+            "span[class*='price']",
+            "[data-testid*='price']",
+            ".price-current",
+            ".current-price",
+            ".product-price",
+            "span.price",
+            ".item-price",
+            "[itemprop='price']",
+            "[class*='sale-price']",
+            "[class*='current-price']",
+            "p[class*='price']",
+            "div[class*='price-']",
+            ".product__price",
+            ".product__sale-price",
+        ]
+
+        let price = 0
+        for (const sel of priceSelectors) {
+            const elem = $(sel).first()
+            if (elem.length) {
+                const text = elem.text()
+                const p = cleanPrice(text)
+                if (p > 0) {
+                    price = p
+                    break
+                }
+            }
+        }
+
+        if (price === 0) return null
+
+        // Title selectors
+        const titleSelectors = [
+            "h1",
+            '[itemprop="name"]',
+            "[data-testid*='name']",
+            ".product-name",
+            ".product-title",
+            ".product__title",
+            "[class*='product-title']",
+            "[class*='product__name']",
+        ]
+        let title = ""
+        for (const sel of titleSelectors) {
+            const elem = $(sel).first()
+            if (elem.length) {
+                title = elem.text().trim()
+                if (title) break
+            }
+        }
+
+        // Image - prefer product image over logo/icon
+        let imageUrl = this.findProductImage($, url)
+
+        // Old price selectors (for discount calculation)
+        let oldPrice: number | undefined = undefined
+        const oldPriceSelectors = [
+            "s",  // Strikethrough
+            "del",  // Delete tag
+            "span[class*='old-price']",
+            "[class*='old-price']",
+            "[class*='crossed-price']",
+            "[class*='original-price']",
+            "[class*='compare-at']",
+            "[style*='line-through']",
+        ]
+
+        for (const sel of oldPriceSelectors) {
+            const elem = $(sel).first()
+            if (elem.length) {
+                const text = elem.text()
+                const p = cleanPrice(text)
+                if (p > price) {
+                    oldPrice = p
+                    break
+                }
+            }
+        }
+
+        return {
+            title: cleanText(title),
+            price,
+            oldPrice,
+            currency: "UAH",
+            image_url: imageUrl,
+            description: "",
+            source_url: url,
+            store_name: "",
+        }
+    }
+
+    /**
+     * Smart image extraction: prioritize product images over logos
+     */
+    protected findProductImage($: cheerio.CheerioAPI, url: string): string {
+        // Try OG image first (usually curated)
+        const ogImage = $('meta[property="og:image"]').attr("content")
+        if (ogImage && this.isProductImage(ogImage)) {
+            return ogImage
+        }
+
+        // Look for images in product-specific containers
+        const productImageSelectors = [
+            "[class*='product-image'] img",
+            "[class*='product__image'] img",
+            "[class*='product-photo'] img",
+            "[class*='ProductImage'] img",
+            "[class*='main-image'] img",
+            "[class*='primary-image'] img",
+            "[data-testid*='product-image'] img",
+            "img[alt*='product' i]",
+            "img[alt*='Product' i]",
+            "img[class*='product' i]",
+        ]
+
+        for (const selector of productImageSelectors) {
+            const imgs = $(selector)
+            for (let i = 0; i < imgs.length; i++) {
+                const src = $(imgs[i]).attr("src") || 
+                           $(imgs[i]).attr("data-src") ||
+                           $(imgs[i]).attr("data-image") ||
+                           ""
+                
+                if (src && this.isProductImage(src)) {
+                    return this.makeAbsoluteUrl(src, url)
+                }
+            }
+        }
+
+        // Fallback: get first large image
+        const allImages = $("img")
+        for (let i = 0; i < Math.min(allImages.length, 10); i++) {
+            const src = $(allImages[i]).attr("src") || 
+                       $(allImages[i]).attr("data-src") ||
+                       ""
+            
+            if (src && this.isProductImage(src)) {
+                return this.makeAbsoluteUrl(src, url)
+            }
+        }
+
+        return ogImage || ""
+    }
+
+    /**
+     * Check if URL looks like a product image (not logo/icon/avatar)
+     */
+    protected isProductImage(url: string): boolean {
+        // Exclude common non-product image patterns
+        const excludePatterns = [
+            /logo/i,
+            /icon/i,
+            /avatar/i,
+            /placeholder/i,
+            /loading/i,
+            /spinner/i,
+            /badge/i,
+            /flag/i,
+            /star/i,
+            /arrow/i,
+            /button/i,
+            /data:image/i,
+            /\.gif$/i,
+            /1x1/i,
+            /transparent/i,
+        ]
+
+        for (const pattern of excludePatterns) {
+            if (pattern.test(url)) return false
+        }
+
+        // Include patterns that suggest product image
+        const includePatterns = [
+            /product/i,
+            /photo/i,
+            /image/i,
+            /picture/i,
+            /gallery/i,
+            /item/i,
+            /\.(jpg|jpeg|png|webp)$/i,
+        ]
+
+        return includePatterns.some(p => p.test(url))
+    }
+
+    /**
+     * Convert relative URL to absolute
+     */
+    protected makeAbsoluteUrl(url: string, baseUrl: string): string {
+        if (url.startsWith("http")) return url
+        if (url.startsWith("//")) return "https:" + url
+        if (url.startsWith("/")) {
+            try {
+                return new URL(url, baseUrl).href
+            } catch {
+                return url
+            }
+        }
+        try {
+            return new URL(url, baseUrl).href
+        } catch {
+            return url
         }
     }
 
@@ -90,27 +305,37 @@ export class UniversalParser implements ProductParser {
 
         // Handle offers
         let price = 0
+        let oldPrice: number | undefined = undefined
         let currency = ""
         const offers = node.offers
 
         if (offers && typeof offers === "object" && !Array.isArray(offers)) {
-            price = offers.price
+            price = offers.price || offers.lowPrice || 0
+            oldPrice = offers.highPrice || offers.originalPrice || undefined
             currency = offers.priceCurrency || ""
         } else if (Array.isArray(offers) && offers.length > 0) {
             const offer = offers[0]
             price = offer.price || offer.lowPrice || 0
+            oldPrice = offer.highPrice || offer.originalPrice || undefined
             currency = offer.priceCurrency || ""
         }
 
         // Convert USD to UAH if needed
         if (price > 0 && (currency === "USD" || currency === "$")) {
             price = convertUsdToUah(price)
+            if (oldPrice && oldPrice > 0) oldPrice = convertUsdToUah(oldPrice)
             currency = "UAH"
         }
 
+        const finalPrice = price ? cleanPrice(String(price)) : 0
+        let finalOldPrice = oldPrice ? cleanPrice(String(oldPrice)) : undefined
+        if (finalOldPrice && finalOldPrice <= finalPrice) finalOldPrice = undefined
+
         return {
             title: cleanText(name),
-            price: price ? cleanPrice(String(price)) : 0,
+            price: finalPrice,
+            oldPrice: finalOldPrice,
+            discount_percent: calculateDiscountPercent(finalPrice, finalOldPrice),
             currency: currency || "",
             image_url: typeof image === "string" ? image : "",
             description: cleanText(description),
@@ -154,6 +379,7 @@ export class UniversalParser implements ProductParser {
             title: cleanText(title),
             price,
             oldPrice,
+            discount_percent: calculateDiscountPercent(price, oldPrice),
             currency,
             image_url: image,
             description: cleanText(description),

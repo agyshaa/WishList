@@ -13,6 +13,7 @@ interface ParsedProduct {
     title: string
     price: number
     oldPrice?: number | null
+    discount_percent?: number | null
     currency: string
     image: string
     store: string
@@ -27,6 +28,7 @@ interface AddItemModalProps {
         title: string
         price: number
         oldPrice?: number | null
+        discount_percent?: number | null
         image: string
         store: string
         url: string
@@ -56,16 +58,23 @@ export function AddItemModal({ isOpen, onClose, onAdd }: AddItemModalProps) {
                 body: JSON.stringify({ url }),
             })
 
+            const data = await res.json()
+
             if (!res.ok) {
-                const data = await res.json()
-                setError(data.error || "Failed to parse URL")
+                // Handle different error types
+                if (res.status === 429 || data.detail === "site_blocked") {
+                    setError("🚫 Магазин заблокував запитання. Спробуйте через 1-2 хвилини...")
+                } else if (res.status === 400 || data.detail === "parse_failed") {
+                    setError(`❌ ${data.error || "Не вдалося спарсити цю сторінку"}`)
+                } else {
+                    setError(data.error || "Failed to parse URL")
+                }
                 return
             }
 
-            const data: ParsedProduct = await res.json()
             setParsed(data)
-        } catch {
-            setError("Could not connect to parser. Is it running?")
+        } catch (err) {
+            setError("⚠️ Помилка з'єднання. Перевірте URL та спробуйте ще раз")
         } finally {
             setIsLoading(false)
         }
@@ -78,6 +87,7 @@ export function AddItemModal({ isOpen, onClose, onAdd }: AddItemModalProps) {
             title: parsed.title,
             price: parsed.price,
             oldPrice: parsed.oldPrice,
+            discount_percent: parsed.discount_percent,
             image: parsed.image,
             store: parsed.store,
             url: parsed.url || url,
@@ -158,7 +168,7 @@ export function AddItemModal({ isOpen, onClose, onAdd }: AddItemModalProps) {
                     {parsed && (
                         <div className="glass rounded-lg p-3 flex items-start gap-3 animate-in fade-in">
                             {parsed.image ? (
-                                <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-muted shrink-0 flex-shrink-0">
+                                <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-muted shrink-0">
                                     <Image
                                         src={parsed.image}
                                         alt={parsed.title}
@@ -169,7 +179,7 @@ export function AddItemModal({ isOpen, onClose, onAdd }: AddItemModalProps) {
                                     />
                                 </div>
                             ) : (
-                                <div className="w-16 h-16 rounded-lg bg-muted flex items-center justify-center shrink-0 flex-shrink-0">
+                                <div className="w-16 h-16 rounded-lg bg-muted flex items-center justify-center shrink-0">
                                     <Check className="w-6 h-6 text-secondary" />
                                 </div>
                             )}

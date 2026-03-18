@@ -167,7 +167,7 @@ export default async function PublicProfilePage({ params }: PublicProfileProps) 
                                     <div className="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center mx-auto mb-2 group-hover:scale-110 transition-transform">
                                         <TrendingUp className="w-5 h-5 text-secondary" />
                                     </div>
-                                    <p className="text-2xl font-bold text-secondary">${totalValue.toLocaleString()}</p>
+                                    <p className="text-2xl font-bold text-secondary">₴{totalValue.toLocaleString()}</p>
                                     <p className="text-xs text-muted-foreground">Total Value</p>
                                 </div>
                             </div>

@@ -11,13 +11,15 @@ import { useState } from "react"
 interface WishlistItemCardProps {
   item: WishlistItem
   editable?: boolean
+  onBook?: (id: string) => Promise<boolean>
   onDelete?: (id: string) => void
   onMarkPurchased?: (id: string) => void
   onEdit?: (item: WishlistItem) => void
 }
 
-export function WishlistItemCard({ item, editable = false, onDelete, onMarkPurchased, onEdit }: WishlistItemCardProps) {
+export function WishlistItemCard({ item, editable = false, onBook, onDelete, onMarkPurchased, onEdit }: WishlistItemCardProps) {
   const [isPurchased, setIsPurchased] = useState(false)
+  const [isBooking, setIsBooking] = useState(false)
 
   const priorityColors = {
     high: "border-l-primary",
@@ -35,7 +37,7 @@ export function WishlistItemCard({ item, editable = false, onDelete, onMarkPurch
     >
       <div className="flex gap-4 p-4">
         {/* Product Image */}
-        <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden bg-muted shrink-0 flex-shrink-0">
+        <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden bg-muted shrink-0">
           <Image src={item.image || "/placeholder.svg"} alt={item.title} fill className="w-full h-full object-cover" sizes="96px" />
           {isPurchased && (
             <div className="absolute inset-0 bg-background/80 flex items-center justify-center">
@@ -84,8 +86,8 @@ export function WishlistItemCard({ item, editable = false, onDelete, onMarkPurch
             )}
           </div>
 
-          <div className="mt-2 flex items-center justify-between">
-            <div className="flex flex-col items-start gap-0.5">
+          <div className="mt-2 flex items-center justify-between gap-2">
+            <div className="flex flex-col items-start gap-0.5 flex-1">
               <p className="text-lg font-bold text-secondary">
                 ₴{item.price.toFixed(2)}
               </p>
@@ -100,13 +102,58 @@ export function WishlistItemCard({ item, editable = false, onDelete, onMarkPurch
                 </div>
               )}
             </div>
-            <Button size="sm" variant="outline" className="gap-1 h-8 text-xs bg-transparent" asChild>
-              <a href={item.url} target="_blank" rel="noopener noreferrer">
-                <ExternalLink className="w-3 h-3" />
-                View
-              </a>
-            </Button>
+            <div className="flex gap-1">
+              <Button size="sm" variant="outline" className="gap-1 h-8 text-xs bg-transparent" asChild>
+                <a href={item.url} target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="w-3 h-3" />
+                  View
+                </a>
+              </Button>
+              {!editable && onBook && !item.isBooked && (
+                <Button 
+                  size="sm" 
+                  className="gap-1 h-8 text-xs bg-primary hover:bg-primary/90"
+                  onClick={async () => {
+                    setIsBooking(true)
+                    try {
+                      await onBook(item.id)
+                    } finally {
+                      setIsBooking(false)
+                    }
+                  }}
+                  disabled={isBooking}
+                >
+                  <Check className="w-3 h-3" />
+                  {isBooking ? "Booking..." : "Book"}
+                </Button>
+              )}
+              {!editable && onBook && item.isBooked && (
+                <Button 
+                  size="sm" 
+                  className="gap-1 h-8 text-xs bg-muted hover:bg-muted/80 text-foreground"
+                  onClick={async () => {
+                    setIsBooking(true)
+                    try {
+                      await onBook(item.id)
+                    } finally {
+                      setIsBooking(false)
+                    }
+                  }}
+                  disabled={isBooking}
+                >
+                  <Check className="w-3 h-3" />
+                  {isBooking ? "Canceling..." : "Cancel"}
+                </Button>
+              )}
+            </div>
           </div>
+
+          {item.isBooked && item.bookedBy && (
+            <div className="mt-2 text-xs text-muted-foreground italic flex items-center gap-1">
+              <Check className="w-3 h-3 text-secondary" />
+              Booked by <span className="font-medium text-foreground">{item.bookedBy.name}</span>
+            </div>
+          )}
 
           {item.notes && <p className="text-xs text-muted-foreground mt-2 italic break-all whitespace-pre-wrap">\"{ item.notes}\"</p>}
         </div>

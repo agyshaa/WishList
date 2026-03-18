@@ -3,9 +3,17 @@
 import type { WishlistItem } from "@/lib/mock-data"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
-import { Heart, ExternalLink, Plus } from "lucide-react"
+import { Bookmark, ExternalLink, Plus, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
+import { useApp } from "@/lib/store"
+import { useToast } from "@/components/ui/use-toast"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 interface ProductCardProps {
   item: WishlistItem
@@ -15,8 +23,11 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ item, className, variant = "default", viewMode = "grid" }: ProductCardProps) {
-  const [isLiked, setIsLiked] = useState(false)
+  const [isBooking, setIsBooking] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
+
+  const { user, wishlists, addItemToWishlist, bookItem } = useApp()
+  const { toast } = useToast()
 
   const priorityColors = {
     high: "bg-primary text-primary-foreground",
@@ -39,8 +50,8 @@ export function ProductCard({ item, className, variant = "default", viewMode = "
         className={cn(
           "relative overflow-hidden bg-muted",
           viewMode === "list" 
-            ? "w-full sm:w-48 xl:w-56 shrink-0 aspect-[4/3] sm:aspect-square" 
-            : variant === "compact" ? "aspect-square" : "aspect-[4/5]"
+            ? "w-full sm:w-48 xl:w-56 shrink-0 aspect-4/3 sm:aspect-square" 
+            : variant === "compact" ? "aspect-square" : "aspect-4/5"
         )}
       >
         <Image
@@ -55,29 +66,141 @@ export function ProductCard({ item, className, variant = "default", viewMode = "
         {/* Overlay actions */}
         <div
           className={cn(
-            "absolute inset-0 bg-gradient-to-t from-background/80 to-transparent transition-smooth",
+            "absolute inset-0 bg-linear-to-t from-background/80 to-transparent transition-smooth",
             isHovered ? "opacity-100" : "opacity-0",
           )}
         >
           <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
-            <Button size="sm" className="bg-primary hover:bg-primary/90 gap-1">
-              <Plus className="w-4 h-4" />
-              Add
-            </Button>
-            <div className="flex gap-2">
-              <button
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button 
+                    size="sm" 
+                    className="bg-primary hover:bg-primary/90 gap-1"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <Plus className="w-4 h-4" />
+                    Add
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" onClick={(e) => e.stopPropagation()}>
+                  {wishlists.map((list) => (
+                    <DropdownMenuItem 
+                      key={list.id}
+                      onClick={() => {
+                        const { id, addedAt, ...itemData } = item
+                        addItemToWishlist(list.id, itemData)
+                        toast({
+                          title: "Added!",
+                          description: `Item has been added to ${list.name}.`,
+                        })
+                      }}
+                    >
+                      {list.emoji} {list.name}
+                    </DropdownMenuItem>
+                  ))}
+                  {wishlists.length === 0 && (
+                    <DropdownMenuItem disabled>No wishlists yet</DropdownMenuItem>
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button 
+                size="sm" 
+                className="bg-primary hover:bg-primary/90 gap-1"
                 onClick={(e) => {
                   e.stopPropagation()
-                  setIsLiked(!isLiked)
+                  toast({
+                    title: "Login Required",
+                    description: "Please log in to add items to your wishlist.",
+                    variant: "destructive",
+                  })
                 }}
-                className={cn(
-                  "w-9 h-9 rounded-full flex items-center justify-center transition-smooth",
-                  isLiked ? "bg-primary text-primary-foreground" : "glass hover:bg-muted",
-                )}
               >
-                <Heart className={cn("w-4 h-4", isLiked && "fill-current")} />
-              </button>
-              <button className="w-9 h-9 rounded-full glass hover:bg-muted flex items-center justify-center transition-smooth">
+                <Plus className="w-4 h-4" />
+                Add
+              </Button>
+            )}
+            <div className="flex gap-2">
+              {item.isBooked && item.bookedBy?.id === user?.id ? (
+                <button
+                  onClick={async (e) => {
+                    e.stopPropagation()
+                    setIsBooking(true)
+                    const success = await bookItem(item.id)
+                    setIsBooking(false)
+                    if (success) {
+                      toast({
+                        title: "Booking Canceled!",
+                        description: "You have canceled your reservation.",
+                      })
+                      item.isBooked = false
+                    }
+                  }}
+                  disabled={isBooking}
+                  className={cn(
+                    "h-9 px-3 rounded-full flex items-center justify-center text-xs font-medium transition-smooth",
+                    "bg-muted text-muted-foreground hover:bg-muted/80"
+                  )}
+                  title="Cancel this booking"
+                >
+                  {isBooking ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <>
+                      <Bookmark className="w-4 h-4 mr-1 fill-current" />
+                      Cancel
+                    </>
+                  )}
+                </button>
+              ) : (
+                <button
+                  onClick={async (e) => {
+                    e.stopPropagation()
+                    if (!user) {
+                      toast({
+                        title: "Login Required",
+                        description: "Please log in to book items.",
+                        variant: "destructive",
+                      })
+                      return
+                    }
+                    setIsBooking(true)
+                    const success = await bookItem(item.id)
+                    setIsBooking(false)
+                    if (success) {
+                      toast({
+                        title: "Item Booked!",
+                        description: "You have reserved this item.",
+                      })
+                      // The local item state isn't strictly controlled here, 
+                      // but if it's on discover it will be hidden soon or we can mutate item.isBooked
+                      item.isBooked = true
+                    }
+                  }}
+                  disabled={isBooking || (item.isBooked && item.bookedBy?.id !== user?.id)}
+                  className={cn(
+                    "w-9 h-9 rounded-full flex items-center justify-center transition-smooth",
+                    item.isBooked && item.bookedBy?.id !== user?.id
+                      ? "bg-muted text-muted-foreground cursor-not-allowed" 
+                      : "glass hover:bg-muted"
+                  )}
+                  title={item.isBooked && item.bookedBy?.id !== user?.id ? `Booked by ${item.bookedBy?.name}` : "Book this item"}
+                >
+                  {isBooking ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Bookmark className={cn("w-4 h-4", item.isBooked && "fill-current")} />
+                  )}
+                </button>
+              )}
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation()
+                  window.open(item.url, '_blank', 'noopener,noreferrer')
+                }}
+                className="w-9 h-9 rounded-full glass hover:bg-muted flex items-center justify-center transition-smooth"
+              >
                 <ExternalLink className="w-4 h-4" />
               </button>
             </div>
@@ -97,7 +220,9 @@ export function ProductCard({ item, className, variant = "default", viewMode = "
 
       {/* Card content */}
       <div className={cn("flex flex-col flex-1", viewMode === "list" ? "p-5 sm:p-6" : "p-4")}>
-        <p className="text-xs text-muted-foreground mb-1">{item.store}</p>
+        <div className="flex justify-between items-start mb-1 gap-2">
+            <p className="text-xs text-muted-foreground">{item.store}</p>
+        </div>
         <h3 className={cn("font-medium text-foreground break-all whitespace-pre-wrap", viewMode === "list" ? "text-base lg:text-lg mb-3" : "line-clamp-2 text-sm mb-2")}>{item.title}</h3>
         <div className={cn("mt-auto", viewMode === "list" ? "flex items-end justify-between gap-4" : "")}>
             <div className="flex flex-col items-start gap-1">

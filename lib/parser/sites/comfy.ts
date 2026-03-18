@@ -1,5 +1,5 @@
 import * as cheerio from "cheerio"
-import { cleanPrice, cleanText } from "../utils"
+import { cleanPrice, cleanText, calculateDiscountPercent } from "../utils"
 import type { ProductData } from "../types"
 import { UniversalParser } from "../universal"
 
@@ -10,7 +10,7 @@ export class ComfyParser extends UniversalParser {
   parse(url: string, html: string): ProductData {
     const $ = cheerio.load(html)
     
-    // 1. DOM classes
+    // 1. DOM classes - Current price
     let cheerioPrice = 0
     let cheerioOldPrice: number | undefined = undefined
 
@@ -20,11 +20,31 @@ export class ComfyParser extends UniversalParser {
         if (val > 0) cheerioPrice = val
     })
 
-    $(".price__old-price, .price__old").each((_, el) => {
-        if (cheerioOldPrice !== undefined) return
-        const val = cleanPrice($(el).text())
-        if (val > 0) cheerioOldPrice = val
-    })
+    // 2. DOM classes - Old price (comprehensive selectors for Comfy)
+    const oldPriceSelectors = [
+        ".price__old-price",
+        ".price__old",
+        ".price__compare-price",
+        "[class*='price__old']",
+        "[class*='old-price']",
+        "s.price__current",  // Strikethrough current price
+        "del",  // Delete tag
+        "[class*='compare-at']",
+        "[style*='line-through']",
+    ]
+    
+    for (const selector of oldPriceSelectors) {
+        const elem = $(selector).first()
+        if (elem.length) {
+            const val = cleanPrice(elem.text())
+            if (val > 0) {
+                cheerioOldPrice = val
+                console.log(`[Comfy] Found oldPrice ${val} with selector: ${selector}`)
+                break
+            }
+        }
+    }
+    
     if (cheerioOldPrice && cheerioOldPrice <= cheerioPrice) {
         cheerioOldPrice = undefined
     }
@@ -40,14 +60,15 @@ export class ComfyParser extends UniversalParser {
 
     // 4. Meta / Inline fallback
     const inlinePrice = this.tryInlineJsonPrice(html)
+    const inlineOldPrice = this.tryInlineJsonOldPrice(html)
     const ogTitle = $('meta[property="og:title"]').attr("content") || ""
     const ogImage = $('meta[property="og:image"]').attr("content") || ""
     const ogDescription = $('meta[property="og:description"]').attr("content") || ""
     const ogPrice = cleanPrice($('meta[property="product:price:amount"]').attr("content") || "")
 
-    // Merge attributes safely
+    // Merge attributes safely - extract image with smart filtering
     const title = preloadedResult?.title || ldData.title || ogTitle || ""
-    const image_url = preloadedResult?.image_url || ldData.image_url || ogImage || ""
+    const image_url = this.extractImage($, preloadedResult?.image_url || ldData.image_url || ogImage) || ogImage || ""
     const description = preloadedResult?.description || ldData.description || ogDescription || ""
     
     const priceCandidates = [
@@ -62,7 +83,8 @@ export class ComfyParser extends UniversalParser {
     const oldPriceCandidates = [
         cheerioOldPrice,
         preloadedResult?.oldPrice,
-        ldData.oldPrice
+        ldData.oldPrice,
+        inlineOldPrice
     ]
     let oldPrice = oldPriceCandidates.find(p => p !== undefined && p > 0)
     if (oldPrice && oldPrice <= price) oldPrice = undefined
@@ -71,6 +93,7 @@ export class ComfyParser extends UniversalParser {
         title: cleanText(title),
         price,
         oldPrice,
+        discount_percent: calculateDiscountPercent(price, oldPrice),
         currency: "UAH",
         image_url,
         description: cleanText(description),
@@ -92,10 +115,34 @@ export class ComfyParser extends UniversalParser {
 
           const product = data?.product?.product
           if (product) {
+            // Price extraction: special_price (discounted) > price (current)
+            const currentPrice = parseFloat(product.special_price || product.price) || 0
+            
+            // Old price: if there's special_price, original is regular price
+            // Also check for explicit oldPrice, regular_price, originalPrice fields
+            let oldPrice: number | undefined = undefined
+            
+            if (product.special_price && product.price) {
+              // Has discount: special_price is current, price is old
+              oldPrice = parseFloat(product.price)
+            } else if (product.regular_price && product.price) {
+              // Sometimes it's regular_price instead
+              oldPrice = parseFloat(product.regular_price)
+            } else if (product.originalPrice) {
+              oldPrice = parseFloat(product.originalPrice)
+            } else if (product.compareAtPrice) {
+              oldPrice = parseFloat(product.compareAtPrice)
+            }
+            
+            // Validate: oldPrice must be higher than current
+            if (oldPrice && oldPrice <= currentPrice) {
+              oldPrice = undefined
+            }
+            
             return {
               title: product.name || "",
-              price: parseFloat(product.special_price || product.price) || 0,
-              oldPrice: product.special_price ? parseFloat(product.price) : undefined,
+              price: currentPrice,
+              oldPrice,
               currency: "UAH",
               image_url: product.img || "",
               description: product.description || "",
@@ -103,7 +150,8 @@ export class ComfyParser extends UniversalParser {
               store_name: "Comfy",
             }
           }
-        } catch {
+        } catch (e) {
+          console.log(`[Comfy] PreloadedState parsing error:`, e)
           continue
         }
       }
@@ -130,5 +178,66 @@ export class ComfyParser extends UniversalParser {
     }
 
     return 0
+  }
+
+  private tryInlineJsonOldPrice(html: string): number | undefined {
+    // Look for old/compare price in inline JSON
+    const patterns = [
+      /"oldPrice"\s*:\s*"?(\d[\d,.]+)/,
+      /"compareAtPrice"\s*:\s*"?(\d[\d,.]+)/,
+      /"regular_price"\s*:\s*"?(\d[\d,.]+)/,
+      /"originalPrice"\s*:\s*"?(\d[\d,.]+)/,
+    ]
+
+    for (const pattern of patterns) {
+      const match = html.match(pattern)
+      if (match) {
+        const price = cleanPrice(match[1])
+        if (price > 0) {
+          console.log(`[Comfy] Found oldPrice ${price} in inline JSON`)
+          return price
+        }
+      }
+    }
+
+    return undefined
+  }
+
+  private extractImage($: cheerio.CheerioAPI, fallbackImage?: string): string {
+    // Try OG image first
+    if (fallbackImage && this.isProductImage(fallbackImage)) {
+      return fallbackImage
+    }
+
+    // Primary selectors for Comfy product images
+    const selectors = [
+      "img.product-image",
+      "img[data-testid='product-image']",
+      "div.product-gallery img",
+      "img.main-image",
+      "img[src*='product']",
+    ]
+
+    for (const selector of selectors) {
+      const elements = $(selector)
+      for (let i = 0; i < elements.length; i++) {
+        const elem = $(elements[i])
+        let src = elem.attr("src") || elem.attr("data-src") || ""
+
+        // Filter out non-product images
+        if (!src || src.includes("logo") || src.includes("icon") || 
+            src.includes("avatar") || src.includes("placeholder")) {
+          continue
+        }
+
+        if (src) {
+          console.log(`[Comfy] Found image: ${src.slice(0, 80)}...`)
+          return src
+        }
+      }
+    }
+
+    // Fallback to provided image if no good product image found
+    return fallbackImage || ""
   }
 }

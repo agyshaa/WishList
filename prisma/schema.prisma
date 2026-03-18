@@ -19,7 +19,8 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  wishlists Wishlist[]
+  wishlists   Wishlist[]
+  bookedItems WishlistItem[] @relation("BookedItems")
 }
 
 model Wishlist {
@@ -52,4 +53,8 @@ model WishlistItem {
 
   wishlistId String
   wishlist   Wishlist @relation(fields: [wishlistId], references: [id], onDelete: Cascade)
+
+  isBooked   Boolean @default(false)
+  bookedById String?
+  bookedBy   User?   @relation("BookedItems", fields: [bookedById], references: [id])
 }

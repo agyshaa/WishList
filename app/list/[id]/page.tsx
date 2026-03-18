@@ -8,8 +8,9 @@ import { AccessKeyModal } from "@/components/access-key-modal"
 import { AddItemModal } from "@/components/add-item-modal"
 import { EditWishlistModal } from "@/components/edit-wishlist-modal"
 import { EditItemModal } from "@/components/edit-item-modal"
-import type { WishlistItem } from "@/lib/mock-data"
+import type { WishlistItem, Wishlist } from "@/lib/mock-data"
 import { Button } from "@/components/ui/button"
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { Share2, Plus, Lock, Globe, ArrowLeft, Edit3 } from "lucide-react"
 import Link from "next/link"
 import { useState, useEffect } from "react"
@@ -24,19 +25,59 @@ export default function WishlistPage() {
     const [showEditItemModal, setShowEditItemModal] = useState(false)
     const [selectedItem, setSelectedItem] = useState<WishlistItem | null>(null)
     const [isSaving, setIsSaving] = useState(false)
+    const [wishlist, setWishlist] = useState<Wishlist | null>(null)
+    const [isLoadingWishlist, setIsLoadingWishlist] = useState(true)
 
-    const { user, isLoading, getWishlistById, addItemToWishlist, deleteItem, updateWishlist, updateItem } = useApp()
+    const { user, isLoading, getWishlistById, getWishlistByIdFromApi, addItemToWishlist, deleteItem, updateWishlist, updateItem, getWishlistByAccessKey, regenerateAccessKey, updateWishlistPrivacy, bookItem } = useApp()
 
-    const wishlistId = params.id as string
-    const wishlist = getWishlistById(wishlistId)
+    const wishlistParam = params.id as string
+
+    // Fetch wishlist by ID or accessKey
+    useEffect(() => {
+        const fetchWishlist = async () => {
+            setIsLoadingWishlist(true)
+            try {
+                // Try by UUID first (works for both public and owned wishlists)
+                const byId = await getWishlistByIdFromApi(wishlistParam)
+                if (byId) {
+                    setWishlist(byId)
+                    setIsLoadingWishlist(false)
+                    return
+                }
+
+                // Try by accessKey if UUID failed (for shared wishlists with key)
+                const byKey = await getWishlistByAccessKey(wishlistParam.toUpperCase())
+                if (byKey) {
+                    setWishlist(byKey)
+                } else {
+                    setWishlist(null)
+                }
+            } catch (error) {
+                console.error("Error fetching wishlist:", error)
+                setWishlist(null)
+            } finally {
+                setIsLoadingWishlist(false)
+            }
+        }
+
+        if (!isLoading) {
+            fetchWishlist()
+        }
+    }, [wishlistParam, isLoading, user, getWishlistByIdFromApi, getWishlistByAccessKey])
 
     useEffect(() => {
-        if (!isLoading && !user) {
-            router.push("/login")
+        // Only redirect to login if trying to access own wishlist (not a shared one)
+        // Shared wishlists should be accessible without login
+        if (!isLoading && !user && !wishlist) {
+            // Check if this looks like an accessKey (has dashes) that we tried to fetch
+            if (!wishlistParam.includes("-")) {
+                // It's a UUID, so require login
+                router.push("/login")
+            }
         }
-    }, [user, isLoading, router])
+    }, [user, isLoading, router, wishlist, wishlistParam])
 
-    if (isLoading) {
+    if (isLoading || isLoadingWishlist) {
         return (
             <main className="min-h-screen bg-background flex items-center justify-center">
                 <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
@@ -46,23 +87,29 @@ export default function WishlistPage() {
 
     if (!wishlist) {
         return (
-            <main className="min-h-screen bg-background flex items-center justify-center">
+            <main className="min-h-screen bg-background">
                 <Navbar />
-                <div className="text-center">
-                    <h1 className="text-2xl font-bold text-foreground mb-2">Wishlist not found</h1>
-                    <p className="text-muted-foreground mb-4">This list may have been deleted or doesn&apos;t exist.</p>
-                    <Button asChild className="bg-primary hover:bg-primary/90">
-                        <Link href="/profile">Go to Profile</Link>
-                    </Button>
+                <div className="pt-24 pb-12 px-4 flex items-center justify-center">
+                    <div className="text-center">
+                        <h1 className="text-2xl font-bold text-foreground mb-2">Wishlist not found</h1>
+                        <p className="text-muted-foreground mb-4">This list may have been deleted or doesn&apos;t exist.</p>
+                        <Button asChild className="bg-primary hover:bg-primary/90">
+                            <Link href="/profile">Go to Profile</Link>
+                        </Button>
+                    </div>
                 </div>
+                <Footer />
             </main>
         )
     }
 
+    const isOwner = user && wishlist.userId === user.id
+
+
     const totalValue = wishlist.items.reduce((sum, item) => sum + item.price, 0)
 
     const handleAddItem = (data: { title: string; price: number; oldPrice?: number | null; image: string; store: string; url: string; priority: string; notes: string }) => {
-        addItemToWishlist(wishlistId, {
+        addItemToWishlist(wishlist.id, {
             title: data.title,
             price: data.price,
             oldPrice: data.oldPrice,
@@ -76,7 +123,7 @@ export default function WishlistPage() {
     }
 
     const handleDeleteItem = (itemId: string) => {
-        deleteItem(wishlistId, itemId)
+        deleteItem(wishlist.id, itemId)
     }
 
     const handleEditItem = (item: WishlistItem) => {
@@ -87,7 +134,7 @@ export default function WishlistPage() {
     const handleSaveItem = async (itemId: string, data: { priority: string; notes: string }) => {
         setIsSaving(true)
         try {
-            await updateItem(wishlistId, itemId, {
+            await updateItem(wishlist.id, itemId, {
                 priority: data.priority as "high" | "medium" | "low",
                 notes: data.notes,
             })
@@ -99,16 +146,36 @@ export default function WishlistPage() {
     }
 
     const handleTogglePrivacy = () => {
-        updateWishlist(wishlistId, { isPrivate: !wishlist.isPrivate })
+        updateWishlist(wishlist.id, { isPrivate: !wishlist.isPrivate })
     }
 
     const handleEditWishlist = async (data: { name: string; description: string; emoji: string; isPrivate: boolean }) => {
         setIsSaving(true)
         try {
-            await updateWishlist(wishlistId, data)
+            await updateWishlist(wishlist.id, data)
             setShowEditModal(false)
         } finally {
             setIsSaving(false)
+        }
+    }
+
+    const handleBookItem = async (itemId: string): Promise<boolean> => {
+        try {
+            const success = await bookItem(itemId)
+            if (success) {
+                // Refresh wishlist data to show updated booked status
+                if (wishlistParam.includes("-")) {
+                    // It's an accessKey, refetch via accessKey
+                    const updated = await getWishlistByAccessKey(wishlistParam.toUpperCase())
+                    if (updated) {
+                        setWishlist(updated)
+                    }
+                }
+            }
+            return success
+        } catch (error) {
+            console.error("Error booking item:", error)
+            return false
         }
     }
 
@@ -120,11 +187,11 @@ export default function WishlistPage() {
                 <div className="max-w-3xl mx-auto">
                     {/* Back link */}
                     <Link
-                        href="/profile"
+                        href={isOwner ? "/profile" : "/"}
                         className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6 transition-smooth"
                     >
                         <ArrowLeft className="w-4 h-4" />
-                        Back to Profile
+                        {isOwner ? "Back to Profile" : "Back to Home"}
                     </Link>
 
                     {/* Header */}
@@ -136,53 +203,85 @@ export default function WishlistPage() {
                                     <h1 className="text-2xl sm:text-3xl font-bold text-foreground line-clamp-2">{wishlist.name}</h1>
                                     {wishlist.description && <p className="text-muted-foreground mt-1 line-clamp-2 break-all whitespace-pre-wrap">{wishlist.description}</p>}
                                     <div className="flex items-center gap-3 mt-3 text-sm text-muted-foreground">
-                                        <button
-                                            onClick={handleTogglePrivacy}
-                                            className="flex items-center gap-1 hover:text-foreground transition-smooth"
-                                        >
-                                            {wishlist.isPrivate ? (
-                                                <>
-                                                    <Lock className="w-4 h-4" /> Private
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <Globe className="w-4 h-4" /> Public
-                                                </>
-                                            )}
-                                        </button>
+                                        {isOwner && (
+                                            <button
+                                                onClick={handleTogglePrivacy}
+                                                className="flex items-center gap-1 hover:text-foreground transition-smooth"
+                                            >
+                                                {wishlist.isPrivate ? (
+                                                    <>
+                                                        <Lock className="w-4 h-4" /> Private
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <Globe className="w-4 h-4" /> Public
+                                                    </>
+                                                )}
+                                            </button>
+                                        )}
+                                        {!isOwner && (
+                                            <span className="flex items-center gap-1">
+                                                {wishlist.isPrivate ? (
+                                                    <>
+                                                        <Lock className="w-4 h-4" /> Private
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <Globe className="w-4 h-4" /> Public
+                                                    </>
+                                                )}
+                                            </span>
+                                        )}
                                         <span>{wishlist.items.length} items</span>
                                         <span className="text-secondary font-medium">₴{totalValue.toFixed(2)} total</span>
                                     </div>
+
+                                    {!isOwner && wishlist.user && (
+                                        <div className="flex items-center gap-2 mt-3 pt-3 border-t border-border">
+                                            <Avatar className="w-8 h-8">
+                                                <AvatarImage src={wishlist.user.avatar} alt={wishlist.user.name} />
+                                                <AvatarFallback>{wishlist.user.name.charAt(0)}</AvatarFallback>
+                                            </Avatar>
+                                            <div className="flex flex-col">
+                                                <span className="text-xs font-medium text-foreground">{wishlist.user.name}</span>
+                                                <span className="text-xs text-muted-foreground">@{wishlist.user.username}</span>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
                             <div className="flex gap-2">
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={() => setShowEditModal(true)}
-                                    className="gap-1 bg-transparent"
-                                >
-                                    <Edit3 className="w-4 h-4" />
-                                    Edit
-                                </Button>
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={() => setShowShareModal(true)}
-                                    className="gap-1 bg-transparent"
-                                >
-                                    <Share2 className="w-4 h-4" />
-                                    Share
-                                </Button>
-                                <Button
-                                    size="sm"
-                                    onClick={() => setShowAddModal(true)}
-                                    className="gap-1 bg-primary hover:bg-primary/90"
-                                >
-                                    <Plus className="w-4 h-4" />
-                                    Add
-                                </Button>
+                                {isOwner && (
+                                    <>
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={() => setShowEditModal(true)}
+                                            className="gap-1 bg-transparent"
+                                        >
+                                            <Edit3 className="w-4 h-4" />
+                                            Edit
+                                        </Button>
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={() => setShowShareModal(true)}
+                                            className="gap-1 bg-transparent"
+                                        >
+                                            <Share2 className="w-4 h-4" />
+                                            Share
+                                        </Button>
+                                        <Button
+                                            size="sm"
+                                            onClick={() => setShowAddModal(true)}
+                                            className="gap-1 bg-primary hover:bg-primary/90"
+                                        >
+                                            <Plus className="w-4 h-4" />
+                                            Add
+                                        </Button>
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -194,9 +293,10 @@ export default function WishlistPage() {
                                 <WishlistItemCard
                                     key={item.id}
                                     item={item}
-                                    editable
-                                    onDelete={handleDeleteItem}
-                                    onEdit={handleEditItem}
+                                    editable={isOwner || false}
+                                    onBook={!isOwner ? handleBookItem : undefined}
+                                    onDelete={isOwner ? handleDeleteItem : undefined}
+                                    onEdit={isOwner ? handleEditItem : undefined}
                                 />
                             ))}
                         </div>
@@ -239,8 +339,12 @@ export default function WishlistPage() {
             <AccessKeyModal
                 isOpen={showShareModal}
                 onClose={() => setShowShareModal(false)}
-                accessKey={wishlist.accessKey || wishlist.id}
+                accessKey={wishlist.accessKey || ""}
                 listName={wishlist.name}
+                listId={wishlist.id}
+                isPrivate={wishlist.isPrivate}
+                onPrivacyChange={(isPrivate) => updateWishlistPrivacy(wishlist.id, isPrivate)}
+                onRegenerateKey={() => regenerateAccessKey(wishlist.id)}
             />
             <AddItemModal
                 isOpen={showAddModal}

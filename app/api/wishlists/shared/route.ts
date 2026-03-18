@@ -13,14 +13,20 @@ export async function GET(req: Request) {
 
         const wishlist = await prisma.wishlist.findFirst({
             where: { accessKey: key },
-            include: { items: { orderBy: { addedAt: "desc" } } },
+            include: {
+                user: { select: { id: true, name: true, username: true, avatar: true } },
+                items: {
+                    orderBy: { addedAt: "desc" },
+                    include: { bookedBy: { select: { id: true, name: true, username: true, avatar: true } } },
+                },
+            },
         })
 
         if (!wishlist) {
             return NextResponse.json({ error: "Invalid access key" }, { status: 404 })
         }
 
-        // Return wishlist without sensitive data
+        // Return wishlist with owner info
         return NextResponse.json({
             wishlist: {
                 id: wishlist.id,
@@ -29,7 +35,12 @@ export async function GET(req: Request) {
                 emoji: wishlist.emoji,
                 isPrivate: wishlist.isPrivate,
                 accessKey: wishlist.accessKey,
-                items: wishlist.items,
+                userId: wishlist.userId,
+                user: wishlist.user,
+                items: wishlist.items.map((item) => ({
+                    ...item,
+                    bookedBy: item.bookedBy,
+                })),
                 createdAt: wishlist.createdAt,
                 updatedAt: wishlist.updatedAt,
             },

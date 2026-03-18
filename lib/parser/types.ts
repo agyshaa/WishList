@@ -2,6 +2,7 @@ export interface ProductData {
     title: string
     price: number
     oldPrice?: number
+    discount_percent?: number  // Автоматичний розрахунок: ((oldPrice - price) / oldPrice) * 100
     currency: string
     image_url: string
     description: string

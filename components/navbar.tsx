@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Sparkles, Menu, X, User, Settings, LogOut, Globe, Search, Loader2 } from "lucide-react"
+import { Menu, X, User, Settings, LogOut, Globe, Search, Loader2 } from "lucide-react"
 import { useState, useEffect, useRef } from "react"
 import { useApp } from "@/lib/store"
 import { useLanguage } from "@/lib/language-context"
@@ -55,8 +55,8 @@ export function Navbar() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     <Link href="/" className="flex items-center gap-2 group">
-                        <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center transition-smooth group-hover:glow-primary">
-                            <Sparkles className="w-5 h-5 text-primary-foreground" />
+                        <div className="w-8 h-8 rounded-lg flex items-center justify-center transition-smooth group-hover:glow-primary">
+                            <Image src="/icon.svg" alt="WishList Logo" width={32} height={32} className="w-8 h-8 rounded-lg" />
                         </div>
                         <span className="text-2xl font-bold font-heading text-foreground">
                             Wish<span className="text-primary">List</span>

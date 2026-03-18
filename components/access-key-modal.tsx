@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Copy, Check, Key, RefreshCw, Lock, Globe } from "lucide-react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 
@@ -13,6 +13,10 @@ interface AccessKeyModalProps {
   onClose: () => void
   accessKey: string
   listName: string
+  listId: string
+  isPrivate: boolean
+  onPrivacyChange?: (isPrivate: boolean) => Promise<void>
+  onRegenerateKey?: () => Promise<string | null>
 }
 
 function generateAccessKey(): string {
@@ -22,16 +26,40 @@ function generateAccessKey(): string {
   return `WISH-${part1}-${part2}`
 }
 
-export function AccessKeyModal({ isOpen, onClose, accessKey: initialKey, listName }: AccessKeyModalProps) {
+export function AccessKeyModal({ 
+  isOpen, 
+  onClose, 
+  accessKey: initialKey, 
+  listName, 
+  listId,
+  isPrivate: initialIsPrivate,
+  onPrivacyChange,
+  onRegenerateKey
+}: AccessKeyModalProps) {
   const [copied, setCopied] = useState(false)
   const [copiedKey, setCopiedKey] = useState(false)
-  const [isPrivate, setIsPrivate] = useState(true)
-  const [accessKey, setAccessKey] = useState(initialKey.includes("WISH-") ? initialKey : generateAccessKey())
+  const [isPrivate, setIsPrivate] = useState(initialIsPrivate)
+  const [accessKey, setAccessKey] = useState(initialKey || generateAccessKey())
+  const [isLoading, setIsLoading] = useState(false)
 
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(`${window.location.origin}/list/${accessKey}`)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+  // Update state when props change
+  useEffect(() => {
+    setIsPrivate(initialIsPrivate)
+    if (initialKey) {
+      setAccessKey(initialKey)
+    }
+  }, [initialKey, initialIsPrivate])
+
+  const handlePrivacyChange = async (newValue: boolean) => {
+    setIsLoading(true)
+    try {
+      setIsPrivate(newValue)
+      if (onPrivacyChange) {
+        await onPrivacyChange(newValue)
+      }
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleCopyKey = () => {
@@ -40,8 +68,26 @@ export function AccessKeyModal({ isOpen, onClose, accessKey: initialKey, listNam
     setTimeout(() => setCopiedKey(false), 2000)
   }
 
-  const regenerateKey = () => {
-    setAccessKey(generateAccessKey())
+  const handleCopyLink = () => {
+    const url = `${typeof window !== "undefined" ? window.location.origin : ""}/list/${accessKey}`
+    navigator.clipboard.writeText(url)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  const handleRegenerateKey = async () => {
+    setIsLoading(true)
+    try {
+      if (onRegenerateKey) {
+        const newKey = await onRegenerateKey()
+        if (newKey) {
+          setAccessKey(newKey)
+          setCopiedKey(false) // Reset copy status
+        }
+      }
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -68,7 +114,7 @@ export function AccessKeyModal({ isOpen, onClose, accessKey: initialKey, listNam
                 </p>
               </div>
             </div>
-            <Switch id="privacy-toggle" checked={isPrivate} onCheckedChange={setIsPrivate} />
+            <Switch id="privacy-toggle" checked={isPrivate} onCheckedChange={handlePrivacyChange} disabled={isLoading} />
           </div>
 
           {isPrivate && (
@@ -89,11 +135,12 @@ export function AccessKeyModal({ isOpen, onClose, accessKey: initialKey, listNam
                     {copiedKey ? <Check className="w-4 h-4 text-secondary" /> : <Copy className="w-4 h-4" />}
                   </Button>
                   <Button
-                    onClick={regenerateKey}
+                    onClick={handleRegenerateKey}
                     variant="outline"
                     className="shrink-0 bg-transparent border-border"
                     size="icon"
                     title="Generate new key"
+                    disabled={isLoading}
                   >
                     <RefreshCw className="w-4 h-4" />
                   </Button>

@@ -1,36 +1,41 @@
 import * as cheerio from "cheerio"
-import { cleanPrice, cleanText } from "../utils"
+import { cleanPrice, cleanText, calculateDiscountPercent } from "../utils"
 import type { ProductData } from "../types"
 import { UniversalParser } from "../universal"
 
-/**
- * Brain parser: JSON-LD first, then manual selectors.
- */
 export class BrainParser extends UniversalParser {
     parse(url: string, html: string): ProductData {
+        if (html.length < 1000 ||
+            (html.includes("<title>404") || html.includes("<title>Error 404")) ||
+            (html.toLowerCase().includes("<h1>404") && !html.includes("Jackery"))) {
+            throw new Error("404: Товар не знайден на Brain. Перевірте посилання")
+        }
+
         let ldData: Partial<ProductData> = {}
         try {
             ldData = super.parse(url, html)
-        } catch {}
+        } catch { }
 
-        // Manual extraction
         const $ = cheerio.load(html)
 
         const title = this.extractTitle($) || ldData.title || ""
         const domPrice = this.extractPrice($)
-        const domOldPrice = this.extractOldPrice($)
+        const domOldPrice = this.extractOldPrice($, domPrice)
         const imageUrl = this.extractImage($) || ldData.image_url || ""
         const description = this.extractDescription($) || ldData.description || ""
 
         const price = [domPrice, ldData.price || 0].find(p => p > 0) || 0
         let oldPrice = [domOldPrice, ldData.oldPrice].find(p => p !== undefined && p > 0)
-        
+
         if (oldPrice && oldPrice <= price) oldPrice = undefined
+
+        console.log(`[BrainParser] Extracted - title: ${title.substring(0, 50)}, price: ${price}, oldPrice: ${oldPrice}`)
 
         return {
             title: cleanText(title),
             price,
             oldPrice,
+            discount_percent: calculateDiscountPercent(price, oldPrice),
             currency: "UAH",
             image_url: imageUrl,
             description: cleanText(description),
@@ -39,25 +44,45 @@ export class BrainParser extends UniversalParser {
         }
     }
 
-    private extractOldPrice($: cheerio.CheerioAPI): number | undefined {
-        // Brain discount is usually in div.old-price or .br-pr-op
-        const oldPriceElem = $("div.old-price, span.old-price, .br-pr-op")
-        if (oldPriceElem.length) return cleanPrice(oldPriceElem.first().text())
+    private extractOldPrice($: cheerio.CheerioAPI, currentPrice: number): number | undefined {
+        // Найточніші селектори Brain для старої ціни
+        const selectors = [
+            ".br-pr-op",
+            ".old-price",
+            "div.main-price-block s",
+            "div.main-price-block del",
+            "s",
+            "del"
+        ]
+
+        for (const sel of selectors) {
+            const elems = $(sel)
+            for (let i = 0; i < elems.length; i++) {
+                const text = $(elems[i]).text().trim()
+                if (text) {
+                    const price = cleanPrice(text)
+                    // Стара ціна обов'язково має бути більшою за поточну
+                    if (price > currentPrice && price < currentPrice * 4) {
+                        console.log(`[BrainParser] Selected oldPrice: ${price} with selector: ${sel}`)
+                        return price
+                    }
+                }
+            }
+        }
+
+        console.log(`[BrainParser] No oldPrice found`)
         return undefined
     }
 
     private extractTitle($: cheerio.CheerioAPI): string {
-        // Brain uses h1.main-title or h1.desktop-only-title
         for (const cls of ["main-title", "desktop-only-title"]) {
             const elem = $(`h1.${cls}`)
             if (elem.length) return elem.text().trim()
         }
 
-        // Fallback: any h1
         const h1 = $("h1")
         if (h1.length) return h1.first().text().trim()
 
-        // Fallback: OG title
         const og = $('meta[property="og:title"]').attr("content")
         if (og) return cleanText(og)
 
@@ -65,32 +90,15 @@ export class BrainParser extends UniversalParser {
     }
 
     private extractPrice($: cheerio.CheerioAPI): number {
-        // Primary: div.main-price-block
-        const mainBlock = $("div.main-price-block")
-        if (mainBlock.length) {
-            // Prefer the "new price" specifically if it exists to avoid old prices entirely
-            const np = mainBlock.find(".br-pr-np")
-            if (np.length) return cleanPrice(np.text())
-            // Else use wrapper and strip known old-price tags
-            const wrapper = mainBlock.find("div.price-wrapper")
-            if (wrapper.length) {
-                 const cloned = wrapper.clone()
-                 cloned.find(".old-price, .br-pr-op").remove()
-                 const cleaned = cleanPrice(cloned.text())
-                 if (cleaned > 0) return cleaned
-            }
-            
-            // Clone block and remove old price text so it doesn't get grabbed
-            const cloned = mainBlock.clone()
-            cloned.find(".old-price, .br-pr-op").remove()
-            return cleanPrice(cloned.text())
-        }
+        // Спочатку шукаємо суто нову ціну (.br-pr-np), щоб гарантовано не захопити стару
+        const np = $(".br-pr-np")
+        if (np.length) return cleanPrice(np.first().text())
 
-        // Fallback: any div.br-pr-price
-        const priceElem = $("div.br-pr-price")
-        if (priceElem.length) {
-            const cloned = priceElem.clone()
-            cloned.find(".old-price, .br-pr-op").remove()
+        // Fallback: клонуємо блок і видаляємо з нього елементи зі старою ціною
+        const mainBlock = $("div.main-price-block, div.br-pr-price").first()
+        if (mainBlock.length) {
+            const cloned = mainBlock.clone()
+            cloned.find(".old-price, .br-pr-op, s, del").remove()
             return cleanPrice(cloned.text())
         }
 
@@ -99,20 +107,37 @@ export class BrainParser extends UniversalParser {
 
     private extractImage($: cheerio.CheerioAPI): string {
         const og = $('meta[property="og:image"]').attr("content")
-        if (og) return og
+        if (og && !og.includes("logo")) return og
 
-        let img = $("img.br-pr-photo")
-        if (!img.length) img = $("img#product_main_image")
+        const selectors = [
+            "img.br-pr-photo",
+            "img#product_main_image",
+            "img[data-testid='product-photo']",
+            "div.product-gallery img",
+        ]
 
-        if (img.length) {
-            let src = img.attr("src") || ""
-            if (src && !src.startsWith("http")) {
-                src = `https://brain.com.ua${src}`
+        for (const selector of selectors) {
+            const elements = $(selector)
+            for (let i = 0; i < elements.length; i++) {
+                const elem = $(elements[i])
+                let src = elem.attr("src") || elem.attr("data-src") || ""
+
+                if (!src || src.includes("logo") || src.includes("icon") || src.includes("placeholder")) {
+                    continue
+                }
+
+                if (src && !src.startsWith("http")) {
+                    src = `https://brain.com.ua${src}`
+                }
+
+                if (src) {
+                    console.log(`[Brain] Found image: ${src.slice(0, 80)}...`)
+                    return src
+                }
             }
-            return src
         }
 
-        return ""
+        return og || ""
     }
 
     private extractDescription($: cheerio.CheerioAPI): string {

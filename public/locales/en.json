@@ -157,6 +157,7 @@
         "title": "My Profile",
         "myWishlists": "My Wishlists",
         "mySharedLists": "Shared With Me",
+        "bookedByMe": "Booked By Me",
         "createFirst": "Create your first wishlist",
         "noShared": "No one has shared a list with you yet",
         "addShared": "Add a shared list",

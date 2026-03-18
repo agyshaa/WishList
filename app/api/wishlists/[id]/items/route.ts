@@ -17,7 +17,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
             return NextResponse.json({ error: "Wishlist not found" }, { status: 404 })
         }
 
-        const { title, price, oldPrice, image, store, url, priority, notes } = await req.json()
+        const { title, price, oldPrice, discount_percent, image, store, url, priority, notes } = await req.json()
 
         if (!title) {
             return NextResponse.json({ error: "Title is required" }, { status: 400 })

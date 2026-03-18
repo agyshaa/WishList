@@ -59,7 +59,13 @@ export async function DELETE(
             return NextResponse.json({ error: "Wishlist not found" }, { status: 404 })
         }
 
-        await prisma.wishlistItem.delete({ where: { id: itemId, wishlistId: id } })
+        // Verify item belongs to this wishlist
+        const item = await prisma.wishlistItem.findFirst({ where: { id: itemId, wishlistId: id } })
+        if (!item) {
+            return NextResponse.json({ error: "Item not found" }, { status: 404 })
+        }
+
+        await prisma.wishlistItem.delete({ where: { id: itemId } })
 
         return NextResponse.json({ success: true })
     } catch (error) {

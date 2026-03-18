@@ -10,6 +10,7 @@ import { CreateListModal } from "@/components/create-list-modal"
 import { EditWishlistModal } from "@/components/edit-wishlist-modal"
 import { AccessKeyModal } from "@/components/access-key-modal"
 import { SharedListsTab } from "@/components/shared-lists-tab"
+import { BookedItemsTab } from "@/components/booked-items-tab"
 import type { Wishlist } from "@/lib/mock-data"
 import { Button } from "@/components/ui/button"
 import { Plus, List, Users } from "lucide-react"
@@ -21,6 +22,7 @@ import { useLanguage } from "@/lib/language-context"
 const tabs = [
     { id: "my-lists", labelKey: "profile.myWishlists", icon: List },
     { id: "shared", labelKey: "profile.mySharedLists", icon: Users },
+     { id: "booked", labelKey: "profile.bookedByMe", icon: Plus },
 ]
 
 export default function ProfilePage() {
@@ -30,7 +32,7 @@ export default function ProfilePage() {
     const [selectedList, setSelectedList] = useState<Wishlist | null>(null)
     const [activeTab, setActiveTab] = useState("my-lists")
     const [isSaving, setIsSaving] = useState(false)
-    const { user, isLoading, wishlists, createWishlist, deleteWishlist, updateWishlist } = useApp()
+    const { user, isLoading, wishlists, createWishlist, deleteWishlist, updateWishlist, regenerateAccessKey, updateWishlistPrivacy } = useApp()
     const router = useRouter()
     const { t } = useLanguage() // Підключаємо наш хук
 
@@ -159,9 +161,13 @@ export default function ProfilePage() {
                                 </div>
                             )}
                         </div>
-                    ) : (
+                    ) : activeTab === "shared" ? (
                         <div className="mt-6">
                             <SharedListsTab />
+                        </div>
+                    ) : (
+                        <div className="mt-6">
+                            <BookedItemsTab />
                         </div>
                     )}
                 </div>
@@ -190,8 +196,12 @@ export default function ProfilePage() {
                     <AccessKeyModal
                         isOpen={showShareModal}
                         onClose={() => setShowShareModal(false)}
-                        accessKey={selectedList.accessKey || selectedList.id}
+                        accessKey={selectedList.accessKey || ""}
                         listName={selectedList.name}
+                        listId={selectedList.id}
+                        isPrivate={selectedList.isPrivate}
+                        onPrivacyChange={(isPrivate) => updateWishlistPrivacy(selectedList.id, isPrivate)}
+                        onRegenerateKey={() => regenerateAccessKey(selectedList.id)}
                     />
                 </>
             )}

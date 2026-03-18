@@ -1,19 +1,27 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
+import { getAuthUserId } from "@/lib/auth"
 
-// GET /api/items/public - Get all items from public wishlists
 export async function GET() {
     try {
+        const currentUserId = await getAuthUserId()
+
         // Get all public wishlists with their items
         const publicWishlists = await prisma.wishlist.findMany({
             where: { isPrivate: false },
-            include: { items: true },
+            include: { 
+                items: {
+                    where: { isBooked: false } // Only show unbooked items
+                } 
+            },
             orderBy: { updatedAt: "desc" },
         })
 
-        // Flatten items from all public wishlists
-        const items = publicWishlists.flatMap((wishlist) => 
-            wishlist.items.map((item) => ({
+        // Flatten items from all public wishlists, excluding user's own items
+        const items = publicWishlists
+            .filter(wishlist => wishlist.userId !== currentUserId)
+            .flatMap((wishlist) => 
+                wishlist.items.map((item) => ({
                 ...item,
                 wishlistId: wishlist.id,
                 wishlistName: wishlist.name,

@@ -3,12 +3,15 @@ export interface WishlistItem {
   title: string
   price: number
   oldPrice?: number | null
+  discount_percent?: number | null
   image: string
   store: string
   url: string
   priority: "high" | "medium" | "low"
   notes?: string
   addedAt: string
+  isBooked?: boolean
+  bookedBy?: { id: string; name: string; username: string; avatar: string } | null
 }
 
 export interface Wishlist {
@@ -18,6 +21,8 @@ export interface Wishlist {
   emoji: string
   isPrivate: boolean
   accessKey?: string
+  userId?: string
+  user?: { id: string; name: string; username: string; avatar: string }
   items: WishlistItem[]
   createdAt: string
   updatedAt: string
