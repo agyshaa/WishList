@@ -423,7 +423,7 @@ export default function DiscoverPage() {
 
                                         <div className="mt-8 pt-6 border-t border-border/50 flex justify-end">
                                             <Button onClick={() => setShowFilters(false)} className="px-8 shadow-md">
-                                                Show {filteredItems.length} results
+                                                {t("discover.showResults")} {filteredItems.length} {t("discover.results")}
                                             </Button>
                                         </div>
                                     </div>
@@ -490,7 +490,7 @@ export default function DiscoverPage() {
                                         {t("discover.loadMore") || "Load More (9)"}
                                     </Button>
                                     <p className="text-sm text-muted-foreground mt-3">
-                                        Showing {visibleCount} of {displayItems.length} items
+                                        {t("discover.showing")} {visibleCount} {t("discover.of")} {displayItems.length} {t("discover.itemsText")}
                                     </p>
                                 </div>
                             )}

@@ -7,9 +7,11 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Sparkles, Eye, EyeOff, ArrowRight } from "lucide-react"
+import { Eye, EyeOff, ArrowRight } from "lucide-react"
 import { useApp } from "@/lib/store"
 import { useLanguage } from "@/lib/language-context"
+import Image from "next/image"
+
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
@@ -48,9 +50,9 @@ export default function LoginPage() {
       <div className="w-full max-w-md relative z-10">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 justify-center mb-8 group">
-          <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center transition-smooth group-hover:glow-primary">
-            <Sparkles className="w-6 h-6 text-primary-foreground" />
-          </div>
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center transition-smooth group-hover:glow-primary">
+                <Image src="/icon.svg" alt="WishList Logo" width={32} height={32} className="w-8 h-8 rounded-lg" />
+            </div>
           <span className="text-2xl font-bold text-foreground">WishList</span>
         </Link>
 
@@ -73,7 +75,7 @@ export default function LoginPage() {
               <Input
                 id="email"
                 type="email"
-                placeholder="you@example.com"
+                placeholder={t("auth.emailPlaceholder")}
                 className="bg-muted border-border h-12"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -92,7 +94,7 @@ export default function LoginPage() {
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
-                  placeholder="Enter your password"
+                  placeholder={t("auth.passwordPlaceholder")}
                   className="bg-muted border-border h-12 pr-10"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}

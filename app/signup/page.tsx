@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label"
 import { Sparkles, Eye, EyeOff, ArrowRight, Check } from "lucide-react"
 import { useApp } from "@/lib/store"
 import { useLanguage } from "@/lib/language-context"
+import Image from "next/image"
 
 export default function SignUpPage() {
   const [firstName, setFirstName] = useState("")
@@ -24,9 +25,9 @@ export default function SignUpPage() {
   const router = useRouter()
 
   const passwordRequirements = [
-    { label: "At least 8 characters", met: password.length >= 8 },
-    { label: "Contains a number", met: /\d/.test(password) },
-    { label: "Contains uppercase letter", met: /[A-Z]/.test(password) },
+    { label: t("auth.passwordRequirements"), met: password.length >= 8 },
+    { label: t("auth.passwordNumber"), met: /\d/.test(password) },
+    { label: t("auth.passwordUppercase"), met: /[A-Z]/.test(password) },
   ]
 
   const allRequirementsMet = passwordRequirements.every((req) => req.met)
@@ -59,9 +60,9 @@ export default function SignUpPage() {
       <div className="w-full max-w-md relative z-10">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 justify-center mb-8 group">
-          <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center transition-smooth group-hover:glow-primary">
-            <Sparkles className="w-6 h-6 text-primary-foreground" />
-          </div>
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center transition-smooth group-hover:glow-primary">
+                <Image src="/icon.svg" alt="WishList Logo" width={32} height={32} className="w-8 h-8 rounded-lg" />
+            </div>
           <span className="text-2xl font-bold text-foreground">WishList</span>
         </Link>
 
@@ -84,7 +85,7 @@ export default function SignUpPage() {
                 <Label htmlFor="firstName">{t("auth.name")}</Label>
                 <Input 
                   id="firstName" 
-                  placeholder="Alex" 
+                  placeholder={t("auth.firstNamePlaceholder")} 
                   className="bg-muted border-border h-12" 
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
@@ -92,10 +93,10 @@ export default function SignUpPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="lastName">Last Name</Label>
+                <Label htmlFor="lastName">{t("auth.lastName")}</Label>
                 <Input 
                   id="lastName" 
-                  placeholder="Rivera" 
+                  placeholder={t("auth.lastNamePlaceholder")} 
                   className="bg-muted border-border h-12" 
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
@@ -109,7 +110,7 @@ export default function SignUpPage() {
               <Input
                 id="email"
                 type="email"
-                placeholder="you@example.com"
+                placeholder={t("auth.emailPlaceholder")}
                 className="bg-muted border-border h-12"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -118,10 +119,10 @@ export default function SignUpPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="username">Username</Label>
+              <Label htmlFor="username">{t("auth.username")}</Label>
               <Input 
                 id="username" 
-                placeholder="alexr" 
+                placeholder={t("auth.usernamePlaceholder")} 
                 className="bg-muted border-border h-12" 
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
@@ -135,7 +136,7 @@ export default function SignUpPage() {
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
-                  placeholder="Create a password"
+                  placeholder={t("auth.passwordPlaceholder")}
                   className="bg-muted border-border h-12 pr-10"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -176,7 +177,7 @@ export default function SignUpPage() {
                 <div className="w-5 h-5 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
               ) : (
                 <>
-                  Create Account
+                  {t("auth.createAccount")}
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </>
               )}
@@ -184,18 +185,18 @@ export default function SignUpPage() {
           </form>
 
           <p className="mt-4 text-center text-xs text-muted-foreground">
-            By signing up, you agree to our{" "}
+            {t("auth.agreeTerms")}{" "}
             <Link href="/terms" className="text-primary hover:underline">
-              Terms
+              {t("auth.terms")}
             </Link>{" "}
-            and{" "}
+            {t("auth.and")}{" "}
             <Link href="/privacy" className="text-primary hover:underline">
-              Privacy Policy
+              {t("auth.privacyPolicy")}
             </Link>
           </p>
 
           <div className="mt-6 text-center text-sm text-muted-foreground">
-            Already have an account?{" "}
+            {t("auth.haveAccount")}{" "}
               <Link href="/login" className="text-primary hover:underline font-medium">
                 {t("auth.loginNow")}
               </Link>
