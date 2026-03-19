@@ -1,6 +1,6 @@
 "use client"
 
-import type { Wishlist } from "@/lib/mock-data"
+import type { Wishlist } from "@/lib/types"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
 import { Lock, Globe, MoreHorizontal, Edit3, Trash2, Share2 } from "lucide-react"

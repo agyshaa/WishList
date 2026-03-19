@@ -11,7 +11,7 @@ import { useLanguage } from "@/lib/language-context"
 import { cn } from "@/lib/utils"
 import { Slider } from "@/components/ui/slider"
 import { Badge } from "@/components/ui/badge"
-import type { WishlistItem } from "@/lib/mock-data"
+import type { WishlistItem } from "@/lib/types"
 
 interface FilterState {
     categories: string[]

@@ -9,7 +9,7 @@ import { Lock, ArrowLeft, Eye, Heart } from "lucide-react"
 import Link from "next/link"
 import { useApp } from "@/lib/store"
 import { useState, useEffect } from "react"
-import type { Wishlist } from "@/lib/mock-data"
+import type { Wishlist } from "@/lib/types"
 
 export default function SharedWishlistPage() {
     const params = useParams()

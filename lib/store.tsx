@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from "react"
-import type { User, Wishlist, WishlistItem } from "./mock-data"
+import type { User, Wishlist, WishlistItem } from "./types"
 import {
     validateWishlistData,
     sanitizeWishlistName,

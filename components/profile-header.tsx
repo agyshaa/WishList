@@ -1,6 +1,6 @@
 "use client"
 
-import type { User } from "@/lib/mock-data"
+import type { User } from "@/lib/types"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Settings, Edit3 } from "lucide-react"
