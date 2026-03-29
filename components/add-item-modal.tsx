@@ -8,6 +8,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { Link2, Sparkles, Loader2, AlertCircle, Check } from "lucide-react"
 import { useState } from "react"
 import Image from "next/image"
+import { useLanguage } from "@/lib/language-context"
+import { useApp } from "@/lib/store"
 
 interface ParsedProduct {
     title: string
@@ -44,6 +46,7 @@ export function AddItemModal({ isOpen, onClose, onAdd }: AddItemModalProps) {
     const [isLoading, setIsLoading] = useState(false)
     const [parsed, setParsed] = useState<ParsedProduct | null>(null)
     const [error, setError] = useState("")
+    const { t } = useLanguage()
 
     const handleParse = async () => {
         if (!url) return
@@ -119,18 +122,18 @@ export function AddItemModal({ isOpen, onClose, onAdd }: AddItemModalProps) {
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-2 text-foreground">
                         <Link2 className="w-5 h-5 text-primary" />
-                        Add to Wishlist
+                        {t("item.addToWishlist")}
                     </DialogTitle>
                 </DialogHeader>
 
-                <div className="space-y-4 pt-2 overflow-y-auto max-h-[calc(90dvh-8rem)] sm:max-h-[calc(85vh-8rem)] pr-1">
+                <div className="space-y-4 pt-2">
                     {/* URL Input */}
                     <div className="space-y-2">
-                        <Label htmlFor="url">Product URL</Label>
+                        <Label htmlFor="url">{t("item.productUrl")}</Label>
                         <div className="flex gap-2">
                             <Input
                                 id="url"
-                                placeholder="Paste any product link..."
+                                placeholder={t("item.pasteLink")}
                                 value={url}
                                 onChange={(e) => {
                                     setUrl(e.target.value)
@@ -149,7 +152,7 @@ export function AddItemModal({ isOpen, onClose, onAdd }: AddItemModalProps) {
                                 ) : (
                                     <>
                                         <Sparkles className="w-4 h-4 mr-1" />
-                                        Parse
+                                        {t("item.parse")}
                                     </>
                                 )}
                             </Button>
@@ -209,19 +212,19 @@ export function AddItemModal({ isOpen, onClose, onAdd }: AddItemModalProps) {
 
                     {/* Priority */}
                     <div className="space-y-2">
-                        <Label>Priority</Label>
+                        <Label>{t("item.priority")}</Label>
                         <div className="flex gap-2">
                             {[
-                                { value: "high", label: "Must Have", color: "bg-primary" },
-                                { value: "medium", label: "Want", color: "bg-secondary" },
-                                { value: "low", label: "Nice to Have", color: "bg-muted-foreground" },
+                                { value: "high", label: t("item.mustHave"), color: "bg-primary" },
+                                { value: "medium", label: t("item.want"), color: "bg-secondary" },
+                                { value: "low", label: t("item.niceToHave"), color: "bg-muted-foreground" },
                             ].map((p) => (
                                 <button
                                     key={p.value}
                                     onClick={() => setPriority(p.value)}
                                     className={`flex-1 py-2 px-3 rounded-lg text-xs font-medium transition-smooth ${priority === p.value
-                                        ? `${p.color} text-background`
-                                        : "bg-muted text-muted-foreground hover:text-foreground"
+                                            ? `${p.color} text-background`
+                                            : "bg-muted text-muted-foreground hover:text-foreground"
                                         }`}
                                 >
                                     {p.label}
@@ -232,10 +235,10 @@ export function AddItemModal({ isOpen, onClose, onAdd }: AddItemModalProps) {
 
                     {/* Notes */}
                     <div className="space-y-2">
-                        <Label htmlFor="notes">Notes (optional)</Label>
+                        <Label htmlFor="notes">{t("item.notes")} ({t("common.optional")})</Label>
                         <Textarea
                             id="notes"
-                            placeholder="Color preference, size, etc..."
+                            placeholder={t("item.color")}
                             value={notes}
                             onChange={(e) => setNotes(e.target.value)}
                             className="bg-muted border-border resize-none break-all whitespace-pre-wrap"
@@ -245,12 +248,12 @@ export function AddItemModal({ isOpen, onClose, onAdd }: AddItemModalProps) {
                     </div>
 
                     {/* Actions */}
-                    <div className="flex justify-end gap-2 pt-2 sticky bottom-0 bg-inherit pb-1">
+                    <div className="flex justify-end gap-2 pt-2">
                         <Button variant="outline" onClick={handleClose} className="bg-transparent">
-                            Cancel
+                            {t("common.cancel")}
                         </Button>
                         <Button onClick={handleAdd} disabled={!parsed} className="bg-primary hover:bg-primary/90">
-                            Add to List
+                            {t("item.addToList")}
                         </Button>
                     </div>
                 </div>

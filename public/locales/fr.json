@@ -14,22 +14,23 @@
 		"view": "Voir",
 		"settings": "Paramètres",
 		"min": "Min",
-		"max": "Max"
+		"max": "Max",
+		"optional": "optionnel"
 	},
 	"auth": {
 		"login": "Se connecter",
 		"signup": "S'inscrire",
 		"email": "Adresse e-mail",
-		"emailPlaceholder": "ton@email.com",
+		"emailPlaceholder": "example@gmail.com",
 		"password": "Mot de passe",
 		"passwordPlaceholder": "•••••••••",
 		"name": "Ton nom",
 		"firstName": "Prénom",
-		"firstNamePlaceholder": "Jean",
+		"firstNamePlaceholder": "Prénom",
 		"lastName": "Nom de famille",
-		"lastNamePlaceholder": "Dupont",
+		"lastNamePlaceholder": "Nom de famille",
 		"username": "Pseudo",
-		"usernamePlaceholder": "ton_pseudo",
+		"usernamePlaceholder": "username",
 		"rememberMe": "Se souvenir de moi",
 		"forgotPassword": "Mot de passe oublié ?",
 		"noAccount": "Nouveau par ici ?",
@@ -43,13 +44,40 @@
 		"agreedTerms": "J'accepte les",
 		"terms": "Conditions d'utilisation",
 		"and": "et la",
-		"privacyPolicy": "Politique de confidentialité"
+		"privacyPolicy": "Politique de confidentialité",
+		"backToLogin": "Retour à la connexion"
+	},
+	"forgotPassword": {
+		"title": "Réinitialiser ton mot de passe",
+		"subtitle": "Saisis ton email et nous t'aiderons à retrouver l'accès",
+		"sendReset": "Envoyer le lien de réinitialisation",
+		"checkEmail": "Vérifie ton email !",
+		"sentTo": "Lien de réinitialisation envoyé à",
+		"notReceived": "Tu ne l'as pas reçu ?",
+		"clickResend": "Réessayer"
+	},
+	"resetPassword": {
+		"title": "Créer un nouveau mot de passe",
+		"subtitle": "Choisis un mot de passe fort pour ton compte",
+		"password": "Nouveau mot de passe",
+		"passwordPlaceholder": "N'oublie pas les majuscules et les chiffres !",
+		"confirmPassword": "Confirmer le mot de passe",
+		"confirmPasswordPlaceholder": "Assure-toi que les deux correspondent",
+		"resetBtn": "Définir un nouveau mot de passe",
+		"success": "Voilà ! Mot de passe changé.",
+		"successMsg": "Tu peux maintenant te connecter avec ton nouveau mot de passe",
+		"invalidToken": "Le lien n'est pas valide ou a expiré. Réessaye de demander une réinitialisation.",
+		"tokenExpired": "Le lien a expiré",
+		"passwordMismatch": "Les mots de passe ne correspondent pas",
+		"passwordTooShort": "Le mot de passe doit contenir au moins 6 caractères"
 	},
 	"navbar": {
 		"home": "Accueil",
 		"profile": "Mon Espace",
 		"discover": "Découvrir",
-		"logout": "Se déconnecter"
+		"logout": "Se déconnecter",
+		"searchUsers": "Trouver des amis...",
+		"noUsersFound": "Aucun utilisateur trouvé"
 	},
 	"wishlist": {
 		"title": "Liste d'envies",
@@ -196,7 +224,11 @@
 		"tipDemo": "Astuce : Essaie notre clé démo ",
 		"toSeeHowItWorks": " pour voir comment ça marche !",
 		"viewOnly": "Mode lecture",
-		"noSharedDesc": "Quand tes amis partagent leurs listes secrètes, entre leur clé ci-dessus pour les débloquer."
+		"noSharedDesc": "Quand tes amis partagent leurs listes secrètes, entre leur clé ci-dessus pour les débloquer.",
+		"privateDesc": "Seules les personnes ayant la clé peuvent la voir",
+		"publicDesc": "N'importe qui peut trouver et voir cette liste",
+		"shareLink": "Ou partage ce lien",
+		"shareNote": "Envoie cette clé à tes amis pour qu'ils puissent voir ta liste dans l'onglet 'Partagé avec moi'."
 	},
 	"errors": {
 		"required": "On a besoin de cette info !",

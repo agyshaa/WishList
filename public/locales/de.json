@@ -14,13 +14,14 @@
 		"view": "Ansehen",
 		"settings": "Einstellungen",
 		"min": "Min",
-		"max": "Max"
+		"max": "Max",
+		"optional": "optional"
 	},
 	"auth": {
 		"login": "Einloggen",
 		"signup": "Registrieren",
 		"email": "E-Mail-Adresse",
-		"emailPlaceholder": "deine@email.com",
+		"emailPlaceholder": "example@gmail.com",
 		"password": "Passwort",
 		"passwordPlaceholder": "•••••••••",
 		"name": "Dein Name",
@@ -29,7 +30,7 @@
 		"lastName": "Nachname",
 		"lastNamePlaceholder": "Mustermann",
 		"username": "Benutzername",
-		"usernamePlaceholder": "dein_benutzername",
+		"usernamePlaceholder": "benutzername",
 		"rememberMe": "Angemeldet bleiben",
 		"forgotPassword": "Passwort vergessen?",
 		"noAccount": "Neu hier?",
@@ -43,13 +44,40 @@
 		"agreedTerms": "Ich stimme den",
 		"terms": "Nutzungsbedingungen",
 		"and": "und der",
-		"privacyPolicy": "Datenschutzerklärung zu"
+		"privacyPolicy": "Datenschutzerklärung",
+		"backToLogin": "Zurück zur Anmeldung"
+	},
+	"forgotPassword": {
+		"title": "Passwort zurücksetzen",
+		"subtitle": "Gib deine E-Mail ein und wir helfen dir, wieder Zugriff zu bekommen",
+		"sendReset": "Zurücksetzen-Link senden",
+		"checkEmail": "Prüfe deine E-Mail!",
+		"sentTo": "Zurücksetzen-Link gesendet an",
+		"notReceived": "Hast du ihn nicht erhalten?",
+		"clickResend": "Erneut versuchen"
+	},
+	"resetPassword": {
+		"title": "Neues Passwort erstellen",
+		"subtitle": "Wähle ein starkes Passwort für dein Konto",
+		"password": "Neues Passwort",
+		"passwordPlaceholder": "Vergiss nicht, Großbuchstaben und Zahlen zu verwenden!",
+		"confirmPassword": "Passwort bestätigen",
+		"confirmPasswordPlaceholder": "Stelle sicher, dass beide übereinstimmen",
+		"resetBtn": "Neues Passwort setzen",
+		"success": "Geschafft! Passwort geändert.",
+		"successMsg": "Du kannst dich jetzt mit deinem neuen Passwort anmelden",
+		"invalidToken": "Link ist ungültig oder abgelaufen. Versuche, eine Zurücksetzen erneut anzufordern.",
+		"tokenExpired": "Link ist abgelaufen",
+		"passwordMismatch": "Passwörter stimmen nicht überein",
+		"passwordTooShort": "Passwort muss mindestens 6 Zeichen lang sein"
 	},
 	"navbar": {
 		"home": "Startseite",
 		"profile": "Mein Space",
 		"discover": "Entdecken",
-		"logout": "Abmelden"
+		"logout": "Abmelden",
+		"searchUsers": "Freunde finden...",
+		"noUsersFound": "Keine User gefunden"
 	},
 	"wishlist": {
 		"title": "Wunschliste",
@@ -196,7 +224,11 @@
 		"tipDemo": "Tipp: Probier unseren Demo-Schlüssel ",
 		"toSeeHowItWorks": " um zu sehen, wie es funktioniert!",
 		"viewOnly": "Schreibgeschützt",
-		"noSharedDesc": "Wenn deine Friends ihre geheimen Listen teilen, gib oben einfach ihren Schlüssel ein."
+		"noSharedDesc": "Wenn deine Friends ihre geheimen Listen teilen, gib oben einfach ihren Schlüssel ein.",
+		"privateDesc": "Nur Personen mit dem Schlüssel können diese Liste sehen",
+		"publicDesc": "Jeder kann diese Liste finden und ansehen",
+		"shareLink": "Oder teile diesen Link",
+		"shareNote": "Schreib diesen Schlüssel an deine Friends, damit sie deine Wunschliste im Tab 'Mit mir geteilt' sehen können."
 	},
 	"errors": {
 		"required": "Dieses Feld wird benötigt!",

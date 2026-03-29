@@ -184,6 +184,52 @@ export function Navbar() {
                                 </Link>
                             )}
 
+                            {/* Mobile User Search */}
+                            <div className="px-2 pb-2">
+                                <div className="relative">
+                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                                    <input
+                                        type="text"
+                                        placeholder={t("navbar.searchUsers") || "Search users..."}
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                        className="w-full pl-9 pr-4 py-2 bg-muted/50 border border-border/50 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-muted-foreground text-foreground"
+                                    />
+                                </div>
+
+                                {/* Mobile Search Results */}
+                                {searchQuery.trim() !== "" && (
+                                    <div className="mt-2 glass rounded-xl border border-border/50 overflow-hidden flex flex-col">
+                                        {isSearching ? (
+                                            <div className="flex items-center justify-center p-4">
+                                                <Loader2 className="w-5 h-5 animate-spin text-primary" />
+                                            </div>
+                                        ) : searchResults.length > 0 ? (
+                                            <div className="w-full max-h-60 overflow-y-auto">
+                                                {searchResults.map(u => (
+                                                    <Link
+                                                        key={u.id}
+                                                        href={`/u/${u.username}`}
+                                                        onClick={() => { setShowResults(false); setIsOpen(false); setSearchQuery(""); }}
+                                                        className="flex items-center gap-3 p-3 hover:bg-muted/50 transition-colors w-full border-b border-border/50 last:border-0"
+                                                    >
+                                                        <Image src={u.avatar || "/placeholder.svg"} alt={u.name} width={32} height={32} className="w-8 h-8 rounded-full object-cover shrink-0 bg-muted" />
+                                                        <div className="flex flex-col text-left overflow-hidden">
+                                                            <span className="text-sm font-medium text-foreground truncate">{u.name}</span>
+                                                            <span className="text-xs text-muted-foreground truncate">@{u.username}</span>
+                                                        </div>
+                                                    </Link>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <div className="p-4 text-sm text-muted-foreground text-center">
+                                                {t("navbar.noUsersFound") || "No users found"}
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+
                             {/* Mobile Language Switcher */}
                             <div className="px-2 pb-2 border-b border-border">
                                 <DropdownMenu>

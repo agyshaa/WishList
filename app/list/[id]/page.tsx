@@ -15,10 +15,12 @@ import { Share2, Plus, Lock, Globe, ArrowLeft, Edit3 } from "lucide-react"
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import { useApp } from "@/lib/store"
+import { useLanguage } from "@/lib/language-context"
 
 export default function WishlistPage() {
     const params = useParams()
     const router = useRouter()
+    const { t } = useLanguage()
     const [showShareModal, setShowShareModal] = useState(false)
     const [showAddModal, setShowAddModal] = useState(false)
     const [showEditModal, setShowEditModal] = useState(false)
@@ -91,10 +93,10 @@ export default function WishlistPage() {
                 <Navbar />
                 <div className="pt-24 pb-12 px-4 flex items-center justify-center">
                     <div className="text-center">
-                        <h1 className="text-2xl font-bold text-foreground mb-2">Wishlist not found</h1>
-                        <p className="text-muted-foreground mb-4">This list may have been deleted or doesn&apos;t exist.</p>
+                        <h1 className="text-2xl font-bold text-foreground mb-2">{t("wishlist.notFound")}</h1>
+                        <p className="text-muted-foreground mb-4">{t("wishlist.mayBeDeleted")}</p>
                         <Button asChild className="bg-primary hover:bg-primary/90">
-                            <Link href="/profile">Go to Profile</Link>
+                            <Link href="/profile">{t("wishlist.goToProfile")}</Link>
                         </Button>
                     </div>
                 </div>
@@ -191,126 +193,96 @@ export default function WishlistPage() {
                         className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6 transition-smooth"
                     >
                         <ArrowLeft className="w-4 h-4" />
-                        {isOwner ? "Back to Profile" : "Back to Home"}
+                        {isOwner ? t("navbar.profile") : t("navbar.home")}
                     </Link>
 
                     {/* Header */}
-                    <div className="glass rounded-2xl p-4 sm:p-6 mb-6">
-                        <div className="flex items-start gap-3 sm:gap-4">
-                            <div className="text-3xl sm:text-4xl">{wishlist.emoji}</div>
-                            <div className="flex-1 min-w-0">
-                                <div className="flex items-start justify-between gap-2">
-                                    <h1 className="text-xl sm:text-3xl font-bold text-foreground line-clamp-2">{wishlist.name}</h1>
-                                    {/* Desktop buttons */}
-                                    {isOwner && (
-                                        <div className="hidden sm:flex gap-2 shrink-0">
-                                            <Button
-                                                variant="outline"
-                                                size="sm"
-                                                onClick={() => setShowEditModal(true)}
-                                                className="gap-1 bg-transparent"
+                    <div className="glass rounded-2xl p-6 mb-6">
+                        <div className="flex items-start justify-between gap-4">
+                            <div className="flex items-start gap-4">
+                                <div className="text-4xl">{wishlist.emoji}</div>
+                                <div>
+                                    <h1 className="text-2xl sm:text-3xl font-bold text-foreground line-clamp-2">{wishlist.name}</h1>
+                                    {wishlist.description && <p className="text-muted-foreground mt-1 line-clamp-2 break-all whitespace-pre-wrap">{wishlist.description}</p>}
+                                    <div className="flex items-center gap-3 mt-3 text-sm text-muted-foreground">
+                                        {isOwner && (
+                                            <button
+                                                onClick={handleTogglePrivacy}
+                                                className="flex items-center gap-1 hover:text-foreground transition-smooth"
                                             >
-                                                <Edit3 className="w-4 h-4" />
-                                                Edit
-                                            </Button>
-                                            <Button
-                                                variant="outline"
-                                                size="sm"
-                                                onClick={() => setShowShareModal(true)}
-                                                className="gap-1 bg-transparent"
-                                            >
-                                                <Share2 className="w-4 h-4" />
-                                                Share
-                                            </Button>
-                                            <Button
-                                                size="sm"
-                                                onClick={() => setShowAddModal(true)}
-                                                className="gap-1 bg-primary hover:bg-primary/90"
-                                            >
-                                                <Plus className="w-4 h-4" />
-                                                Add
-                                            </Button>
-                                        </div>
-                                    )}
-                                </div>
-                                {wishlist.description && <p className="text-muted-foreground mt-1 line-clamp-2 break-all whitespace-pre-wrap text-sm sm:text-base">{wishlist.description}</p>}
-                                <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-3 text-sm text-muted-foreground">
-                                    {isOwner && (
-                                        <button
-                                            onClick={handleTogglePrivacy}
-                                            className="flex items-center gap-1 hover:text-foreground transition-smooth"
-                                        >
-                                            {wishlist.isPrivate ? (
-                                                <>
-                                                    <Lock className="w-4 h-4" /> Private
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <Globe className="w-4 h-4" /> Public
-                                                </>
-                                            )}
-                                        </button>
-                                    )}
-                                    {!isOwner && (
-                                        <span className="flex items-center gap-1">
-                                            {wishlist.isPrivate ? (
-                                                <>
-                                                    <Lock className="w-4 h-4" /> Private
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <Globe className="w-4 h-4" /> Public
-                                                </>
-                                            )}
-                                        </span>
-                                    )}
-                                    <span>{wishlist.items.length} items</span>
-                                    <span className="text-secondary font-medium">₴{totalValue.toFixed(2)} total</span>
-                                </div>
-
-                                {!isOwner && wishlist.user && (
-                                    <div className="flex items-center gap-2 mt-3 pt-3 border-t border-border">
-                                        <Avatar className="w-8 h-8">
-                                            <AvatarImage src={wishlist.user.avatar} alt={wishlist.user.name} />
-                                            <AvatarFallback>{wishlist.user.name.charAt(0)}</AvatarFallback>
-                                        </Avatar>
-                                        <div className="flex flex-col">
-                                            <span className="text-xs font-medium text-foreground">{wishlist.user.name}</span>
-                                            <span className="text-xs text-muted-foreground">@{wishlist.user.username}</span>
-                                        </div>
+                                                {wishlist.isPrivate ? (
+                                                    <>
+                                                        <Lock className="w-4 h-4" /> {t("wishlist.private")}
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <Globe className="w-4 h-4" /> {t("wishlist.public")}
+                                                    </>
+                                                )}
+                                            </button>
+                                        )}
+                                        {!isOwner && (
+                                            <span className="flex items-center gap-1">
+                                                {wishlist.isPrivate ? (
+                                                    <>
+                                                        <Lock className="w-4 h-4" /> {t("wishlist.private")}
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <Globe className="w-4 h-4" /> {t("wishlist.public")}
+                                                    </>
+                                                )}
+                                            </span>
+                                        )}
+                                        <span>{wishlist.items.length} {t("wishlist.items")}</span>
+                                        <span className="text-secondary font-medium">₴{totalValue.toFixed(2)} {t("wishlist.total")}</span>
                                     </div>
-                                )}
 
-                                {/* Mobile buttons */}
+                                    {!isOwner && wishlist.user && (
+                                        <div className="flex items-center gap-2 mt-3 pt-3 border-t border-border">
+                                            <Avatar className="w-8 h-8">
+                                                <AvatarImage src={wishlist.user.avatar} alt={wishlist.user.name} />
+                                                <AvatarFallback>{wishlist.user.name.charAt(0)}</AvatarFallback>
+                                            </Avatar>
+                                            <div className="flex flex-col">
+                                                <span className="text-xs font-medium text-foreground">{wishlist.user.name}</span>
+                                                <span className="text-xs text-muted-foreground">@{wishlist.user.username}</span>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="flex gap-2">
                                 {isOwner && (
-                                    <div className="flex sm:hidden gap-2 mt-3 w-full">
+                                    <>
                                         <Button
                                             variant="outline"
                                             size="sm"
                                             onClick={() => setShowEditModal(true)}
-                                            className="flex-1 gap-1 bg-transparent text-xs"
+                                            className="gap-1 bg-transparent"
                                         >
-                                            <Edit3 className="w-3.5 h-3.5" />
-                                            Edit
+                                            <Edit3 className="w-4 h-4" />
+                                            {t("common.edit")}
                                         </Button>
                                         <Button
                                             variant="outline"
                                             size="sm"
                                             onClick={() => setShowShareModal(true)}
-                                            className="flex-1 gap-1 bg-transparent text-xs"
+                                            className="gap-1 bg-transparent"
                                         >
-                                            <Share2 className="w-3.5 h-3.5" />
-                                            Share
+                                            <Share2 className="w-4 h-4" />
+                                            {t("common.share")}
                                         </Button>
                                         <Button
                                             size="sm"
                                             onClick={() => setShowAddModal(true)}
-                                            className="flex-1 gap-1 bg-primary hover:bg-primary/90 text-xs"
+                                            className="gap-1 bg-primary hover:bg-primary/90"
                                         >
-                                            <Plus className="w-3.5 h-3.5" />
-                                            Add
+                                            <Plus className="w-4 h-4" />
+                                            {t("common.add")}
                                         </Button>
-                                    </div>
+                                    </>
                                 )}
                             </div>
                         </div>
@@ -335,11 +307,11 @@ export default function WishlistPage() {
                             <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center mx-auto mb-4">
                                 <Edit3 className="w-8 h-8 text-muted-foreground" />
                             </div>
-                            <h3 className="font-semibold text-foreground mb-2">This wishlist is empty</h3>
-                            <p className="text-muted-foreground mb-4">Add your first item to get started</p>
+                            <h3 className="font-semibold text-foreground mb-2">{t("wishlist.empty")}</h3>
+                            <p className="text-muted-foreground mb-4">{t("wishlist.addFirstItem")}</p>
                             <Button onClick={() => setShowAddModal(true)} className="bg-primary hover:bg-primary/90 gap-2">
                                 <Plus className="w-4 h-4" />
-                                Add Your First Item
+                                {t("common.add")}
                             </Button>
                         </div>
                     )}

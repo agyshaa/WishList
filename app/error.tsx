@@ -36,7 +36,7 @@ export default function Error({
                 {/* Background */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
                     <div
-                        className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full opacity-10 blur-3xl"
+                        className="absolute top-1/3 left-1/2 -translate-x-1/2 w-600px h-600px rounded-full opacity-10 blur-3xl"
                         style={{ background: "oklch(0.55 0.22 25)" }}
                     />
                 </div>

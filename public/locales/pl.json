@@ -14,20 +14,21 @@
 		"view": "Wyświetl",
 		"settings": "Ustawienia",
 		"min": "Min",
-		"max": "Maks"
+		"max": "Maks",
+		"optional": "opcjonalnie"
 	},
 	"auth": {
 		"login": "Zaloguj się",
 		"signup": "Zarejestruj się",
 		"email": "Adres e-mail",
-		"emailPlaceholder": "twoj@email.com",
+		"emailPlaceholder": "example@gmail.com",
 		"password": "Hasło",
 		"passwordPlaceholder": "•••••••••",
 		"name": "Twoje imię",
 		"firstName": "Imię",
-		"firstNamePlaceholder": "Jan",
+		"firstNamePlaceholder": "Imię",
 		"lastName": "Nazwisko",
-		"lastNamePlaceholder": "Kowalski",
+		"lastNamePlaceholder": "Nazwisko",
 		"username": "Nazwa użytkownika",
 		"usernamePlaceholder": "twoja_nazwa",
 		"rememberMe": "Zapamiętaj mnie",
@@ -43,13 +44,40 @@
 		"agreedTerms": "Akceptuję",
 		"terms": "Warunki korzystania",
 		"and": "oraz",
-		"privacyPolicy": "Politykę prywatności"
+		"privacyPolicy": "Polityka prywatności",
+		"backToLogin": "Powrót do logowania"
+	},
+	"forgotPassword": {
+		"title": "Zresetuj swoje hasło",
+		"subtitle": "Wpisz swój email i pomożemy Ci odzyskać dostęp",
+		"sendReset": "Wyślij link resetowania",
+		"checkEmail": "Sprawdź swoją pocztę!",
+		"sentTo": "Link resetowania wysłany na",
+		"notReceived": "Nie otrzymałeś go?",
+		"clickResend": "Spróbuj ponownie"
+	},
+	"resetPassword": {
+		"title": "Utwórz nowe hasło",
+		"subtitle": "Wybierz silne hasło dla swojego konta",
+		"password": "Nowe hasło",
+		"passwordPlaceholder": "Nie zapomnij o wielkich literach i cyfrach!",
+		"confirmPassword": "Potwierdź hasło",
+		"confirmPasswordPlaceholder": "Upewnij się, że oba się zgadzają",
+		"resetBtn": "Ustaw nowe hasło",
+		"success": "Gotowe! Hasło zmienione.",
+		"successMsg": "Możesz teraz zalogować się za pomocą nowego hasła",
+		"invalidToken": "Link jest nieprawidłowy lub wygasł. Spróbuj ponownie wymienić resetowanie.",
+		"tokenExpired": "Link wygasł",
+		"passwordMismatch": "Hasła nie pasują do siebie",
+		"passwordTooShort": "Hasło musi mieć co najmniej 6 znaków"
 	},
 	"navbar": {
 		"home": "Strona główna",
 		"profile": "Mój profil",
 		"discover": "Odkrywaj",
-		"logout": "Wyloguj się"
+		"logout": "Wyloguj się",
+		"searchUsers": "Znajdź znajomych...",
+		"noUsersFound": "Nie znaleziono użytkowników"
 	},
 	"wishlist": {
 		"title": "Lista życzeń",
@@ -196,7 +224,11 @@
 		"tipDemo": "Wskazówka: Wypróbuj nasz klucz demo ",
 		"toSeeHowItWorks": " aby zobaczyć, jak to działa!",
 		"viewOnly": "Tylko do odczytu",
-		"noSharedDesc": "Kiedy Twoi znajomi udostępnią Ci swoje prywatne listy, wpisz ich klucz powyżej, aby zyskać dostęp."
+		"noSharedDesc": "Kiedy Twoi znajomi udostępnią Ci swoje prywatne listy, wpisz ich klucz powyżej, aby zyskać dostęp.",
+		"privateDesc": "Tylko osoby posiadające klucz mogą to zobaczyć",
+		"publicDesc": "Każdy może znaleźć i wyświetlić tę listę",
+		"shareLink": "Lub udostępnij ten link",
+		"shareNote": "Wyślij ten klucz swoim znajomym, aby mogli zobaczyć Twoją listę na karcie 'Udostępnione Tobie'."
 	},
 	"errors": {
 		"required": "To pole jest wymagane!",

@@ -7,6 +7,7 @@ import { Copy, Check, Key, RefreshCw, Lock, Globe } from "lucide-react"
 import { useState, useEffect } from "react"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
+import { useLanguage } from "@/lib/language-context"
 
 interface AccessKeyModalProps {
   isOpen: boolean
@@ -41,6 +42,7 @@ export function AccessKeyModal({
   const [isPrivate, setIsPrivate] = useState(initialIsPrivate)
   const [accessKey, setAccessKey] = useState(initialKey || generateAccessKey())
   const [isLoading, setIsLoading] = useState(false)
+  const { t } = useLanguage()
 
   // Update state when props change
   useEffect(() => {
@@ -96,7 +98,7 @@ export function AccessKeyModal({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-foreground">
             <Key className="w-5 h-5 text-primary" />
-            Share &ldquo;{listName}&rdquo;
+            {t("common.share")} &ldquo;{listName}&rdquo;
           </DialogTitle>
         </DialogHeader>
 
@@ -107,10 +109,10 @@ export function AccessKeyModal({
               {isPrivate ? <Lock className="w-5 h-5 text-primary" /> : <Globe className="w-5 h-5 text-secondary" />}
               <div>
                 <Label htmlFor="privacy-toggle" className="font-medium">
-                  {isPrivate ? "Private List" : "Public List"}
+                  {isPrivate ? t("wishlist.privateList") : t("wishlist.publicList")}
                 </Label>
                 <p className="text-xs text-muted-foreground">
-                  {isPrivate ? "Only people with the key can view" : "Anyone can find and view this list"}
+                  {isPrivate ? t("shared.privateDesc") : t("shared.publicDesc")}
                 </p>
               </div>
             </div>
@@ -121,7 +123,7 @@ export function AccessKeyModal({
             <>
               {/* Access Key Display */}
               <div className="space-y-2">
-                <Label className="text-sm text-muted-foreground">Access Key</Label>
+                <Label className="text-sm text-muted-foreground">{t("shared.accessKey")}</Label>
                 <div className="flex gap-2">
                   <div className="flex-1 flex items-center gap-2 px-4 py-3 bg-muted rounded-xl font-mono text-lg tracking-wider">
                     <span className="text-primary">{accessKey}</span>
@@ -149,7 +151,7 @@ export function AccessKeyModal({
 
               {/* Share Link */}
               <div className="space-y-2">
-                <Label className="text-sm text-muted-foreground">Or share this link</Label>
+                <Label className="text-sm text-muted-foreground">{t("shared.shareLink")}</Label>
                 <div className="flex gap-2">
                   <Input
                     readOnly
@@ -164,8 +166,7 @@ export function AccessKeyModal({
 
               <div className="glass rounded-lg p-3 text-sm text-muted-foreground">
                 <p>
-                  Send this key to friends so they can view your wishlist in their{" "}
-                  <span className="text-primary font-medium">&ldquo;Shared with Me&rdquo;</span> tab.
+                  {t("shared.shareNote")}
                 </p>
               </div>
             </>
@@ -173,7 +174,7 @@ export function AccessKeyModal({
 
           <div className="flex justify-end gap-2 pt-2">
             <Button variant="outline" onClick={onClose} className="bg-transparent">
-              Done
+              {t("common.close")}
             </Button>
           </div>
         </div>

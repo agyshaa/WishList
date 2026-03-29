@@ -21,7 +21,7 @@ interface AppState {
     user: User | null
     isLoading: boolean
     login: (email: string, password: string) => Promise<void>
-    signup: (name: string, email: string, password: string) => Promise<void>
+    signup: (name: string, email: string, password: string, username: string) => Promise<void>
     logout: () => void
     updateUser: (updates: Partial<User>) => void
 
@@ -151,12 +151,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
         }
     }
 
-    const signup = async (name: string, email: string, password: string) => {
+    const signup = async (name: string, email: string, password: string, username: string) => {
         setIsLoading(true)
         try {
-            // Extract username from email
-            const username = email.split("@")[0]
-
             const res = await fetch("/api/auth/signup", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -170,6 +167,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
             const data = await res.json()
             setUser({ ...data.user, wishlists: [] })
+        } catch (error) {
+            console.error("Signup error:", error)
+            throw error
         } finally {
             setIsLoading(false)
         }

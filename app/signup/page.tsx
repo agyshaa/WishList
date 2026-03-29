@@ -36,16 +36,22 @@ export default function SignUpPage() {
     e.preventDefault()
     setError("")
 
+    if (!username.trim()) {
+      setError(t("errors.usernameMissing") || "Username is required")
+      return
+    }
+
     if (!allRequirementsMet) {
       setError(t("errors.passwordTooShort"))
       return
     }
 
     try {
-      await signup(`${firstName} ${lastName}`, email, password)
+      await signup(`${firstName} ${lastName}`, email, password, username)
       router.push("/profile")
-    } catch {
-      setError(t("errors.signupFailed"))
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : t("errors.signupFailed")
+      setError(errorMessage)
     }
   }
 
@@ -185,7 +191,7 @@ export default function SignUpPage() {
           </form>
 
           <p className="mt-4 text-center text-xs text-muted-foreground">
-            {t("auth.agreeTerms")}{" "}
+            {t("auth.agreedTerms")}{" "}
             <Link href="/terms" className="text-primary hover:underline">
               {t("auth.terms")}
             </Link>{" "}

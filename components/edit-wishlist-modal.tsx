@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
+import { useLanguage } from "@/lib/language-context"
 
 interface EditWishlistModalProps {
     isOpen: boolean
@@ -28,6 +29,7 @@ export function EditWishlistModal({ isOpen, onClose, wishlist, onSave, isLoading
     const [emoji, setEmoji] = useState("")
     const [isPrivate, setIsPrivate] = useState(false)
     const [showEmojiPicker, setShowEmojiPicker] = useState(false)
+    const { t } = useLanguage()
 
     useEffect(() => {
         if (isOpen && wishlist) {
@@ -58,13 +60,13 @@ export function EditWishlistModal({ isOpen, onClose, wishlist, onSave, isLoading
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="sm:max-w-125">
                 <DialogHeader>
-                    <DialogTitle>Edit Wishlist</DialogTitle>
+                    <DialogTitle>{t("wishlist.editWishlist")}</DialogTitle>
                 </DialogHeader>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     {/* Emoji Picker */}
                     <div className="space-y-2">
-                        <Label>Emoji</Label>
+                        <Label>{t("wishlist.emoji")}</Label>
                         <div className="relative">
                             <button
                                 type="button"
@@ -97,14 +99,14 @@ export function EditWishlistModal({ isOpen, onClose, wishlist, onSave, isLoading
                     {/* Name */}
                     <div className="space-y-2">
                         <div className="flex items-center justify-between">
-                            <Label htmlFor="name">Wishlist Name</Label>
+                            <Label htmlFor="name">{t("wishlist.name")}</Label>
                             <span className="text-xs text-muted-foreground">{name.length}/50</span>
                         </div>
                         <Input
                             id="name"
                             value={name}
                             onChange={(e) => setName(e.target.value.slice(0, 50))}
-                            placeholder="e.g., Birthday Wishlist"
+                            placeholder={t("wishlist.listName")}
                             maxLength={50}
                             disabled={isLoading}
                         />
@@ -113,14 +115,14 @@ export function EditWishlistModal({ isOpen, onClose, wishlist, onSave, isLoading
                     {/* Description */}
                     <div className="space-y-2">
                         <div className="flex items-center justify-between">
-                            <Label htmlFor="description">Description</Label>
+                            <Label htmlFor="description">{t("wishlist.description")}</Label>
                             <span className="text-xs text-muted-foreground">{description.length}/200</span>
                         </div>
                         <Textarea
                             id="description"
                             value={description}
                             onChange={(e) => setDescription(e.target.value.slice(0, 200))}
-                            placeholder="Add a description for your wishlist..."
+                            placeholder={t("home.hero.subtitle")}
                             maxLength={200}
                             rows={3}
                             disabled={isLoading}
@@ -132,8 +134,8 @@ export function EditWishlistModal({ isOpen, onClose, wishlist, onSave, isLoading
                     {/* Privacy Toggle */}
                     <div className="flex items-center justify-between p-3 rounded-lg border border-border bg-muted/50">
                         <div>
-                            <Label className="font-medium">Private Wishlist</Label>
-                            <p className="text-xs text-muted-foreground mt-1">Only you can see this wishlist</p>
+                            <Label className="font-medium">{t("wishlist.privateList")}</Label>
+                            <p className="text-xs text-muted-foreground mt-1">{t("wishlist.onlyYouCanSee")}</p>
                         </div>
                         <Switch checked={isPrivate} onCheckedChange={setIsPrivate} disabled={isLoading} />
                     </div>
@@ -147,10 +149,10 @@ export function EditWishlistModal({ isOpen, onClose, wishlist, onSave, isLoading
                             disabled={isLoading}
                             className="bg-transparent"
                         >
-                            Cancel
+                            {t("common.cancel")}
                         </Button>
                         <Button type="submit" disabled={isLoading} className="bg-primary hover:bg-primary/90">
-                            {isLoading ? "Saving..." : "Save Changes"}
+                            {isLoading ? t("common.loading") : t("common.save")}
                         </Button>
                     </div>
                 </form>

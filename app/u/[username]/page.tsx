@@ -60,7 +60,7 @@ export default async function PublicProfilePage({ params }: PublicProfileProps) 
             <div className="fixed inset-0 overflow-hidden pointer-events-none">
                 <div className="absolute top-1/4 -left-32 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" />
                 <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-150 bg-primary/5 rounded-full blur-3xl" />
             </div>
 
             <div className="relative pt-24 pb-12 px-4">
@@ -70,8 +70,8 @@ export default async function PublicProfilePage({ params }: PublicProfileProps) 
                     <div className="glass rounded-3xl overflow-hidden relative group">
                         {/* Animated gradient banner */}
                         <div className="h-40 relative overflow-hidden">
-                            <div className="absolute inset-0 bg-gradient-to-r from-primary/30 via-primary/10 to-secondary/20" />
-                            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/20 via-transparent to-transparent" />
+                            <div className="absolute inset-0 bg-linear-to-r from-primary/30 via-primary/10 to-secondary/20" />
+                            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,var(--tw-gradient-stops))] from-primary/20 via-transparent to-transparent" />
 
                             {/* Floating particles */}
                             <div className="absolute inset-0">
@@ -202,7 +202,7 @@ export default async function PublicProfilePage({ params }: PublicProfileProps) 
                                         >
                                             {/* Header */}
                                             <div className="flex justify-between items-start mb-4">
-                                                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center text-3xl group-hover:scale-110 group-hover:rotate-3 transition-transform">
+                                                <div className="w-14 h-14 rounded-xl bg-linear-to-br from-primary/20 to-primary/5 flex items-center justify-center text-3xl group-hover:scale-110 group-hover:rotate-3 transition-transform">
                                                     {wishlist.emoji || '🎁'}
                                                 </div>
                                                 <div className="flex items-center gap-2">

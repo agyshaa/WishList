@@ -14,22 +14,23 @@
         "view": "View",
         "settings": "Settings",
         "min": "Min",
-        "max": "Max"
+        "max": "Max",
+        "optional": "optional"
     },
     "auth": {
         "login": "Log In",
         "signup": "Sign Up",
         "email": "Email address",
-        "emailPlaceholder": "your@email.com",
+        "emailPlaceholder": "example@gmail.com",
         "password": "Password",
         "passwordPlaceholder": "••••••••",
         "name": "Your name",
         "firstName": "First name",
-        "firstNamePlaceholder": "John",
+        "firstNamePlaceholder": "First name",
         "lastName": "Last name",
-        "lastNamePlaceholder": "Doe",
+        "lastNamePlaceholder": "Last name",
         "username": "Username",
-        "usernamePlaceholder": "your_username",
+        "usernamePlaceholder": "username",
         "rememberMe": "Keep me logged in",
         "forgotPassword": "Forgot password?",
         "noAccount": "New here?",
@@ -43,13 +44,40 @@
         "agreedTerms": "I agree to",
         "terms": "Terms of Service",
         "and": "and",
-        "privacyPolicy": "Privacy Policy"
+        "privacyPolicy": "Privacy Policy",
+        "backToLogin": "Back to login"
+    },
+    "forgotPassword": {
+        "title": "Reset your password",
+        "subtitle": "Enter your email and we'll help you get back in",
+        "sendReset": "Send reset link",
+        "checkEmail": "Check your email!",
+        "sentTo": "Reset link sent to",
+        "notReceived": "Didn't get it?",
+        "clickResend": "Try again"
+    },
+    "resetPassword": {
+        "title": "Create new password",
+        "subtitle": "Choose a strong password for your account",
+        "password": "New password",
+        "passwordPlaceholder": "Don't forget uppercase and numbers!",
+        "confirmPassword": "Confirm password",
+        "confirmPasswordPlaceholder": "Make sure both match",
+        "resetBtn": "Set new password",
+        "success": "All set! Password changed.",
+        "successMsg": "You can now log in with your new password",
+        "invalidToken": "Link is invalid or expired. Try requesting a reset again.",
+        "tokenExpired": "Link has expired",
+        "passwordMismatch": "Passwords don't match",
+        "passwordTooShort": "Password must be at least 6 characters"
     },
     "navbar": {
         "home": "Home",
         "profile": "My Space",
         "discover": "Discover",
-        "logout": "Log Out"
+        "logout": "Log Out",
+        "searchUsers": "Find friends...",
+        "noUsersFound": "No users found"
     },
     "wishlist": {
         "title": "Wishlist",
@@ -79,7 +107,7 @@
     "item": {
         "addToWishlist": "Add to Wishlist",
         "productUrl": "Product URL",
-        "pasteLink": "Drop any product link here...",
+        "pasteLink": "Paste product link...",
         "parse": "Fetch details",
         "priority": "How badly do you want it?",
         "mustHave": "Need it ASAP",
@@ -196,7 +224,11 @@
         "tipDemo": "Tip: Try our demo key ",
         "toSeeHowItWorks": " to see the magic happen!",
         "viewOnly": "Read-only mode",
-        "noSharedDesc": "When your besties share their private wishlists, drop their secret key above to unlock them."
+        "noSharedDesc": "When your besties share their private wishlists, drop their secret key above to unlock them.",
+        "privateDesc": "Only people with the key can view",
+        "publicDesc": "Anyone can find and view this list",
+        "shareLink": "Or share this link",
+        "shareNote": "Send this key to friends so they can view your wishlist in their 'Shared With Me' tab."
     },
     "errors": {
         "required": "We need this info!",

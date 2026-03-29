@@ -14,22 +14,23 @@
 		"view": "Ver",
 		"settings": "Ajustes",
 		"min": "Mín",
-		"max": "Máx"
+		"max": "Máx",
+		"optional": "opcional"
 	},
 	"auth": {
 		"login": "Iniciar sesión",
 		"signup": "Registrarse",
 		"email": "Correo electrónico",
-		"emailPlaceholder": "tu@email.com",
+		"emailPlaceholder": "example@gmail.com",
 		"password": "Contraseña",
 		"passwordPlaceholder": "••••••••",
 		"name": "Tu nombre",
 		"firstName": "Nombre",
-		"firstNamePlaceholder": "Juan",
+		"firstNamePlaceholder": "Nombre",
 		"lastName": "Apellido",
-		"lastNamePlaceholder": "García",
+		"lastNamePlaceholder": "Apellido",
 		"username": "Nombre de usuario",
-		"usernamePlaceholder": "tu_usuario",
+		"usernamePlaceholder": "usuario",
 		"rememberMe": "Recuérdame",
 		"forgotPassword": "¿Olvidaste la contraseña?",
 		"noAccount": "¿Eres nuevo aquí?",
@@ -43,13 +44,40 @@
 		"agreedTerms": "Estoy de acuerdo con los",
 		"terms": "Términos de servicio",
 		"and": "y la",
-		"privacyPolicy": "Política de privacidad"
+		"privacyPolicy": "Política de privacidad",
+		"backToLogin": "Volver al inicio de sesión"
+	},
+	"forgotPassword": {
+		"title": "Restablecer tu contraseña",
+		"subtitle": "Ingresa tu correo electrónico y te ayudaremos a recuperar el acceso",
+		"sendReset": "Enviar enlace de restablecimiento",
+		"checkEmail": "¡Revisa tu correo!",
+		"sentTo": "Enlace de restablecimiento enviado a",
+		"notReceived": "¿No lo recibiste?",
+		"clickResend": "Intentar de nuevo"
+	},
+	"resetPassword": {
+		"title": "Crear nueva contraseña",
+		"subtitle": "Elige una contraseña fuerte para tu cuenta",
+		"password": "Nueva contraseña",
+		"passwordPlaceholder": "¡No olvides mayúsculas y números!",
+		"confirmPassword": "Confirmar contraseña",
+		"confirmPasswordPlaceholder": "Asegúrate de que ambas coincidan",
+		"resetBtn": "Establecer nueva contraseña",
+		"success": "¡Listo! Contraseña cambiada.",
+		"successMsg": "Ahora puedes iniciar sesión con tu nueva contraseña",
+		"invalidToken": "El enlace no es válido o ha expirado. Intenta solicitar un restablecimiento nuevamente.",
+		"tokenExpired": "El enlace ha expirado",
+		"passwordMismatch": "Las contraseñas no coinciden",
+		"passwordTooShort": "La contraseña debe tener al menos 6 caracteres"
 	},
 	"navbar": {
 		"home": "Inicio",
 		"profile": "Mi espacio",
 		"discover": "Descubrir",
-		"logout": "Cerrar sesión"
+		"logout": "Cerrar sesión",
+		"searchUsers": "Buscar amigos...",
+		"noUsersFound": "No encontramos a nadie"
 	},
 	"wishlist": {
 		"title": "Lista de deseos",
@@ -196,7 +224,11 @@
 		"tipDemo": "Consejo: Prueba nuestra clave demo ",
 		"toSeeHowItWorks": " ¡para ver la magia en acción!",
 		"viewOnly": "Modo lectura",
-		"noSharedDesc": "Cuando tus amigos compartan sus listas secretas, pon su clave arriba para desbloquearlas."
+		"noSharedDesc": "Cuando tus amigos compartan sus listas secretas, pon su clave arriba para desbloquearlas.",
+		"privateDesc": "Solo las personas con la clave pueden verla",
+		"publicDesc": "Cualquiera puede encontrar y ver esta lista",
+		"shareLink": "O comparte este enlace",
+		"shareNote": "Envía esta clave a tus amigos para que puedan ver tu lista en la pestaña 'Compartido conmigo'."
 	},
 	"errors": {
 		"required": "¡Necesitamos esta info!",

@@ -20,11 +20,25 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  wishlists   Wishlist[]
-  bookedItems WishlistItem[] @relation("BookedItems")
+  wishlists              Wishlist[]
+  bookedItems            WishlistItem[] @relation("BookedItems")
+  passwordResetToken     PasswordResetToken?
 
   @@index([email])
   @@index([username])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@index([userId])
 }
 
 model Wishlist {
