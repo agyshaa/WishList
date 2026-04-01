@@ -50,11 +50,10 @@
 	"forgotPassword": {
 		"title": "Zresetuj swoje hasło",
 		"subtitle": "Wpisz swój email i pomożemy Ci odzyskać dostęp",
-		"sendReset": "Wyślij link resetowania",
-		"checkEmail": "Sprawdź swoją pocztę!",
-		"sentTo": "Link resetowania wysłany na",
-		"notReceived": "Nie otrzymałeś go?",
-		"clickResend": "Spróbuj ponownie"
+		"sendReset": "Zresetuj hasło",
+		"redirecting": "Przekierowywanie...",
+		"redirectingSubtitle": "Przenosimy Cię na stronę resetowania hasła",
+		"emailNotFound": "Jeśli konto z tym emailem istnieje, pomożemy Ci zresetować hasło. Sprawdź email i spróbuj ponownie."
 	},
 	"resetPassword": {
 		"title": "Utwórz nowe hasło",

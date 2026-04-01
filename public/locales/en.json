@@ -50,11 +50,10 @@
     "forgotPassword": {
         "title": "Reset your password",
         "subtitle": "Enter your email and we'll help you get back in",
-        "sendReset": "Send reset link",
-        "checkEmail": "Check your email!",
-        "sentTo": "Reset link sent to",
-        "notReceived": "Didn't get it?",
-        "clickResend": "Try again"
+        "sendReset": "Reset password",
+        "redirecting": "Redirecting...",
+        "redirectingSubtitle": "Taking you to the password reset page",
+        "emailNotFound": "If an account with this email exists, we'll help you reset your password. Check the email and try again."
     },
     "resetPassword": {
         "title": "Create new password",

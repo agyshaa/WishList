@@ -50,11 +50,10 @@
 	"forgotPassword": {
 		"title": "Restablecer tu contraseña",
 		"subtitle": "Ingresa tu correo electrónico y te ayudaremos a recuperar el acceso",
-		"sendReset": "Enviar enlace de restablecimiento",
-		"checkEmail": "¡Revisa tu correo!",
-		"sentTo": "Enlace de restablecimiento enviado a",
-		"notReceived": "¿No lo recibiste?",
-		"clickResend": "Intentar de nuevo"
+		"sendReset": "Restablecer contraseña",
+		"redirecting": "Redirigiendo...",
+		"redirectingSubtitle": "Te estamos llevando a la página de restablecimiento de contraseña",
+		"emailNotFound": "Si existe una cuenta con este correo, te ayudaremos a restablecer tu contraseña. Verifica el correo e intenta de nuevo."
 	},
 	"resetPassword": {
 		"title": "Crear nueva contraseña",

@@ -50,11 +50,10 @@
 	"forgotPassword": {
 		"title": "Passwort zurücksetzen",
 		"subtitle": "Gib deine E-Mail ein und wir helfen dir, wieder Zugriff zu bekommen",
-		"sendReset": "Zurücksetzen-Link senden",
-		"checkEmail": "Prüfe deine E-Mail!",
-		"sentTo": "Zurücksetzen-Link gesendet an",
-		"notReceived": "Hast du ihn nicht erhalten?",
-		"clickResend": "Erneut versuchen"
+		"sendReset": "Passwort zurücksetzen",
+		"redirecting": "Weiterleitung...",
+		"redirectingSubtitle": "Du wirst zur Seite zum Zurücksetzen des Passworts weitergeleitet",
+		"emailNotFound": "Wenn ein Konto mit dieser E-Mail existiert, helfen wir dir, das Passwort zurückzusetzen. Überprüfe die E-Mail und versuche es erneut."
 	},
 	"resetPassword": {
 		"title": "Neues Passwort erstellen",

@@ -50,11 +50,10 @@
 	"forgotPassword": {
 		"title": "Réinitialiser ton mot de passe",
 		"subtitle": "Saisis ton email et nous t'aiderons à retrouver l'accès",
-		"sendReset": "Envoyer le lien de réinitialisation",
-		"checkEmail": "Vérifie ton email !",
-		"sentTo": "Lien de réinitialisation envoyé à",
-		"notReceived": "Tu ne l'as pas reçu ?",
-		"clickResend": "Réessayer"
+		"sendReset": "Réinitialiser le mot de passe",
+		"redirecting": "Redirection...",
+		"redirectingSubtitle": "Nous te redirigeons vers la page de réinitialisation du mot de passe",
+		"emailNotFound": "Si un compte avec cet email existe, nous t'aiderons à réinitialiser ton mot de passe. Vérifie l'email et réessaie."
 	},
 	"resetPassword": {
 		"title": "Créer un nouveau mot de passe",

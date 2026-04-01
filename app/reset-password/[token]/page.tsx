@@ -73,12 +73,22 @@ function ResetPasswordContent() {
       if (response.ok) {
         setStatus({
           state: "success",
-          message: data.message || t("resetPassword.success"),
         })
       } else {
+        // Маппимо серверні помилки на переклади
+        let errorKey = "common.error"
+        if (data.error?.includes("expired")) {
+          errorKey = "resetPassword.invalidToken"
+        } else if (data.error?.includes("Invalid")) {
+          errorKey = "resetPassword.invalidToken"
+        } else if (data.error?.includes("match")) {
+          errorKey = "resetPassword.passwordMismatch"
+        } else if (data.error?.includes("6 characters")) {
+          errorKey = "resetPassword.passwordTooShort"
+        }
         setStatus({
           state: "error",
-          message: data.error || t("common.error"),
+          message: t(errorKey),
         })
       }
     } catch (err) {
@@ -231,7 +241,7 @@ function ResetPasswordContent() {
                 <Check className="w-7 h-7 text-secondary" />
               </div>
               <h1 className="text-2xl font-bold text-foreground mb-2">{t("resetPassword.success")}</h1>
-              <p className="text-muted-foreground mb-8">{status.message || t("resetPassword.successMsg")}</p>
+              <p className="text-muted-foreground mb-8">{t("resetPassword.successMsg")}</p>
 
               <Button
                 onClick={() => (window.location.href = "/login")}
