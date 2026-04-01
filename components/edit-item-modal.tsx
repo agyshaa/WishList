@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { useState, useEffect } from "react"
 import Image from "next/image"
+import { useLanguage } from "@/lib/language-context"
 
 interface EditItemModalProps {
     isOpen: boolean
@@ -26,6 +27,7 @@ interface EditItemModalProps {
 export function EditItemModal({ isOpen, onClose, item, onSave, isLoading }: EditItemModalProps) {
     const [priority, setPriority] = useState("medium")
     const [notes, setNotes] = useState("")
+    const { t } = useLanguage()
 
     useEffect(() => {
         if (isOpen && item) {
@@ -46,7 +48,7 @@ export function EditItemModal({ isOpen, onClose, item, onSave, isLoading }: Edit
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="glass border-border sm:max-w-lg">
                 <DialogHeader>
-                    <DialogTitle className="text-foreground">Edit Item</DialogTitle>
+                    <DialogTitle className="text-foreground">{t("item.editItem")}</DialogTitle>
                 </DialogHeader>
 
                 <div className="space-y-4 pt-2">
@@ -78,22 +80,21 @@ export function EditItemModal({ isOpen, onClose, item, onSave, isLoading }: Edit
 
                     {/* Priority */}
                     <div className="space-y-2">
-                        <Label>Priority</Label>
+                        <Label>{t("item.priority")}</Label>
                         <div className="flex gap-2">
                             {[
-                                { value: "high", label: "Must Have", color: "bg-primary" },
-                                { value: "medium", label: "Want", color: "bg-secondary" },
-                                { value: "low", label: "Nice to Have", color: "bg-muted-foreground" },
+                                { value: "high", label: t("item.mustHave"), color: "bg-primary" },
+                                { value: "medium", label: t("item.want"), color: "bg-secondary" },
+                                { value: "low", label: t("item.niceToHave"), color: "bg-muted-foreground" },
                             ].map((p) => (
                                 <button
                                     key={p.value}
                                     onClick={() => setPriority(p.value)}
                                     disabled={isLoading}
-                                    className={`flex-1 py-2 px-3 rounded-lg text-xs font-medium transition-smooth ${
-                                        priority === p.value
+                                    className={`flex-1 py-2 px-3 rounded-lg text-xs font-medium transition-smooth ${priority === p.value
                                             ? `${p.color} text-background`
                                             : "bg-muted text-muted-foreground hover:text-foreground"
-                                    }`}
+                                        }`}
                                 >
                                     {p.label}
                                 </button>
@@ -103,10 +104,10 @@ export function EditItemModal({ isOpen, onClose, item, onSave, isLoading }: Edit
 
                     {/* Notes */}
                     <div className="space-y-2">
-                        <Label htmlFor="notes">Notes</Label>
+                        <Label htmlFor="notes">{t("item.notes")}</Label>
                         <Textarea
                             id="notes"
-                            placeholder="Color preference, size, etc..."
+                            placeholder={t("item.color")}
                             value={notes}
                             onChange={(e) => setNotes(e.target.value)}
                             disabled={isLoading}
@@ -119,10 +120,10 @@ export function EditItemModal({ isOpen, onClose, item, onSave, isLoading }: Edit
                     {/* Actions */}
                     <div className="flex justify-end gap-2 pt-2">
                         <Button variant="outline" onClick={onClose} disabled={isLoading} className="bg-transparent">
-                            Cancel
+                            {t("common.cancel")}
                         </Button>
                         <Button onClick={handleSave} disabled={isLoading} className="bg-primary hover:bg-primary/90">
-                            {isLoading ? "Saving..." : "Save Changes"}
+                            {isLoading ? t("common.saving") : t("common.saveChanges")}
                         </Button>
                     </div>
                 </div>

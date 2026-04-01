@@ -44,7 +44,7 @@ export function EditWishlistModal({ isOpen, onClose, wishlist, onSave, isLoading
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
         if (!name.trim()) {
-            alert("Wishlist name is required")
+            alert(t("common.wishlistNameRequired"))
             return
         }
 

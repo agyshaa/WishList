@@ -15,7 +15,13 @@
 		"settings": "Settings",
 		"min": "Min",
 		"max": "Max",
-		"optional": "optional"
+		"optional": "optional",
+		"saving": "Saving...",
+		"saveChanges": "Save Changes",
+		"selectImage": "Please select an image file",
+		"fileTooLarge": "File size must be less than 5MB",
+		"avatarFailed": "Failed to update avatar",
+		"wishlistNameRequired": "Wishlist name is required"
 	},
 	"auth": {
 		"login": "Log In",
@@ -118,7 +124,16 @@
 		"editItem": "Edit Item",
 		"deleteItem": "Remove Item",
 		"markPurchased": "Mark as Gifted",
-		"priceNotFound": "Price hiding"
+		"priceNotFound": "Price hiding",
+		"view": "View",
+		"book": "Book",
+		"booking": "Booking...",
+		"cancelBooking": "Cancel",
+		"canceling": "Canceling...",
+		"bookedBy": "Booked by",
+		"parseBlocked": "Store blocked the request. Try again in 1-2 minutes...",
+		"parseFailed": "Failed to parse this page",
+		"parseConnectionError": "Connection error. Check the URL and try again"
 	},
 	"home": {
 		"hero": {
@@ -208,7 +223,10 @@
 		"addShared": "Add a shared list",
 		"settings": "Settings",
 		"noWishlists": "You haven't made any wishes yet!",
-		"createOne": "Let's create one"
+		"createOne": "Let's create one",
+		"lists": "Lists",
+		"items": "Items",
+		"totalValue": "Total Value"
 	},
 	"shared": {
 		"accessKey": "Secret Key",
@@ -226,7 +244,17 @@
 		"privateDesc": "Only people with the key can view",
 		"publicDesc": "Anyone can find and view this list",
 		"shareLink": "Or share this link",
-		"shareNote": "Send this key to friends so they can view your wishlist in their 'Shared With Me' tab."
+		"shareNote": "Send this key to friends so they can view your wishlist in their 'Shared With Me' tab.",
+		"keyPlaceholder": "e.g., WISH-88X-J92",
+		"invalidAccessKey": "Invalid Access Key",
+		"invalidAccessKeyDesc": "This access key is invalid or the wishlist has been removed.",
+		"goHome": "Go Home",
+		"viewOnlyMode": "View Only Mode",
+		"viewOnlyDesc": "You're viewing a shared wishlist",
+		"sharedWithYouBadge": "Shared with you",
+		"noItemsYet": "This wishlist has no items yet.",
+		"wantToGift": "Want to gift something?",
+		"giftCta": "Click on any item to visit the store and make someone's day!"
 	},
 	"errors": {
 		"required": "We need this info!",
@@ -459,5 +487,23 @@
 			"subtitle": "Join thousands of happy users who never receive a bad gift again.",
 			"button": "Create Your First Wishlist"
 		}
+	},
+	"booked": {
+		"noItems": "No booked gifts",
+		"noItemsDesc": "Items you've booked for others will appear here.",
+		"canceledTitle": "Booking canceled",
+		"canceledDesc": "You have canceled your booking."
+	},
+	"toast": {
+		"added": "Added!",
+		"addedToList": "Item has been added to {list}.",
+		"noWishlists": "No wishlists yet",
+		"loginRequired": "Login Required",
+		"loginToAdd": "Please log in to add items to your wishlist.",
+		"loginToBook": "Please log in to book items.",
+		"bookingCanceled": "Booking Canceled!",
+		"bookingCanceledDesc": "You have canceled your reservation.",
+		"itemBooked": "Item Booked!",
+		"itemBookedDesc": "You have reserved this item."
 	}
 }

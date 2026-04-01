@@ -45,13 +45,13 @@ export default function SettingsPage() {
 
         // Validate file type
         if (!file.type.startsWith("image/")) {
-            alert("Please select an image file")
+            alert(t("common.selectImage"))
             return
         }
 
         // Validate file size (max 5MB)
         if (file.size > 5 * 1024 * 1024) {
-            alert("File size must be less than 5MB")
+            alert(t("common.fileTooLarge"))
             return
         }
 
@@ -68,7 +68,7 @@ export default function SettingsPage() {
             reader.readAsDataURL(file)
         } catch (error) {
             console.error("Error uploading avatar:", error)
-            alert("Failed to update avatar")
+            alert(t("common.avatarFailed"))
         }
     }
 

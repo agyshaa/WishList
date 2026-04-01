@@ -9,12 +9,14 @@ import { Lock, ArrowLeft, Eye, Heart } from "lucide-react"
 import Link from "next/link"
 import { useApp } from "@/lib/store"
 import { useState, useEffect } from "react"
+import { useLanguage } from "@/lib/language-context"
 import type { Wishlist } from "@/lib/types"
 
 export default function SharedWishlistPage() {
     const params = useParams()
     const accessKey = (params.key as string).toUpperCase()
     const { getWishlistByAccessKey } = useApp()
+    const { t } = useLanguage()
     const [wishlist, setWishlist] = useState<Wishlist | null>(null)
     const [loading, setLoading] = useState(true)
 
@@ -44,12 +46,12 @@ export default function SharedWishlistPage() {
                     <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center mx-auto mb-4">
                         <Lock className="w-8 h-8 text-muted-foreground" />
                     </div>
-                    <h1 className="text-2xl font-bold text-foreground mb-2">Invalid Access Key</h1>
+                    <h1 className="text-2xl font-bold text-foreground mb-2">{t("shared.invalidAccessKey")}</h1>
                     <p className="text-muted-foreground mb-6 max-w-sm">
-                        This access key is invalid or the wishlist has been removed.
+                        {t("shared.invalidAccessKeyDesc")}
                     </p>
                     <Button asChild className="bg-primary hover:bg-primary/90">
-                        <Link href="/">Go Home</Link>
+                        <Link href="/">{t("shared.goHome")}</Link>
                     </Button>
                 </div>
             </main>
@@ -69,15 +71,15 @@ export default function SharedWishlistPage() {
                         className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6 transition-smooth"
                     >
                         <ArrowLeft className="w-4 h-4" />
-                        Back
+                        {t("common.back")}
                     </Link>
 
                     {/* View Only Banner */}
                     <div className="bg-secondary/20 border border-secondary/30 rounded-xl p-4 mb-6 flex items-center gap-3">
                         <Eye className="w-5 h-5 text-secondary" />
                         <div>
-                            <p className="font-medium text-foreground">View Only Mode</p>
-                            <p className="text-sm text-muted-foreground">{"You're viewing a shared wishlist"}</p>
+                            <p className="font-medium text-foreground">{t("shared.viewOnlyMode")}</p>
+                            <p className="text-sm text-muted-foreground">{t("shared.viewOnlyDesc")}</p>
                         </div>
                     </div>
 
@@ -92,10 +94,10 @@ export default function SharedWishlistPage() {
                                 )}
                                 <div className="flex items-center gap-3 mt-3 text-sm text-muted-foreground">
                                     <span className="flex items-center gap-1">
-                                        <Lock className="w-4 h-4" /> Shared with you
+                                        <Lock className="w-4 h-4" /> {t("shared.sharedWithYouBadge")}
                                     </span>
-                                    <span>{wishlist.items.length} items</span>
-                                    <span className="text-secondary font-medium">${totalValue.toFixed(2)} total</span>
+                                    <span>{wishlist.items.length} {t("profile.items")}</span>
+                                    <span className="text-secondary font-medium">${totalValue.toLocaleString("uk-UA")} {t("profile.totalValue").toLowerCase()}</span>
                                 </div>
                             </div>
                         </div>
@@ -110,16 +112,16 @@ export default function SharedWishlistPage() {
                         </div>
                     ) : (
                         <div className="text-center py-12 glass rounded-2xl">
-                            <p className="text-muted-foreground">This wishlist has no items yet.</p>
+                            <p className="text-muted-foreground">{t("shared.noItemsYet")}</p>
                         </div>
                     )}
 
                     {/* Gift Helper CTA */}
                     <div className="mt-8 glass rounded-2xl p-6 text-center">
                         <Heart className="w-8 h-8 text-primary mx-auto mb-3" />
-                        <h3 className="font-semibold text-foreground mb-2">Want to gift something?</h3>
+                        <h3 className="font-semibold text-foreground mb-2">{t("shared.wantToGift")}</h3>
                         <p className="text-sm text-muted-foreground mb-4">
-                            {"Click on any item to visit the store and make someone's day!"}
+                            {t("shared.giftCta")}
                         </p>
                     </div>
                 </div>

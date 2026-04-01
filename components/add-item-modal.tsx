@@ -66,18 +66,18 @@ export function AddItemModal({ isOpen, onClose, onAdd }: AddItemModalProps) {
             if (!res.ok) {
                 // Handle different error types
                 if (res.status === 429 || data.detail === "site_blocked") {
-                    setError("🚫 Магазин заблокував запитання. Спробуйте через 1-2 хвилини...")
+                    setError(`🚫 ${t("item.parseBlocked")}`)
                 } else if (res.status === 400 || data.detail === "parse_failed") {
-                    setError(`❌ ${data.error || "Не вдалося спарсити цю сторінку"}`)
+                    setError(`❌ ${data.error || t("item.parseFailed")}`)
                 } else {
-                    setError(data.error || "Failed to parse URL")
+                    setError(data.error || t("item.parseFailed"))
                 }
                 return
             }
 
             setParsed(data)
         } catch (err) {
-            setError("⚠️ Помилка з'єднання. Перевірте URL та спробуйте ще раз")
+            setError(`⚠️ ${t("item.parseConnectionError")}`)
         } finally {
             setIsLoading(false)
         }
@@ -223,8 +223,8 @@ export function AddItemModal({ isOpen, onClose, onAdd }: AddItemModalProps) {
                                     key={p.value}
                                     onClick={() => setPriority(p.value)}
                                     className={`flex-1 py-2 px-3 rounded-lg text-xs font-medium transition-smooth ${priority === p.value
-                                            ? `${p.color} text-background`
-                                            : "bg-muted text-muted-foreground hover:text-foreground"
+                                        ? `${p.color} text-background`
+                                        : "bg-muted text-muted-foreground hover:text-foreground"
                                         }`}
                                 >
                                     {p.label}

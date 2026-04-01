@@ -70,7 +70,7 @@ export function SharedListsTab() {
                                 setError("")
                                 setSuccessMsg("")
                             }}
-                            placeholder="e.g., WISH-88X-J92"
+                            placeholder={t("shared.keyPlaceholder")}
                             className="bg-muted border-border h-12 font-mono tracking-wider uppercase"
                         />
                         {accessKey && (

@@ -15,7 +15,13 @@
 		"settings": "Ajustes",
 		"min": "Mín",
 		"max": "Máx",
-		"optional": "opcional"
+		"optional": "opcional",
+		"saving": "Guardando...",
+		"saveChanges": "Guardar cambios",
+		"selectImage": "Por favor selecciona un archivo de imagen",
+		"fileTooLarge": "El archivo no puede superar los 5 MB",
+		"avatarFailed": "No se pudo actualizar el avatar",
+		"wishlistNameRequired": "El nombre de la lista es obligatorio"
 	},
 	"auth": {
 		"login": "Iniciar sesión",
@@ -118,7 +124,16 @@
 		"editItem": "Editar",
 		"deleteItem": "Eliminar",
 		"markPurchased": "Marcar como regalado",
-		"priceNotFound": "Precio escondido"
+		"priceNotFound": "Precio escondido",
+		"view": "Ver",
+		"book": "Reservar",
+		"booking": "Reservando...",
+		"cancelBooking": "Cancelar reserva",
+		"canceling": "Cancelando...",
+		"bookedBy": "Reservado por",
+		"parseBlocked": "La tienda bloqueó la solicitud. Intenta en 1-2 minutos...",
+		"parseFailed": "No se pudo analizar esta página",
+		"parseConnectionError": "Error de conexión. Verifica la URL e inténtalo de nuevo"
 	},
 	"home": {
 		"hero": {
@@ -208,7 +223,10 @@
 		"addShared": "Añadir lista compartida",
 		"settings": "Ajustes",
 		"noWishlists": "¡Aún no has pedido ningún deseo!",
-		"createOne": "Vamos a crear una"
+		"createOne": "Vamos a crear una",
+		"lists": "Listas",
+		"items": "Artículos",
+		"totalValue": "Valor total"
 	},
 	"shared": {
 		"accessKey": "Clave secreta",
@@ -226,7 +244,17 @@
 		"privateDesc": "Solo las personas con la clave pueden verla",
 		"publicDesc": "Cualquiera puede encontrar y ver esta lista",
 		"shareLink": "O comparte este enlace",
-		"shareNote": "Envía esta clave a tus amigos para que puedan ver tu lista en la pestaña 'Compartido conmigo'."
+		"shareNote": "Envía esta clave a tus amigos para que puedan ver tu lista en la pestaña 'Compartido conmigo'.",
+		"keyPlaceholder": "p.ej. WISH-88X-J92",
+		"invalidAccessKey": "Clave de acceso inválida",
+		"invalidAccessKeyDesc": "Esta clave de acceso no es válida o la lista ha sido eliminada.",
+		"goHome": "Ir al inicio",
+		"viewOnlyMode": "Modo solo lectura",
+		"viewOnlyDesc": "Estás viendo una lista compartida",
+		"sharedWithYouBadge": "Compartido contigo",
+		"noItemsYet": "Esta lista aún no tiene artículos.",
+		"wantToGift": "¿Quieres regalar algo?",
+		"giftCta": "¡Haz clic en cualquier artículo para visitar la tienda y alegrarle el día a alguien!"
 	},
 	"errors": {
 		"required": "¡Necesitamos esta info!",
@@ -404,6 +432,24 @@
 			"deleteAccountDesc": "Borra tu cuenta y tus datos para siempre. ¡No hay vuelta atrás!",
 			"deleteBtn": "Eliminar cuenta"
 		}
+	},
+	"booked": {
+		"noItems": "Aún no has reservado ningún artículo",
+		"noItemsDesc": "Cuando reserves artículos de listas compartidas, aparecerán aquí",
+		"canceledTitle": "Reserva cancelada",
+		"canceledDesc": "La reserva se ha cancelado correctamente"
+	},
+	"toast": {
+		"added": "¡Añadido!",
+		"addedToList": "El artículo se ha añadido a {list}.",
+		"noWishlists": "Aún no tienes listas",
+		"loginRequired": "Inicio de sesión requerido",
+		"loginToAdd": "Inicia sesión para añadir artículos.",
+		"loginToBook": "Inicia sesión para reservar artículos.",
+		"bookingCanceled": "¡Reserva cancelada!",
+		"bookingCanceledDesc": "Has cancelado tu reserva.",
+		"itemBooked": "¡Artículo reservado!",
+		"itemBookedDesc": "Has reservado este artículo."
 	},
 	"howItWorks": {
 		"hero": {
