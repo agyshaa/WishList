@@ -118,7 +118,7 @@ export function WishlistCard({ wishlist, className, editable = false, onShare, o
 
           <div className="flex items-center justify-between mt-3 text-sm">
             <span className="text-muted-foreground">{wishlist.items.length} items</span>
-            <span className="text-secondary font-medium">₴{totalValue.toFixed(2)}</span>
+            <span className="text-secondary font-medium">₴{totalValue.toLocaleString("uk-UA")}</span>
           </div>
         </div>
       </div>

@@ -11,7 +11,7 @@ import { EditItemModal } from "@/components/edit-item-modal"
 import type { WishlistItem, Wishlist } from "@/lib/types"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
-import { Share2, Plus, Lock, Globe, ArrowLeft, Edit3 } from "lucide-react"
+import { Share2, Plus, Lock, Globe, ArrowLeft, Edit3, Package, Gift } from "lucide-react"
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import { useApp } from "@/lib/store"
@@ -110,6 +110,10 @@ export default function WishlistPage() {
 
     const totalValue = wishlist.items.reduce((sum, item) => sum + item.price, 0)
 
+    const formatPrice = (value: number) => {
+        return value.toLocaleString("uk-UA", { minimumFractionDigits: 0, maximumFractionDigits: 0 })
+    }
+
     const handleAddItem = (data: { title: string; price: number; oldPrice?: number | null; image: string; store: string; url: string; priority: string; notes: string }) => {
         addItemToWishlist(wishlist.id, {
             title: data.title,
@@ -198,62 +202,30 @@ export default function WishlistPage() {
 
                     {/* Header */}
                     <div className="glass rounded-2xl p-6 mb-6">
-                        <div className="flex items-start justify-between gap-4">
-                            <div className="flex items-start gap-4">
-                                <div className="text-4xl">{wishlist.emoji}</div>
-                                <div>
+                        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                            <div className="flex items-start gap-4 min-w-0">
+                                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center shrink-0 text-3xl">
+                                    {wishlist.emoji}
+                                </div>
+                                <div className="min-w-0">
                                     <h1 className="text-2xl sm:text-3xl font-bold text-foreground line-clamp-2">{wishlist.name}</h1>
                                     {wishlist.description && <p className="text-muted-foreground mt-1 line-clamp-2 break-all whitespace-pre-wrap">{wishlist.description}</p>}
-                                    <div className="flex items-center gap-3 mt-3 text-sm text-muted-foreground">
-                                        {isOwner && (
-                                            <button
-                                                onClick={handleTogglePrivacy}
-                                                className="flex items-center gap-1 hover:text-foreground transition-smooth"
-                                            >
-                                                {wishlist.isPrivate ? (
-                                                    <>
-                                                        <Lock className="w-4 h-4" /> {t("wishlist.private")}
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <Globe className="w-4 h-4" /> {t("wishlist.public")}
-                                                    </>
-                                                )}
-                                            </button>
-                                        )}
-                                        {!isOwner && (
-                                            <span className="flex items-center gap-1">
-                                                {wishlist.isPrivate ? (
-                                                    <>
-                                                        <Lock className="w-4 h-4" /> {t("wishlist.private")}
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <Globe className="w-4 h-4" /> {t("wishlist.public")}
-                                                    </>
-                                                )}
-                                            </span>
-                                        )}
-                                        <span>{wishlist.items.length} {t("wishlist.items")}</span>
-                                        <span className="text-secondary font-medium">₴{totalValue.toFixed(2)} {t("wishlist.total")}</span>
-                                    </div>
 
                                     {!isOwner && wishlist.user && (
-                                        <div className="flex items-center gap-2 mt-3 pt-3 border-t border-border">
-                                            <Avatar className="w-8 h-8">
+                                        <div className="flex items-center gap-2 mt-3">
+                                            <Avatar className="w-6 h-6">
                                                 <AvatarImage src={wishlist.user.avatar} alt={wishlist.user.name} />
-                                                <AvatarFallback>{wishlist.user.name.charAt(0)}</AvatarFallback>
+                                                <AvatarFallback className="text-[10px]">{wishlist.user.name.charAt(0)}</AvatarFallback>
                                             </Avatar>
-                                            <div className="flex flex-col">
-                                                <span className="text-xs font-medium text-foreground">{wishlist.user.name}</span>
-                                                <span className="text-xs text-muted-foreground">@{wishlist.user.username}</span>
-                                            </div>
+                                            <span className="text-sm text-muted-foreground">
+                                                {wishlist.user.name} <span className="text-muted-foreground/60">@{wishlist.user.username}</span>
+                                            </span>
                                         </div>
                                     )}
                                 </div>
                             </div>
 
-                            <div className="flex gap-2">
+                            <div className="flex gap-2 shrink-0">
                                 {isOwner && (
                                     <>
                                         <Button
@@ -263,7 +235,7 @@ export default function WishlistPage() {
                                             className="gap-1 bg-transparent"
                                         >
                                             <Edit3 className="w-4 h-4" />
-                                            {t("common.edit")}
+                                            <span className="hidden sm:inline">{t("common.edit")}</span>
                                         </Button>
                                         <Button
                                             variant="outline"
@@ -272,7 +244,7 @@ export default function WishlistPage() {
                                             className="gap-1 bg-transparent"
                                         >
                                             <Share2 className="w-4 h-4" />
-                                            {t("common.share")}
+                                            <span className="hidden sm:inline">{t("common.share")}</span>
                                         </Button>
                                         <Button
                                             size="sm"
@@ -280,11 +252,44 @@ export default function WishlistPage() {
                                             className="gap-1 bg-primary hover:bg-primary/90"
                                         >
                                             <Plus className="w-4 h-4" />
-                                            {t("common.add")}
+                                            <span className="hidden sm:inline">{t("common.add")}</span>
                                         </Button>
                                     </>
                                 )}
                             </div>
+                        </div>
+
+                        {/* Stats bar */}
+                        <div className="flex flex-wrap items-center gap-2 mt-4 pt-4 border-t border-border">
+                            {isOwner ? (
+                                <button
+                                    onClick={handleTogglePrivacy}
+                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-smooth hover:opacity-80 bg-muted text-muted-foreground"
+                                >
+                                    {wishlist.isPrivate ? (
+                                        <><Lock className="w-3.5 h-3.5" /> {t("wishlist.private")}</>
+                                    ) : (
+                                        <><Globe className="w-3.5 h-3.5" /> {t("wishlist.public")}</>
+                                    )}
+                                </button>
+                            ) : (
+                                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-muted text-muted-foreground">
+                                    {wishlist.isPrivate ? (
+                                        <><Lock className="w-3.5 h-3.5" /> {t("wishlist.private")}</>
+                                    ) : (
+                                        <><Globe className="w-3.5 h-3.5" /> {t("wishlist.public")}</>
+                                    )}
+                                </span>
+                            )}
+
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-muted text-muted-foreground">
+                                <Gift className="w-3.5 h-3.5" />
+                                {wishlist.items.length} {t("wishlist.items")}
+                            </span>
+
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-secondary/10 text-secondary">
+                                ₴{formatPrice(totalValue)} {t("wishlist.total")}
+                            </span>
                         </div>
                     </div>
 

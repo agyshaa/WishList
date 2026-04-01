@@ -3,8 +3,8 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Menu, X, User, Settings, LogOut, Globe, Search, Loader2 } from "lucide-react"
-import { useState, useEffect, useRef } from "react"
+import { Menu, X, User, Settings, LogOut, Globe } from "lucide-react"
+import { useState } from "react"
 import { useApp } from "@/lib/store"
 import { useLanguage } from "@/lib/language-context"
 import Image from "next/image"
@@ -14,26 +14,8 @@ export function Navbar() {
     const { user, logout, isLoading } = useApp()
     const { language, setLanguage, t } = useLanguage()
 
-    // Status for Search
-    const [searchQuery, setSearchQuery] = useState("")
-    const [isSearching, setIsSearching] = useState(false)
-    const [searchResults, setSearchResults] = useState<any[]>([])
-    const [showResults, setShowResults] = useState(false)
-    const searchRef = useRef<HTMLDivElement>(null)
-
-    // Click Outside listener
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
-                setShowResults(false)
-            }
-        }
-        document.addEventListener("mousedown", handleClickOutside)
-        return () => document.removeEventListener("mousedown", handleClickOutside)
-    }, [])
-
-    const handleLogout = () => {
-        logout()
+    const handleLogout = async () => {
+        await logout()
         window.location.href = "/"
     }
 
@@ -77,27 +59,33 @@ export function Navbar() {
                         {/* Language Switcher */}
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                                <button className="p-2 hover:bg-muted rounded-lg transition-smooth">
+                                <button className="p-2 hover:bg-muted rounded-lg transition-smooth" title="Language">
                                     <Globe className="w-5 h-5 text-muted-foreground" />
                                 </button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="glass w-40">
-                                <DropdownMenuItem onClick={() => setLanguage("uk")} className={language === "uk" ? "bg-primary/20" : ""}>
+                            <DropdownMenuContent align="center" sideOffset={8} className="glass w-44">
+                                <DropdownMenuItem onClick={() => setLanguage("uk")} className={`gap-3 ${language === "uk" ? "bg-primary/20" : ""}`}>
+                                    <Image src="/flags/ua.svg" alt="" width={20} height={20} className="rounded-lg object-cover w-5 h-5" />
                                     Українська
                                 </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => setLanguage("en")} className={language === "en" ? "bg-primary/20" : ""}>
+                                <DropdownMenuItem onClick={() => setLanguage("en")} className={`gap-3 ${language === "en" ? "bg-primary/20" : ""}`}>
+                                    <Image src="/flags/gb.svg" alt="" width={20} height={20} className="rounded-lg object-cover w-5 h-5" />
                                     English
                                 </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => setLanguage("pl")} className={language === "pl" ? "bg-primary/20" : ""}>
+                                <DropdownMenuItem onClick={() => setLanguage("pl")} className={`gap-3 ${language === "pl" ? "bg-primary/20" : ""}`}>
+                                    <Image src="/flags/pl.svg" alt="" width={20} height={20} className="rounded-lg object-cover w-5 h-5" />
                                     Polski
                                 </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => setLanguage("de")} className={language === "de" ? "bg-primary/20" : ""}>
+                                <DropdownMenuItem onClick={() => setLanguage("de")} className={`gap-3 ${language === "de" ? "bg-primary/20" : ""}`}>
+                                    <Image src="/flags/de.svg" alt="" width={20} height={20} className="rounded-lg object-cover w-5 h-5" />
                                     Deutsch
                                 </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => setLanguage("es")} className={language === "es" ? "bg-primary/20" : ""}>
+                                <DropdownMenuItem onClick={() => setLanguage("es")} className={`gap-3 ${language === "es" ? "bg-primary/20" : ""}`}>
+                                    <Image src="/flags/es.svg" alt="" width={20} height={20} className="rounded-lg object-cover w-5 h-5" />
                                     Español
                                 </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => setLanguage("fr")} className={language === "fr" ? "bg-primary/20" : ""}>
+                                <DropdownMenuItem onClick={() => setLanguage("fr")} className={`gap-3 ${language === "fr" ? "bg-primary/20" : ""}`}>
+                                    <Image src="/flags/fr.svg" alt="" width={20} height={20} className="rounded-lg object-cover w-5 h-5" />
                                     Français
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
@@ -184,52 +172,6 @@ export function Navbar() {
                                 </Link>
                             )}
 
-                            {/* Mobile User Search */}
-                            <div className="px-2 pb-2">
-                                <div className="relative">
-                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                                    <input
-                                        type="text"
-                                        placeholder={t("navbar.searchUsers") || "Search users..."}
-                                        value={searchQuery}
-                                        onChange={(e) => setSearchQuery(e.target.value)}
-                                        className="w-full pl-9 pr-4 py-2 bg-muted/50 border border-border/50 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-muted-foreground text-foreground"
-                                    />
-                                </div>
-
-                                {/* Mobile Search Results */}
-                                {searchQuery.trim() !== "" && (
-                                    <div className="mt-2 glass rounded-xl border border-border/50 overflow-hidden flex flex-col">
-                                        {isSearching ? (
-                                            <div className="flex items-center justify-center p-4">
-                                                <Loader2 className="w-5 h-5 animate-spin text-primary" />
-                                            </div>
-                                        ) : searchResults.length > 0 ? (
-                                            <div className="w-full max-h-60 overflow-y-auto">
-                                                {searchResults.map(u => (
-                                                    <Link
-                                                        key={u.id}
-                                                        href={`/u/${u.username}`}
-                                                        onClick={() => { setShowResults(false); setIsOpen(false); setSearchQuery(""); }}
-                                                        className="flex items-center gap-3 p-3 hover:bg-muted/50 transition-colors w-full border-b border-border/50 last:border-0"
-                                                    >
-                                                        <Image src={u.avatar || "/placeholder.svg"} alt={u.name} width={32} height={32} className="w-8 h-8 rounded-full object-cover shrink-0 bg-muted" />
-                                                        <div className="flex flex-col text-left overflow-hidden">
-                                                            <span className="text-sm font-medium text-foreground truncate">{u.name}</span>
-                                                            <span className="text-xs text-muted-foreground truncate">@{u.username}</span>
-                                                        </div>
-                                                    </Link>
-                                                ))}
-                                            </div>
-                                        ) : (
-                                            <div className="p-4 text-sm text-muted-foreground text-center">
-                                                {t("navbar.noUsersFound") || "No users found"}
-                                            </div>
-                                        )}
-                                    </div>
-                                )}
-                            </div>
-
                             {/* Mobile Language Switcher */}
                             <div className="px-2 pb-2 border-b border-border">
                                 <DropdownMenu>
@@ -240,12 +182,30 @@ export function Navbar() {
                                         </Button>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent align="center" className="glass w-[calc(100vw-2rem)] mx-4">
-                                        <DropdownMenuItem onClick={() => { setLanguage("uk"); setIsOpen(false); }} className={language === "uk" ? "bg-primary/20" : ""}>Українська</DropdownMenuItem>
-                                        <DropdownMenuItem onClick={() => { setLanguage("en"); setIsOpen(false); }} className={language === "en" ? "bg-primary/20" : ""}>English</DropdownMenuItem>
-                                        <DropdownMenuItem onClick={() => { setLanguage("pl"); setIsOpen(false); }} className={language === "pl" ? "bg-primary/20" : ""}>Polski</DropdownMenuItem>
-                                        <DropdownMenuItem onClick={() => { setLanguage("de"); setIsOpen(false); }} className={language === "de" ? "bg-primary/20" : ""}>Deutsch</DropdownMenuItem>
-                                        <DropdownMenuItem onClick={() => { setLanguage("es"); setIsOpen(false); }} className={language === "es" ? "bg-primary/20" : ""}>Español</DropdownMenuItem>
-                                        <DropdownMenuItem onClick={() => { setLanguage("fr"); setIsOpen(false); }} className={language === "fr" ? "bg-primary/20" : ""}>Français</DropdownMenuItem>
+                                        <DropdownMenuItem onClick={() => { setLanguage("uk"); setIsOpen(false); }} className={`gap-3 ${language === "uk" ? "bg-primary/20" : ""}`}>
+                                            <Image src="/flags/ua.svg" alt="" width={20} height={20} className="rounded-lg object-cover w-5 h-[15px]" />
+                                            Українська
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem onClick={() => { setLanguage("en"); setIsOpen(false); }} className={`gap-3 ${language === "en" ? "bg-primary/20" : ""}`}>
+                                            <Image src="/flags/gb.svg" alt="" width={20} height={20} className="rounded-lg object-cover w-5 h-[15px]" />
+                                            English
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem onClick={() => { setLanguage("pl"); setIsOpen(false); }} className={`gap-3 ${language === "pl" ? "bg-primary/20" : ""}`}>
+                                            <Image src="/flags/pl.svg" alt="" width={20} height={20} className="rounded-lg object-cover w-5 h-[15px]" />
+                                            Polski
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem onClick={() => { setLanguage("de"); setIsOpen(false); }} className={`gap-3 ${language === "de" ? "bg-primary/20" : ""}`}>
+                                            <Image src="/flags/de.svg" alt="" width={20} height={20} className="rounded-lg object-cover w-5 h-[15px]" />
+                                            Deutsch
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem onClick={() => { setLanguage("es"); setIsOpen(false); }} className={`gap-3 ${language === "es" ? "bg-primary/20" : ""}`}>
+                                            <Image src="/flags/es.svg" alt="" width={20} height={20} className="rounded-lg object-cover w-5 h-[15px]" />
+                                            Español
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem onClick={() => { setLanguage("fr"); setIsOpen(false); }} className={`gap-3 ${language === "fr" ? "bg-primary/20" : ""}`}>
+                                            <Image src="/flags/fr.svg" alt="" width={20} height={20} className="rounded-lg object-cover w-5 h-[15px]" />
+                                            Français
+                                        </DropdownMenuItem>
                                     </DropdownMenuContent>
                                 </DropdownMenu>
                             </div>
