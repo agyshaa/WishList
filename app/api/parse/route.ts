@@ -33,7 +33,7 @@ export async function POST(req: Request) {
             })
         } catch (parseError) {
             const errorMsg = parseError instanceof Error ? parseError.message : String(parseError)
-            
+
             // Determine error type and provide helpful message
             let userMessage = "Не вдалося спарсити сторінку"
             let detail = "parse_failed"
@@ -65,8 +65,8 @@ export async function POST(req: Request) {
             }
 
             console.error(`[api/parse] ${detail}: ${errorMsg}`)
-            
-            const response: any = { 
+
+            const response: any = {
                 error: userMessage,
                 detail,
             }

@@ -231,7 +231,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const updateWishlist = async (id: string, updates: Partial<Wishlist>) => {
         try {
             const validatedUpdates: Partial<Wishlist> = {}
-            
+
             if (updates.name !== undefined) {
                 validatedUpdates.name = sanitizeWishlistName(updates.name)
             }
